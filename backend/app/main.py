@@ -1,18 +1,26 @@
 import uuid
 import traceback
-from typing import Dict, Any, List
+from datetime import datetime
+from typing import Dict, Any, List, Optional
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.models import CheckoutRequest, CheckoutResponse, OrderResponse, OrderItemResponse
+from app.models import (
+    CheckoutRequest,
+    CheckoutResponse,
+    OrderResponse,
+    OrderItemResponse,
+    IncidentCreate,
+    IncidentResponse,
+)
 from app.database import get_supabase_client
 from app.payment_processor import get_user_currency_preferences, calculate_total
 
 app = FastAPI(
-    title="Checkout Service",
-    description="Full-stack E-commerce checkout backend service with Supabase integration",
-    version="1.2.0",
+    title="Checkout Service & SentinelOps Command Center",
+    description="Full-stack E-commerce checkout backend service with Supabase persistent incident memory",
+    version="1.3.0",
 )
 
 # Enable CORS for frontend requests
@@ -47,8 +55,9 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# In-memory store fallback and cache
+# In-memory stores fallback and cache
 _in_memory_orders: Dict[str, Dict[str, Any]] = {}
+_in_memory_incidents: Dict[str, Dict[str, Any]] = {}
 
 
 @app.get("/health", tags=["Monitoring"])
@@ -58,6 +67,10 @@ async def health_check():
     db_status = "connected" if client is not None else "unconfigured"
     return {"status": "ok", "database": db_status}
 
+
+# ==========================================
+# CHECKOUT ROUTES
+# ==========================================
 
 @app.post("/checkout", response_model=CheckoutResponse, tags=["Checkout"])
 async def checkout(request: CheckoutRequest):
@@ -225,7 +238,6 @@ async def get_order(order_id: str):
         except Exception:
             pass
 
-    # Check in-memory store
     if order_id in _in_memory_orders:
         mem_order = _in_memory_orders[order_id]
         return OrderResponse(
@@ -247,3 +259,76 @@ async def get_order(order_id: str):
         )
 
     raise HTTPException(status_code=404, detail="Order not found")
+
+
+# ==========================================
+# SENTINELOPS INCIDENT MEMORY ROUTES
+# ==========================================
+
+@app.post("/incidents", response_model=IncidentResponse, tags=["Incidents"])
+async def record_incident(incident: IncidentCreate):
+    """
+    Write a structured incident record to persistent memory in Supabase.
+    Used by SentinelOps Step 7 to store root cause, evidence, and PR link across sessions.
+    """
+    now_iso = datetime.utcnow().isoformat()
+    record = {
+        "id": incident.id,
+        "title": incident.title,
+        "service": incident.service,
+        "root_cause": incident.root_cause,
+        "evidence_summary": incident.evidence_summary,
+        "verification_result": incident.verification_result,
+        "approval_record": incident.approval_record,
+        "pr_link": incident.pr_link,
+        "resolution_status": incident.resolution_status,
+        "created_at": now_iso,
+    }
+
+    _in_memory_incidents[incident.id] = record
+
+    client = get_supabase_client()
+    if client:
+        try:
+            client.table("incidents").upsert(record).execute()
+        except Exception:
+            pass
+
+    return IncidentResponse(**record)
+
+
+@app.get("/incidents", response_model=List[IncidentResponse], tags=["Incidents"])
+async def list_incidents():
+    """
+    List all stored incident records for the Command Center UI and cross-session AI agent queries.
+    """
+    client = get_supabase_client()
+    if client:
+        try:
+            res = client.table("incidents").select("*").order("created_at", desc=True).limit(50).execute()
+            if res.data:
+                return [IncidentResponse(**row) for row in res.data]
+        except Exception:
+            pass
+
+    return [IncidentResponse(**data) for data in reversed(list(_in_memory_incidents.values()))]
+
+
+@app.get("/incidents/{incident_id}", response_model=IncidentResponse, tags=["Incidents"])
+async def get_incident(incident_id: str):
+    """
+    Retrieve details of a specific past incident by ID.
+    """
+    client = get_supabase_client()
+    if client:
+        try:
+            res = client.table("incidents").select("*").eq("id", incident_id).execute()
+            if res.data:
+                return IncidentResponse(**res.data[0])
+        except Exception:
+            pass
+
+    if incident_id in _in_memory_incidents:
+        return IncidentResponse(**_in_memory_incidents[incident_id])
+
+    raise HTTPException(status_code=404, detail="Incident record not found")

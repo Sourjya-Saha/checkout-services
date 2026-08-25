@@ -175,8 +175,14 @@ export default function CheckoutPage() {
           </p>
         </div>
 
-        {/* Status Indicators */}
-        <div className="flex items-center gap-2">
+        {/* Status Indicators & Navigation */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <a
+            href="/incidents"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all"
+          >
+            Incident Command Center &rarr;
+          </a>
           <button
             onClick={checkHealth}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
@@ -186,7 +192,7 @@ export default function CheckoutPage() {
           </button>
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
             <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-            Database: {backendHealth?.database === "connected" ? "Supabase Connected" : "Local Store Active"}
+            Database: {backendHealth?.database === "connected" ? "Supabase Connected" : "Active"}
           </div>
         </div>
       </div>

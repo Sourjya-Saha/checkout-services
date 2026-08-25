@@ -37,3 +37,28 @@ class OrderResponse(BaseModel):
     total: float
     status: str
     items: List[OrderItemResponse] = []
+
+
+class IncidentCreate(BaseModel):
+    id: str = Field(..., description="Unique Incident ID e.g. INC-20260825-checkout")
+    title: str = Field(..., description="Brief title of incident")
+    service: str = Field("checkout-service", description="Impacted microservice")
+    root_cause: str = Field(..., description="Identified root cause explanation")
+    evidence_summary: str = Field(..., description="Summary of logs, git commits, and DB signals")
+    verification_result: str = Field(..., description="Sandboxed test results")
+    approval_record: str = Field(..., description="Human approval details")
+    pr_link: Optional[str] = Field(None, description="GitHub PR link for the fix")
+    resolution_status: str = Field("resolved", description="Resolution status (resolved, rolled_back, active)")
+
+
+class IncidentResponse(BaseModel):
+    id: str
+    title: str
+    service: str
+    root_cause: str
+    evidence_summary: str
+    verification_result: str
+    approval_record: str
+    pr_link: Optional[str] = None
+    resolution_status: str
+    created_at: Optional[str] = None
