@@ -1,19 +1,17 @@
 import pytest
-import traceback
 from fastapi.testclient import TestClient
 from app.main import app
-from app.payment_processor import calculate_total
-from app.models import CartItem
 
-# Use raise_server_exceptions=False so we can assert the 500 response code
-client = TestClient(app, raise_server_exceptions=False)
+client = TestClient(app)
 
 
 def test_health_check():
-    """Verify health endpoint returns 200 OK."""
+    """Verify health check endpoint returns 200 OK and database status."""
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    data = response.json()
+    assert data["status"] == "ok"
+    assert "database" in data
 
 
 def test_checkout_logged_in_success():
@@ -28,7 +26,6 @@ def test_checkout_logged_in_success():
         "is_guest": False,
     }
     response = client.post("/checkout", json=payload)
-    print(f"\n[Logged-In Checkout] Status: {response.status_code}, Body: {response.text}")
     assert response.status_code == 200
     data = response.json()
     assert "order_id" in data
@@ -37,39 +34,38 @@ def test_checkout_logged_in_success():
     assert data["status"] == "completed"
 
 
-def test_checkout_guest_failure_500():
-    """
-    Verify checkout returns 500 for guest checkouts due to the seeded regression.
-    Captures and prints the exact exception and stack trace.
-    """
+def test_checkout_guest_success():
+    """Verify checkout succeeds seamlessly for a guest user."""
     payload = {
         "user_id": None,
         "cart_items": [
-            {"sku": "SKU-SENTINEL-PRO", "qty": 1, "price": 99.0},
-            {"sku": "SKU-CLOUD-CREDITS", "qty": 2, "price": 25.0},
+            {"sku": "SKU-SENTINEL-PRO", "qty": 2, "price": 99.0},
         ],
-        "currency": "USD",
+        "currency": "EUR",
         "is_guest": True,
     }
-
-    # 1. Capture the exact internal exception and stack trace
-    print("\n" + "=" * 70)
-    print("DEMO VERIFICATION: TRIGGERING GUEST CHECKOUT REGRESSION (TARGET BUG)")
-    print("=" * 70)
-
-    try:
-        # Directly invoke the logic to obtain the raw traceback
-        items = [CartItem(**item) for item in payload["cart_items"]]
-        currency_info = None  # Guest checkout has no saved profile
-        calculate_total(items, currency_info, currency="USD")
-    except Exception as exc:
-        print("\n--- EXACT CAPTURED EXCEPTION & STACK TRACE ---")
-        traceback.print_exc()
-        print("----------------------------------------------\n")
-        assert isinstance(exc, TypeError)
-        assert "'NoneType' object is not subscriptable" in str(exc)
-
-    # 2. Verify FastAPI returns 500 Internal Server Error over HTTP
     response = client.post("/checkout", json=payload)
-    print(f"[Guest Checkout HTTP Response] Status: {response.status_code}, Body: {response.text}")
-    assert response.status_code == 500
+    assert response.status_code == 200
+    data = response.json()
+    assert "order_id" in data
+    assert data["total"] == 182.16  # (99 * 2) * 0.92 = 182.16
+    assert data["currency"] == "EUR"
+    assert data["status"] == "completed"
+
+
+def test_list_and_get_orders():
+    """Verify orders listing and fetching by ID."""
+    # List orders
+    list_res = client.get("/orders")
+    assert list_res.status_code == 200
+    orders = list_res.json()
+    assert isinstance(orders, list)
+    assert len(orders) > 0
+
+    # Get specific order
+    first_id = orders[0]["id"]
+    get_res = client.get(f"/orders/{first_id}")
+    assert get_res.status_code == 200
+    order_data = get_res.json()
+    assert order_data["id"] == first_id
+    assert "items" in order_data
