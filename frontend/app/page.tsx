@@ -23,25 +23,25 @@ export default function DeepRed404CombinedLanding() {
       {/* ========================================================================= */}
       {/* 2. EXACT GIANT 404 BACKGROUND: BLURRED LEFT & RIGHT EDGES + SHARP CENTER */}
       {/* ========================================================================= */}
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+   <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
 
   {/* LEFT 4 */}
-  <div className="absolute top-[64%] left-0 -translate-y-1/2 -translate-x-[19%] whitespace-nowrap">
-    <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+  <div className="absolute top-[55%] left-0 -translate-y-1/2 -translate-x-[3%] whitespace-nowrap">
+    <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
       4
     </span>
   </div>
 
   {/* CENTER 0 */}
-  <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
-    <span className="font-anton font-normal text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
+  <div className="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
+    <span className="font-anton text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
       0
     </span>
   </div>
 
   {/* RIGHT 4 */}
-  <div className="absolute top-[64%] right-0 translate-x-[1%] -translate-y-1/2 whitespace-nowrap">
-    <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+  <div className="absolute top-[55%] right-0 -translate-y-1/2 translate-x-[3%] whitespace-nowrap">
+    <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
       4
     </span>
   </div>
@@ -72,11 +72,7 @@ export default function DeepRed404CombinedLanding() {
           )}
         </Link>
 
-        {/* Top Center: Exact "404 ERROR PAGE" */}
-        <div className="text-center font-mono text-[10px] sm:text-xs uppercase tracking-widest text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-          <p className="font-bold">404</p>
-          <p className="text-zinc-400">ERROR PAGE</p>
-        </div>
+     
 
         {/* Top Right: On hover -> "face the actual service page" -> Redirects to /checkout */}
         <Link
@@ -108,34 +104,21 @@ export default function DeepRed404CombinedLanding() {
           My Harness Agent
         </p>
 
-        {/* Center Title Stack with Kinetic Motion Blur */}
+        {/* Center Title Stack with Tight Black Shadow Behind */}
         <div className="relative inline-block select-none my-1">
-          {/* Motion Blur Trail Underlayer */}
-          <span className="absolute top-1 left-4 sm:left-8 text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black/60 filter blur-[4px] sm:blur-[6px] select-none pointer-events-none">
+          {/* Black Shadow Directly Behind */}
+          <span className="absolute inset-0 translate-x-[2px] translate-y-[3px] sm:translate-x-[3px] sm:translate-y-[4px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[2px] sm:blur-[3px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap">
             SENTINEL OPS
           </span>
 
           {/* Sharp Front Title */}
-          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)] z-10">
+          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] z-10 whitespace-nowrap">
             SENTINEL OPS
           </h1>
         </div>
 
         {/* 404 Overlay Details with Underline Scribble Effect */}
-        <div className="mt-3 space-y-1 max-w-md mx-auto">
-          <p className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-            SORRY, WE DETECTED AN ANOMALY IN THIS SERVICE
-          </p>
-
-          <div className="relative inline-block pt-1">
-            <Link
-              href="/sentinelops"
-              className="text-xs sm:text-sm font-bold font-mono tracking-widest text-white hover:text-red-400 uppercase transition-colors underline underline-offset-4 decoration-red-500"
-            >
-              AUTONOMOUS REMEDIATION &rarr;
-            </Link>
-          </div>
-        </div>
+    
       </div>
 
       {/* ========================================================================= */}
@@ -162,10 +145,7 @@ export default function DeepRed404CombinedLanding() {
           )}
         </Link>
 
-        {/* Center Bottom Subtitle from Reference */}
-        <div className="text-center text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-400 max-w-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-          THE PAGE YOU ARE LOOKING FOR DOESN&apos;T EXIST OR AN OTHER ERROR OCCURRED.
-        </div>
+     
 
         {/* Bottom Right: "Create by Sourjya Saha" */}
         <div className="text-right space-y-0.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
