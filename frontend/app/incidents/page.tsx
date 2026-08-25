@@ -46,7 +46,7 @@ export default function VenturaIncidentsAudit() {
   const resolvedCount = incidents.filter((i) => i.resolution_status === "resolved").length;
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans antialiased selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-black text-white font-epic antialiased selection:bg-white selection:text-black">
       {/* Top Header */}
       <header className="px-6 sm:px-12 py-6 border-b border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">

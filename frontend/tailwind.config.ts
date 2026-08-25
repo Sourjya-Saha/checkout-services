@@ -7,7 +7,11 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        epic: ["GCEpicPro", "system-ui", "-apple-system", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
