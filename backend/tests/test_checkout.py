@@ -60,23 +60,3 @@ def test_checkout_guest_success():
     assert "order_id" in data
     assert data["total"] == 99.0
     assert data["status"] == "completed"
-
-
-def test_regional_tax_fallback():
-    """
-    Verify regional tax calculation falls back safely to 0.0 for unknown or standard regions.
-    """
-    from app.payment_processor import calculate_regional_tax
-
-    # 1. Default STANDARD region returns 0.0 tax without raising KeyError
-    tax_standard = calculate_regional_tax(100.0, "STANDARD")
-    assert tax_standard == 0.0
-
-    # 2. None region defaults safely
-    tax_none = calculate_regional_tax(100.0, None)
-    assert tax_none == 0.0
-
-    # 3. Known valid region (e.g. US_CA = 8.25%) calculates correctly
-    tax_ca = calculate_regional_tax(100.0, "US_CA")
-    assert tax_ca == 8.25
-

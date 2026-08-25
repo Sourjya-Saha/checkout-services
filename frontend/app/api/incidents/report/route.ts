@@ -42,12 +42,22 @@ export async function POST(req: NextRequest) {
 
     const client = getTrueForgeClient();
 
-    // 1. Create a new session with SentinelOps agent spec
-    const sessionRes = await client.sessions.create({
-      agent: {
-        spec: SENTINELOPS_AGENT_SPEC as any,
-      },
-    });
+    // 1. Create a new session using the saved SentinelOps agent from Agents Library
+    let sessionRes: any;
+    try {
+      sessionRes = await client.sessions.create({
+        agent: {
+          id: SENTINELOPS_AGENT_ID,
+        } as any,
+      });
+    } catch {
+      sessionRes = await client.sessions.create({
+        agent: {
+          name: SENTINELOPS_AGENT_NAME,
+          spec: SENTINELOPS_AGENT_SPEC as any,
+        } as any,
+      });
+    }
 
     const sessionId = (sessionRes as any).id || (sessionRes as any).data?.id;
 

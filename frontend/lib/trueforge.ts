@@ -3,6 +3,9 @@ import { TrueForge } from "@truefoundry/trueforge-sdk";
 export const TRUEFORGE_BASE_URL =
   process.env.TRUEFORGE_URL || process.env.NEXT_PUBLIC_TRUEFORGE_URL || "http://localhost:8790";
 
+export const SENTINELOPS_AGENT_ID = "01m0xgq0c13c5p67k7rtjk0s35";
+export const SENTINELOPS_AGENT_NAME = "sentinelops";
+
 let _client: TrueForge | null = null;
 
 export function getTrueForgeClient(): TrueForge {
@@ -21,6 +24,8 @@ export const SENTINELOPS_AGENT_SPEC = {
       reasoning_effort: "low",
     },
   },
+  instructions:
+    "You are SentinelOps, the autonomous incident commander for the checkout-services application. Always load and follow the incident-runbook skill when investigating a reported incident, and the rollback-playbook skill when evaluating rollback vs forward-fix. Never take a write action without the required approval checkpoint.",
   mcp_servers: [
     {
       name: "github",
@@ -56,7 +61,10 @@ export const SENTINELOPS_AGENT_SPEC = {
     dynamic_sub_agents: {
       enabled: true,
     },
-    context_management: {},
+    context_management: {
+      compaction: { enabled: true },
+      large_tool_response: { enabled: true },
+    },
     generative_ui: {
       enabled: true,
     },
