@@ -23,6 +23,12 @@ PROMO_CODE_DISCOUNTS = {
     "VIP50": 0.50,
 }
 
+SHIPPING_TIER_RATES = {
+    "STANDARD": 5.99,
+    "EXPRESS": 14.99,
+    "OVERNIGHT": 29.99,
+}
+
 
 def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]:
     """
@@ -73,8 +79,23 @@ def apply_promo_discount(subtotal: float, promo_code: Optional[str] = None) -> f
         promo_code = "NONE"
 
     # Fall back to no discount when the promo code is missing or unmapped.
-    discount_rate = PROMO_CODE_DISCOUNTS.get(promo_code, 0.0)
+    discount_rate = PROMO_CODE_DISCOUNTS.get(promo_code.upper(), 0.0)
     return round(subtotal * discount_rate, 2)
+
+
+def calculate_shipping_fee(subtotal: float, shipping_tier: Optional[str] = None) -> float:
+    """
+    Calculate shipping and logistics fee based on selected fulfillment tier.
+    Free shipping applies to orders with subtotal >= $150.00.
+    """
+    if subtotal >= 150.0:
+        return 0.0
+
+    if not shipping_tier:
+        shipping_tier = "DEFAULT"
+
+    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default shipping tier
+    return SHIPPING_TIER_RATES[shipping_tier]
 
 
 def calculate_total(
@@ -83,16 +104,20 @@ def calculate_total(
     currency: str = "USD",
     tax_region: Optional[str] = None,
     promo_code: Optional[str] = None,
+    shipping_tier: Optional[str] = None,
 ) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
-    Applies promo code discounts, regional tax calculation, and currency conversion rate.
+    Applies promo discounts, shipping fees, regional taxes, and currency conversion.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
 
-    # Apply promo discount (triggers KeyError: 'NONE' when promo_code is empty or not in PROMO_CODE_DISCOUNTS)
+    # Apply promo discount
     discount = apply_promo_discount(subtotal, promo_code)
     discounted_subtotal = max(0.0, subtotal - discount)
+
+    # Calculate shipping fee (triggers KeyError: 'DEFAULT' when shipping_tier is not explicitly set)
+    shipping_fee = calculate_shipping_fee(discounted_subtotal, shipping_tier)
 
     # Retrieve exchange rate from user preferences if available, or fallback to default table
     if currency_info and isinstance(currency_info, dict) and "rate" in currency_info:
@@ -102,10 +127,10 @@ def calculate_total(
 
     # Calculate regional tax
     tax_amount = calculate_regional_tax(discounted_subtotal, tax_region)
-    total = round((discounted_subtotal + tax_amount) * rate, 2)
+    total = round((discounted_subtotal + tax_amount + shipping_fee) * rate, 2)
 
     # Format and log audit receipt total
     formatted_total = _format_price_for_display(total, currency_info)
-    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, tax: {tax_amount})")
+    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, shipping: {shipping_fee}, tax: {tax_amount})")
 
     return total
