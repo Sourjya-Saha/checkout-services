@@ -202,23 +202,28 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. CENTER HERO: "MY HARNESS AGENT" + "SENTINEL OPS" (NO EXTRA TEXT) */}
+      {/* 5. CENTER HERO: THE OLD "MY HARNESS AGENT" + RED KINETIC STACKED DESIGN */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Eyebrow Label */}
-        <p className="text-[11px] sm:text-xs font-mono font-medium tracking-[0.25em] text-zinc-300 uppercase mb-2">
-          MY HARNESS AGENT
+        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+          My Harness Agent
         </p>
 
-        {/* Giant Main Title: "SENTINEL OPS" */}
+        {/* Center Title Stack with Layered Red Kinetic Motion Blur Trails */}
         <div className="relative inline-block select-none my-1">
-          {/* Soft tight black shadow underlayer */}
-          <span className="absolute inset-0 translate-x-[3px] translate-y-[5px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-black filter blur-[4px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap">
+          {/* Motion Blur Trail Underlayer 1 */}
+          <span className="absolute top-2 left-6 sm:left-10 text-5xl sm:text-7xl md:text-8xl font-epic font-extrabold uppercase tracking-tighter text-red-600/50 filter blur-[5px] sm:blur-[8px] select-none pointer-events-none whitespace-nowrap">
             SENTINEL OPS
           </span>
 
-          {/* Sharp Front White Title */}
-          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-white drop-shadow-[0_6px_20px_rgba(0,0,0,0.95)] z-10 whitespace-nowrap">
+          {/* Motion Blur Trail Underlayer 2 */}
+          <span className="absolute -top-1 left-3 sm:left-6 text-5xl sm:text-7xl md:text-8xl font-epic font-extrabold uppercase tracking-tighter text-red-500/70 filter blur-[2px] sm:blur-[3.5px] select-none pointer-events-none whitespace-nowrap">
+            SENTINEL OPS
+          </span>
+
+          {/* Sharp Front Title */}
+          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-extrabold uppercase tracking-tighter text-red-600 drop-shadow-[0_0_30px_rgba(220,38,38,0.85)] z-10 whitespace-nowrap">
             SENTINEL OPS
           </h1>
         </div>
