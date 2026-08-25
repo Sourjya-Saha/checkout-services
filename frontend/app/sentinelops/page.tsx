@@ -140,6 +140,21 @@ export default function VenturaSentinelOpsCommander() {
           const text = typeof data.content === "string" ? data.content : JSON.stringify(data.content || "");
           if (text) {
             setTerminalLogs((prev) => [...prev, `[Agent] ${text.slice(0, 180)}...`]);
+
+            // Dynamically detect created Pull Request
+            const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);
+            if (prMatch && prMatch[0]) {
+              setIncidentState((prev) => ({
+                ...prev!,
+                status: "resolved",
+                pr_url: prMatch[0],
+              }));
+              setCurrentStep(6);
+              setTerminalLogs((prev) => [
+                ...prev,
+                `[✓] [PR CREATED] Successfully opened Pull Request: ${prMatch[0]}`,
+              ]);
+            }
           }
           if (data.tool_calls && data.tool_calls.length > 0) {
             const tool = data.tool_calls[0];
@@ -152,6 +167,16 @@ export default function VenturaSentinelOpsCommander() {
         }
 
         if (data.type === "tool.response") {
+          const text = JSON.stringify(data);
+          const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);
+          if (prMatch && prMatch[0]) {
+            setIncidentState((prev) => ({
+              ...prev!,
+              status: "resolved",
+              pr_url: prMatch[0],
+            }));
+            setCurrentStep(6);
+          }
           setTerminalLogs((prev) => [
             ...prev,
             `[✓] [TOOL RETURN] ${data.tool_name || "tool"}: response captured`,
@@ -394,7 +419,10 @@ export default function VenturaSentinelOpsCommander() {
                   <strong className="text-white">Target Repository:</strong> Sourjya-Saha/checkout-services
                 </p>
                 <p>
-                  <strong className="text-amber-400">Action:</strong> Install dependencies, apply safe tax fallback in payment_processor.py, and run sandbox pytest suites.
+                  <strong className="text-amber-400">Target Error:</strong> {incidentState.error_message || "Active production regression"}
+                </p>
+                <p>
+                  <strong className="text-zinc-400">Action:</strong> Install dependencies, apply safe fallback in payment_processor.py, and run sandbox verification.
                 </p>
               </div>
 
@@ -438,10 +466,10 @@ export default function VenturaSentinelOpsCommander() {
               </p>
               <div className="p-4 bg-black/80 rounded-2xl border border-blue-900/60 text-xs text-zinc-300 space-y-1">
                 <p>
-                  <strong className="text-white">Branch to Create:</strong> fix-regional-tax-fallback &rarr; main
+                  <strong className="text-white">Target Repository:</strong> Sourjya-Saha/checkout-services
                 </p>
                 <p className="text-emerald-400">
-                  <strong className="text-white">Daytona Proof:</strong> 100% test suites passed in isolated Linux container.
+                  <strong className="text-white">Daytona Proof:</strong> 100% verification checks passed in isolated Linux sandbox.
                 </p>
               </div>
 

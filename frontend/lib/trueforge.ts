@@ -3,7 +3,7 @@ import { TrueForge } from "@truefoundry/trueforge-sdk";
 export const TRUEFORGE_BASE_URL =
   process.env.TRUEFORGE_URL || process.env.NEXT_PUBLIC_TRUEFORGE_URL || "http://localhost:8790";
 
-export const SENTINELOPS_AGENT_ID = "01m0xm9dhsn96bffa5kqhjy5f4";
+export const SENTINELOPS_AGENT_ID = "01m0xnm0edym5yhf3vr7azmmyh";
 export const SENTINELOPS_AGENT_NAME = "sentinelops";
 
 let _client: TrueForge | null = null;
