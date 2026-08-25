@@ -72,8 +72,8 @@ def apply_promo_discount(subtotal: float, promo_code: Optional[str] = None) -> f
     if not promo_code:
         promo_code = "NONE"
 
-    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default promo codes
-    discount_rate = PROMO_CODE_DISCOUNTS[promo_code]
+    # Fall back to no discount when the promo code is missing or unmapped.
+    discount_rate = PROMO_CODE_DISCOUNTS.get(promo_code, 0.0)
     return round(subtotal * discount_rate, 2)
 
 
