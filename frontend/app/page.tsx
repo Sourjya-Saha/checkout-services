@@ -9,7 +9,7 @@ export default function Exact404SentinelOpsLanding() {
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
 
   return (
-    <main className="relative w-screen h-screen min-h-screen bg-[#070b0b] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
+    <main className="relative w-screen h-screen min-h-screen bg-[#060a0a] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
       {/* ========================================================================= */}
       {/* 1. ANALOGUE FILM GRAIN NOISE OVERLAY */}
       {/* ========================================================================= */}
@@ -47,22 +47,18 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. DENSE SILK / SMOKE / COBWEB FILAMENT WAVY TEXTURES (AS IN IMAGE) */}
+      {/* 3. DENSE TOPOGRAPHIC CONTOUR WAVES: SEPARATED TOP & BOTTOM BANDS WITH WIDE GAP */}
       {/* ========================================================================= */}
       <svg
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen"
+        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-85 mix-blend-screen"
         viewBox="0 0 1440 900"
         preserveAspectRatio="none"
       >
         <defs>
-          <filter id="silkFlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="5" result="warp" />
-            <feDisplacementMap in="SourceGraphic" in2="warp" scale="65" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-          <filter id="cobwebMicro" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="4" result="microWarp" />
-            <feDisplacementMap in="SourceGraphic" in2="microWarp" scale="35" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="seismicRip" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale="28" xChannelSelector="R" yChannelSelector="G" />
           </filter>
           <filter id="pencilChalk" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
@@ -70,30 +66,22 @@ export default function Exact404SentinelOpsLanding() {
           </filter>
         </defs>
 
-        {/* Dense Waving Filament Ribbons Across Top Left & Top Right */}
-        <g filter="url(#silkFlow)" className="opacity-70">
-          <path d="M -100 180 C 250 40, 550 360, 950 140 C 1200 20, 1400 300, 1600 120" stroke="white" strokeWidth="1.8" fill="none" />
-          <path d="M -100 200 C 260 60, 560 380, 960 160 C 1210 40, 1410 320, 1600 140" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
-          <path d="M -100 220 C 270 80, 570 400, 970 180 C 1220 60, 1420 340, 1600 160" stroke="white" strokeWidth="1.1" fill="none" opacity="0.6" />
-          <path d="M -100 240 C 280 100, 580 420, 980 200 C 1230 80, 1430 360, 1600 180" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
-          <path d="M -100 260 C 290 120, 590 440, 990 220 C 1240 100, 1440 380, 1600 200" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+        {/* TOP WAVE BAND (POSITIONED HIGH UP ACROSS Y: 140px - 260px) */}
+        <g filter="url(#seismicRip)" className="opacity-90">
+          <path d="M -80 150 C 220 80, 520 230, 880 130 C 1140 60, 1340 210, 1550 120" stroke="white" strokeWidth="1.6" fill="none" />
+          <path d="M -80 170 C 230 100, 530 250, 890 150 C 1150 80, 1350 230, 1550 140" stroke="white" strokeWidth="1.3" fill="none" opacity="0.85" />
+          <path d="M -80 190 C 240 120, 540 270, 900 170 C 1160 100, 1360 250, 1550 160" stroke="white" strokeWidth="1.1" fill="none" opacity="0.7" />
+          <path d="M -80 210 C 250 140, 550 290, 910 190 C 1170 120, 1370 270, 1550 180" stroke="white" strokeWidth="0.9" fill="none" opacity="0.6" />
+          <path d="M -80 230 C 260 160, 560 310, 920 210 C 1180 140, 1380 290, 1550 200" stroke="white" strokeWidth="0.7" fill="none" opacity="0.45" />
         </g>
 
-        {/* Dense Waving Filament Ribbons Across Center & Bottom */}
-        <g filter="url(#silkFlow)" className="opacity-75">
-          <path d="M -80 620 C 320 440, 620 780, 1020 460 C 1250 300, 1420 680, 1620 480" stroke="white" strokeWidth="2.0" fill="none" />
-          <path d="M -80 640 C 330 460, 630 800, 1030 480 C 1260 320, 1430 700, 1620 500" stroke="white" strokeWidth="1.5" fill="none" opacity="0.8" />
-          <path d="M -80 660 C 340 480, 640 820, 1040 500 C 1270 340, 1440 720, 1620 520" stroke="white" strokeWidth="1.2" fill="none" opacity="0.6" />
-          <path d="M -80 680 C 350 500, 650 840, 1050 520 C 1280 360, 1450 740, 1620 540" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
-          <path d="M -80 700 C 360 520, 660 860, 1060 540 C 1290 380, 1460 760, 1620 560" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
-        </g>
-
-        {/* Swirling Cobweb Filaments Draping Around 4 Corners and Center */}
-        <g filter="url(#cobwebMicro)" className="opacity-60">
-          <path d="M 0 100 Q 300 400, 720 220 T 1440 280" stroke="white" strokeWidth="1.2" fill="none" />
-          <path d="M 0 350 Q 500 150, 920 480 T 1440 400" stroke="white" strokeWidth="1.0" fill="none" opacity="0.7" />
-          <path d="M 0 750 Q 400 500, 850 720 T 1440 680" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
-          <path d="M 100 850 C 400 680, 750 880, 1150 700 S 1400 840, 1550 760" stroke="white" strokeWidth="0.9" fill="none" opacity="0.6" />
+        {/* BOTTOM WAVE BAND (POSITIONED LOW DOWN ACROSS Y: 640px - 770px) */}
+        <g filter="url(#seismicRip)" className="opacity-90">
+          <path d="M -80 660 C 280 570, 580 740, 960 620 C 1220 540, 1390 710, 1580 630" stroke="white" strokeWidth="1.6" fill="none" />
+          <path d="M -80 680 C 290 590, 590 760, 970 640 C 1230 560, 1400 730, 1580 650" stroke="white" strokeWidth="1.3" fill="none" opacity="0.85" />
+          <path d="M -80 700 C 300 610, 600 780, 980 660 C 1240 580, 1410 750, 1580 670" stroke="white" strokeWidth="1.1" fill="none" opacity="0.7" />
+          <path d="M -80 720 C 310 630, 610 800, 990 680 C 1250 600, 1420 770, 1580 690" stroke="white" strokeWidth="0.9" fill="none" opacity="0.6" />
+          <path d="M -80 740 C 320 650, 620 820, 1000 700 C 1260 620, 1430 790, 1580 710" stroke="white" strokeWidth="0.7" fill="none" opacity="0.45" />
         </g>
       </svg>
 
@@ -181,7 +169,7 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" */}
       {/* ========================================================================= */}
-      <div className="relative z-50 my-auto text-center py-4">
+      <div className="relative z-50 my-auto text-center py-6">
         {/* Previous "My Harness Agent" Text Styling */}
         <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           My Harness Agent
@@ -267,7 +255,7 @@ export default function Exact404SentinelOpsLanding() {
           </svg>
 
           <div className="relative z-10 p-2.5">
-            <p className="text-[10px] text-zinc-400">Create by</p>
+            <p className="text-[10px] text-white font-medium">Create by</p>
             <p className="text-white group-hover:text-red-400 font-bold tracking-wider text-xs sm:text-sm font-mono uppercase transition-colors">
               SOURJYA SAHA ↗
             </p>
