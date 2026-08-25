@@ -22,30 +22,43 @@ export async function POST(
     const sessionId = incident.session_id;
     const threadId = incident.thread_id || "main";
     const pendingCallId = incident.pending_call_id;
-
-    if (!pendingCallId) {
-      return NextResponse.json(
-        { success: false, error: "No pending tool approval found on incident" },
-        { status: 400 }
-      );
-    }
+    const checkpointType = incident.pending_call_type || "fix";
 
     const client = getTrueForgeClient();
 
-    // Send the UserToolApprovalEvent to resume the paused turn
-    await client.sessions.createTurn(sessionId, {
-      input: [
-        {
-          type: "user.tool_approval",
-          threadId: threadId,
-          toolCallId: pendingCallId,
-          approval:
-            decision === "approve"
-              ? { status: "allow" }
-              : { status: "deny", reason: reason || "Rejected by Incident Commander" },
-        },
-      ],
-    });
+    if (pendingCallId) {
+      // 1. Tool approval event
+      await client.sessions.createTurn(sessionId, {
+        input: [
+          {
+            type: "user.tool_approval",
+            threadId: threadId,
+            toolCallId: pendingCallId,
+            approval:
+              decision === "approve"
+                ? { status: "allow" }
+                : { status: "deny", reason: reason || "Rejected by Incident Commander" },
+          },
+        ],
+      });
+    } else {
+      // 2. Conversational approval turn resume
+      const approvalMessage =
+        decision === "approve"
+          ? checkpointType === "pull_request"
+            ? "Approved. Please proceed with opening the pull request on GitHub."
+            : "Approved. Please proceed with drafting and testing the fix in the sandbox."
+          : `Denied. Do not proceed. Reason: ${reason || "Action rejected by Incident Commander"}`;
+
+      await client.sessions.createTurn(sessionId, {
+        input: [
+          {
+            type: "user.message",
+            content: approvalMessage,
+          },
+        ],
+      });
+    }
 
     const newStatus = decision === "approve" ? "investigating" : "denied";
 

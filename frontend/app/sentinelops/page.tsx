@@ -152,8 +152,8 @@ export default function VenturaSentinelOpsCommander() {
           ]);
         }
 
-        // 4. Approval Required
-        if (data.type === "tool.approval_required") {
+        // 4. Approval Required (Tool approval or Conversational Checkpoint)
+        if (data.type === "tool.approval_required" || data.type === "checkpoint.approval_required") {
           setIsApproving(false);
           const checkpoint = data.checkpoint_type || "fix";
           setIncidentState((prev) => ({
@@ -162,7 +162,7 @@ export default function VenturaSentinelOpsCommander() {
               checkpoint === "pull_request"
                 ? "awaiting_pr_approval"
                 : "awaiting_fix_approval",
-            pending_call_id: data.pending_call_id,
+            pending_call_id: data.pending_call_id || null,
             pending_call_type: checkpoint,
           }));
 

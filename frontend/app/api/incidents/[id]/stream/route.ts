@@ -29,7 +29,6 @@ export async function GET(
 
   const sessionId = incident.session_id;
 
-  // Create an SSE stream that proxies live TrueForge events
   const stream = new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
@@ -37,14 +36,12 @@ export async function GET(
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
       };
 
-      // Send initial connection event with current incident state
       sendEvent({
         type: "incident.state",
         incident,
       });
 
       let isClosed = false;
-      let lastSeenEventId = "";
       const seenEventIds = new Set<string>();
 
       const pollInterval = setInterval(async () => {
@@ -62,7 +59,7 @@ export async function GET(
           if (!eventsRes.ok) return;
 
           const json = await eventsRes.json();
-          const items = (json.data || []).reverse(); // Oldest to newest
+          const items = (json.data || []).reverse();
 
           for (const item of items) {
             const event = item.event;
@@ -79,7 +76,6 @@ export async function GET(
               const sourceEventId = pendingCall?.source_event_id;
               const threadId = event.thread_id || "main";
 
-              // Inspect the source model message to determine if it's PR or Fix checkpoint
               let checkpointType: "fix" | "pull_request" = "fix";
               try {
                 const turnEventsRes = await fetch(
@@ -92,8 +88,7 @@ export async function GET(
                     (e: any) => e.id === sourceEventId
                   );
                   const toolCalls = sourceMsg?.tool_calls || [];
-                  const toolArgsStr =
-                    toolCalls[0]?.function?.arguments || "";
+                  const toolArgsStr = toolCalls[0]?.function?.arguments || "";
                   const toolName = toolCalls[0]?.function?.name || "";
 
                   if (
@@ -133,12 +128,39 @@ export async function GET(
               continue;
             }
 
-            // 2. Check for PR Link in Model Messages or Tool Responses
-            if (event.type === "model.message" || event.type === "tool.response") {
+            // 2. Check for Conversational Approval Checkpoints in Model Messages
+            if (event.type === "model.message") {
               const text =
                 typeof event.content === "string"
                   ? event.content
-                  : JSON.stringify(event);
+                  : JSON.stringify(event.content || "");
+
+              if (text.includes("approval to: draft and test a fix") || text.includes("approval to draft and test")) {
+                await updateIncident(incidentId, {
+                  status: "awaiting_fix_approval",
+                  pending_call_type: "fix",
+                  thread_id: event.thread_id || "main",
+                });
+                sendEvent({
+                  type: "checkpoint.approval_required",
+                  checkpoint_type: "fix",
+                  message: text,
+                  turn_id: turnId,
+                });
+              } else if (text.includes("approval to: open a pull request") || text.includes("approval to open a pull request")) {
+                await updateIncident(incidentId, {
+                  status: "awaiting_pr_approval",
+                  pending_call_type: "pull_request",
+                  thread_id: event.thread_id || "main",
+                });
+                sendEvent({
+                  type: "checkpoint.approval_required",
+                  checkpoint_type: "pull_request",
+                  message: text,
+                  turn_id: turnId,
+                });
+              }
+
               const prMatch = text.match(
                 /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
               );
@@ -149,17 +171,33 @@ export async function GET(
               }
             }
 
-            // 3. Check for Turn Done Event
+            // 3. Check for Tool Responses with PR link
+            if (event.type === "tool.response") {
+              const text = JSON.stringify(event);
+              const prMatch = text.match(
+                /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
+              );
+              if (prMatch && prMatch[0]) {
+                await updateIncident(incidentId, {
+                  pr_url: prMatch[0],
+                });
+              }
+            }
+
+            // 4. Check for Turn Done Event
             if (event.type === "turn.done") {
               const isTerminal =
                 event.state?.status === "done" &&
                 !items.some((i: any) => i.event.type === "tool.approval_required");
 
               if (isTerminal) {
-                await updateIncident(incidentId, {
-                  status: "resolved",
-                  resolved_at: new Date().toISOString(),
-                });
+                const currentInc = await getIncident(incidentId);
+                if (currentInc?.pr_url || currentInc?.status === "investigating") {
+                  await updateIncident(incidentId, {
+                    status: "resolved",
+                    resolved_at: new Date().toISOString(),
+                  });
+                }
               }
             }
 
