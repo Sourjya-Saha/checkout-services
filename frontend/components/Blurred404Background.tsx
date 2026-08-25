@@ -20,23 +20,23 @@ export default function Blurred404Background({
   }[blurIntensity];
 
   return (
-    <div className={`relative min-h-screen w-full bg-[#060a0a] text-white overflow-hidden ${className}`}>
+    <div className={`relative min-h-screen w-full bg-[#060a0a] text-white ${className}`}>
       {/* ========================================================================= */}
-      {/* 1. ANALOGUE FILM GRAIN NOISE OVERLAY */}
+      {/* 1. ANALOGUE FILM GRAIN NOISE OVERLAY (FIXED VIEWPORT) */}
       {/* ========================================================================= */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-45 mix-blend-overlay z-30"
+        className="fixed inset-0 pointer-events-none opacity-45 mix-blend-overlay z-30"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.85'/%3E%3C/svg%3E")`,
         }}
       />
 
       {/* ========================================================================= */}
-      {/* 2. ENTIRE 404 & WAVY TEXTURE CANVAS WITH HEAVY GLOBAL BLUR */}
+      {/* 2. ENTIRE 404 & WAVY TEXTURE CANVAS FIXED (DOES NOT MOVE ON SCROLL) */}
       {/* ========================================================================= */}
       <div
         aria-hidden="true"
-        className={`absolute inset-0 pointer-events-none select-none z-0 overflow-hidden filter ${blurClasses} opacity-85 transform scale-105`}
+        className={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden filter ${blurClasses} opacity-85 transform scale-105`}
       >
         {/* GIANT 404 NUMBERS (ANTON FONT) */}
         <div className="absolute inset-0 flex items-center justify-between overflow-hidden">
@@ -105,7 +105,7 @@ export default function Blurred404Background({
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. PAGE CONTENT LAYER */}
+      {/* 3. SCROLLABLE PAGE CONTENT LAYER */}
       {/* ========================================================================= */}
       <div className="relative z-40 w-full min-h-screen">
         {children}
