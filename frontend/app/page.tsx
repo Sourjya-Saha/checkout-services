@@ -47,11 +47,11 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. DENSE SILK / SMOKE / COBWEB FILAMENT WAVY TEXTURES (WITH SMOOTH WAVE LOOP) */}
+      {/* 3. DENSE SILK / SMOKE / COBWEB FILAMENT WAVY TEXTURES */}
       {/* ========================================================================= */}
       <svg
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen animate-entrance-bg"
+        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen"
         viewBox="0 0 1440 900"
         preserveAspectRatio="none"
       >
@@ -70,22 +70,26 @@ export default function Exact404SentinelOpsLanding() {
           </filter>
         </defs>
 
-        {/* Dense Waving Filament Ribbons Across Top Left & Top Right (Animated Wave Loop) */}
-        <g filter="url(#silkFlow)" className="opacity-75 animate-silk-undulate">
-          <path d="M -100 180 C 250 40, 550 360, 950 140 C 1200 20, 1400 300, 1600 120" stroke="white" strokeWidth="1.8" fill="none" />
-          <path d="M -100 200 C 260 60, 560 380, 960 160 C 1210 40, 1410 320, 1600 140" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
-          <path d="M -100 220 C 270 80, 570 400, 970 180 C 1220 60, 1420 340, 1600 160" stroke="white" strokeWidth="1.1" fill="none" opacity="0.6" />
-          <path d="M -100 240 C 280 100, 580 420, 980 200 C 1230 80, 1430 360, 1600 180" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
-          <path d="M -100 260 C 290 120, 590 440, 990 220 C 1240 100, 1440 380, 1600 200" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+        {/* TOP WAVES: APPEARS SMOOTHLY FROM LEFT */}
+        <g className="animate-wave-left">
+          <g filter="url(#silkFlow)" className="opacity-75 animate-silk-undulate">
+            <path d="M -100 180 C 250 40, 550 360, 950 140 C 1200 20, 1400 300, 1600 120" stroke="white" strokeWidth="1.8" fill="none" />
+            <path d="M -100 200 C 260 60, 560 380, 960 160 C 1210 40, 1410 320, 1600 140" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
+            <path d="M -100 220 C 270 80, 570 400, 970 180 C 1220 60, 1420 340, 1600 160" stroke="white" strokeWidth="1.1" fill="none" opacity="0.6" />
+            <path d="M -100 240 C 280 100, 580 420, 980 200 C 1230 80, 1430 360, 1600 180" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
+            <path d="M -100 260 C 290 120, 590 440, 990 220 C 1240 100, 1440 380, 1600 200" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+          </g>
         </g>
 
-        {/* Dense Waving Filament Ribbons Across Center & Bottom (Animated Drift Loop) */}
-        <g filter="url(#silkFlow)" className="opacity-80 animate-silk-drift">
-          <path d="M -80 620 C 320 440, 620 780, 1020 460 C 1250 300, 1420 680, 1620 480" stroke="white" strokeWidth="2.0" fill="none" />
-          <path d="M -80 640 C 330 460, 630 800, 1030 480 C 1260 320, 1430 700, 1620 500" stroke="white" strokeWidth="1.5" fill="none" opacity="0.8" />
-          <path d="M -80 660 C 340 480, 640 820, 1040 500 C 1270 340, 1440 720, 1620 520" stroke="white" strokeWidth="1.2" fill="none" opacity="0.6" />
-          <path d="M -80 680 C 350 500, 650 840, 1050 520 C 1280 360, 1450 740, 1620 540" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
-          <path d="M -80 700 C 360 520, 660 860, 1060 540 C 1290 380, 1460 760, 1620 560" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+        {/* BOTTOM WAVES: APPEARS SMOOTHLY FROM RIGHT */}
+        <g className="animate-wave-right">
+          <g filter="url(#silkFlow)" className="opacity-80 animate-silk-drift">
+            <path d="M -80 620 C 320 440, 620 780, 1020 460 C 1250 300, 1420 680, 1620 480" stroke="white" strokeWidth="2.0" fill="none" />
+            <path d="M -80 640 C 330 460, 630 800, 1030 480 C 1260 320, 1430 700, 1620 500" stroke="white" strokeWidth="1.5" fill="none" opacity="0.8" />
+            <path d="M -80 660 C 340 480, 640 820, 1040 500 C 1270 340, 1440 720, 1620 520" stroke="white" strokeWidth="1.2" fill="none" opacity="0.6" />
+            <path d="M -80 680 C 350 500, 650 840, 1050 520 C 1280 360, 1450 740, 1620 540" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
+            <path d="M -80 700 C 360 520, 660 860, 1060 540 C 1290 380, 1460 760, 1620 560" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+          </g>
         </g>
 
         {/* Swirling Cobweb Filaments Draping Around 4 Corners and Center */}
@@ -98,7 +102,7 @@ export default function Exact404SentinelOpsLanding() {
       </svg>
 
       {/* ========================================================================= */}
-      {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (ENTRANCE ANIMATIONS) */}
+      {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-start font-mono text-xs text-zinc-200 leading-tight">
         {/* Top-Left Hand-Drawn Wobbly Chalk Loop */}
@@ -108,7 +112,7 @@ export default function Exact404SentinelOpsLanding() {
           onMouseLeave={() => setHoverTopLeft(false)}
           className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tl"
         >
-          {/* Hand-drawn SVG wavy outline animating continuously */}
+          {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 160 70"
@@ -146,7 +150,7 @@ export default function Exact404SentinelOpsLanding() {
           onMouseLeave={() => setHoverTopRight(false)}
           className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tr"
         >
-          {/* Hand-drawn SVG wavy outline animating continuously */}
+          {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 165 70"
@@ -179,7 +183,7 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" (ENTRANCE) */}
+      {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Previous "My Harness Agent" Text Styling with Staggered Fade Down */}
@@ -202,7 +206,7 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (ENTRANCE) */}
+      {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-end font-mono text-xs text-zinc-200 leading-tight">
         {/* Bottom-Left Hand-Drawn Wobbly Chalk Loop */}
@@ -212,7 +216,7 @@ export default function Exact404SentinelOpsLanding() {
           onMouseLeave={() => setHoverBottomLeft(false)}
           className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-bl"
         >
-          {/* Hand-drawn SVG wavy outline animating continuously */}
+          {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 145 70"
@@ -250,7 +254,7 @@ export default function Exact404SentinelOpsLanding() {
           rel="noopener noreferrer"
           className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-br"
         >
-          {/* Hand-drawn SVG wavy outline animating continuously */}
+          {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 165 70"

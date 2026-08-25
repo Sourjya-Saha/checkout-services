@@ -88,7 +88,7 @@ body {
 }
 
 /* ========================================================================= */
-/* DOTTED CIRCULAR MOVING LOOP ANIMATIONS (MARCHING ANTS) & SILK WAVE FLOW */
+/* HYPNOTIC SLOW DOTTED MARCHING LOOP & SILK UNDULATION */
 /* ========================================================================= */
 
 @keyframes marchingDottedAnts {
@@ -114,38 +114,64 @@ body {
     transform: translateX(0px) translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateX(10px) translateY(-6px) rotate(0.4deg);
+    transform: translateX(8px) translateY(-5px) rotate(0.3deg);
   }
 }
 
 .animate-dotted-border {
   stroke-dasharray: 5 6;
-  animation: marchingDottedAnts 3.5s linear infinite;
+  animation: marchingDottedAnts 8s linear infinite;
 }
 
 .animate-silk-undulate {
-  animation: waveUndulateMotion 7s ease-in-out infinite;
+  animation: waveUndulateMotion 8s ease-in-out infinite;
   transform-origin: center;
 }
 
 .animate-silk-drift {
-  animation: waveDriftSlow 11s ease-in-out infinite;
+  animation: waveDriftSlow 12s ease-in-out infinite;
   transform-origin: center;
 }
 
 /* ========================================================================= */
-/* CINEMATIC PAGE OPENING ENTRANCE ANIMATIONS */
+/* SILKY SMOOTH ENTRANCE ANIMATIONS (ONE FROM LEFT, ONE FROM RIGHT) */
 /* ========================================================================= */
+
+@keyframes entranceWaveLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-140px) scale(0.94);
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translateX(0px) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes entranceWaveRight {
+  0% {
+    opacity: 0;
+    transform: translateX(140px) scale(0.94);
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translateX(0px) scale(1);
+    filter: blur(0px);
+  }
+}
 
 @keyframes entranceCenterTitle {
   0% {
     opacity: 0;
-    transform: translateY(32px) scale(0.9);
-    filter: blur(16px);
+    transform: translateY(36px) scale(0.92);
+    filter: blur(18px);
   }
-  60% {
-    opacity: 0.85;
-    filter: blur(3px);
+  50% {
+    opacity: 0.7;
+    filter: blur(4px);
   }
   100% {
     opacity: 1;
@@ -157,95 +183,115 @@ body {
 @keyframes entranceEyebrow {
   0% {
     opacity: 0;
-    transform: translateY(-16px);
-    letter-spacing: 0.35em;
+    transform: translateY(-20px);
+    letter-spacing: 0.3em;
+    filter: blur(6px);
   }
   100% {
     opacity: 1;
     transform: translateY(0px);
     letter-spacing: 0.05em;
+    filter: blur(0px);
   }
 }
 
 @keyframes entranceCornerTL {
   0% {
     opacity: 0;
-    transform: translate(-30px, -24px);
+    transform: translate(-35px, -28px);
+    filter: blur(6px);
   }
   100% {
     opacity: 1;
     transform: translate(0px, 0px);
+    filter: blur(0px);
   }
 }
 
 @keyframes entranceCornerTR {
   0% {
     opacity: 0;
-    transform: translate(30px, -24px);
+    transform: translate(35px, -28px);
+    filter: blur(6px);
   }
   100% {
     opacity: 1;
     transform: translate(0px, 0px);
+    filter: blur(0px);
   }
 }
 
 @keyframes entranceCornerBL {
   0% {
     opacity: 0;
-    transform: translate(-30px, 24px);
+    transform: translate(-35px, 28px);
+    filter: blur(6px);
   }
   100% {
     opacity: 1;
     transform: translate(0px, 0px);
+    filter: blur(0px);
   }
 }
 
 @keyframes entranceCornerBR {
   0% {
     opacity: 0;
-    transform: translate(30px, 24px);
+    transform: translate(35px, 28px);
+    filter: blur(6px);
   }
   100% {
     opacity: 1;
     transform: translate(0px, 0px);
+    filter: blur(0px);
   }
 }
 
 @keyframes entrance404Canvas {
   0% {
     opacity: 0;
-    transform: scale(1.08);
+    transform: scale(1.06);
+    filter: blur(14px);
   }
   100% {
     opacity: 0.95;
     transform: scale(1);
+    filter: blur(0px);
   }
 }
 
 .animate-entrance-bg {
-  animation: entrance404Canvas 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: entrance404Canvas 2.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.animate-wave-left {
+  animation: entranceWaveLeft 2.2s cubic-bezier(0.19, 1, 0.22, 1) 0.1s backwards;
+}
+
+.animate-wave-right {
+  animation: entranceWaveRight 2.2s cubic-bezier(0.19, 1, 0.22, 1) 0.2s backwards;
 }
 
 .animate-entrance-hero {
-  animation: entranceCenterTitle 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+  animation: entranceCenterTitle 1.8s cubic-bezier(0.19, 1, 0.22, 1) 0.35s backwards;
 }
 
 .animate-entrance-eyebrow {
-  animation: entranceEyebrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+  animation: entranceEyebrow 1.5s cubic-bezier(0.19, 1, 0.22, 1) 0.2s backwards;
 }
 
 .animate-entrance-tl {
-  animation: entranceCornerTL 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
+  animation: entranceCornerTL 1.6s cubic-bezier(0.19, 1, 0.22, 1) 0.4s backwards;
 }
 
 .animate-entrance-tr {
-  animation: entranceCornerTR 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
+  animation: entranceCornerTR 1.6s cubic-bezier(0.19, 1, 0.22, 1) 0.5s backwards;
 }
 
 .animate-entrance-bl {
-  animation: entranceCornerBL 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s backwards;
+  animation: entranceCornerBL 1.6s cubic-bezier(0.19, 1, 0.22, 1) 0.6s backwards;
 }
 
 .animate-entrance-br {
-  animation: entranceCornerBR 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s backwards;
+  animation: entranceCornerBR 1.6s cubic-bezier(0.19, 1, 0.22, 1) 0.7s backwards;
 }
