@@ -9,12 +9,12 @@ export default function ExactPosterCloneLanding() {
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
 
   return (
-    <main className="relative w-screen h-screen min-h-screen bg-[#090304] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
+    <main className="relative w-screen h-screen min-h-screen bg-[#090304] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-6 sm:p-12">
       {/* ========================================================================= */}
       {/* 1. ANALOGUE FILM GRAIN & NOISE TEXTURE OVERLAY */}
       {/* ========================================================================= */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-45 mix-blend-overlay z-30"
+        className="absolute inset-0 pointer-events-none opacity-40 mix-blend-overlay z-30"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.75'/%3E%3C/svg%3E")`,
         }}
@@ -23,20 +23,20 @@ export default function ExactPosterCloneLanding() {
       {/* ========================================================================= */}
       {/* 2. ATMOSPHERIC RADIAL RED LIGHTING BLEEDS */}
       {/* ========================================================================= */}
-      <div className="absolute top-1/4 right-0 w-[600px] sm:w-[850px] h-[550px] bg-red-600/30 blur-[150px] pointer-events-none rounded-full" />
-      <div className="absolute bottom-0 left-0 w-[500px] sm:w-[750px] h-[450px] bg-red-700/25 blur-[140px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/4 right-0 w-[550px] sm:w-[800px] h-[500px] bg-red-600/30 blur-[150px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-0 left-0 w-[500px] sm:w-[700px] h-[400px] bg-red-700/25 blur-[140px] pointer-events-none rounded-full" />
 
       {/* ========================================================================= */}
-      {/* 3. BACKGROUND BLURRED MOTION GLYPHS: "SENTINEL" */}
+      {/* 3. BACKGROUND BLURRED MOTION GLYPHS: UNTRIMMED & CLEANLY SCALED */}
       {/* ========================================================================= */}
       {/* Top Right Blurred Glyph */}
-      <div className="absolute -top-6 -right-16 text-[14vw] sm:text-[16vw] font-epic font-extrabold uppercase text-red-600/75 tracking-tighter filter blur-[6px] sm:blur-[10px] pointer-events-none select-none z-0">
+      <div className="absolute top-4 right-6 sm:right-12 text-[10vw] sm:text-[11vw] font-epic font-extrabold uppercase text-red-600/70 tracking-tighter leading-none filter blur-[4px] sm:blur-[7px] pointer-events-none select-none z-0">
         SENTINEL
       </div>
 
-      {/* Bottom Blurred Glyph */}
-      <div className="absolute -bottom-16 -left-10 text-[20vw] sm:text-[23vw] font-epic font-extrabold uppercase text-red-600/80 tracking-tighter filter blur-[8px] sm:blur-[14px] pointer-events-none select-none z-0">
-        SENTINEL
+      {/* Bottom Blurred Glyph - Cleanly Centered & Scaled to Never Trim */}
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-full text-center text-[12vw] sm:text-[13.5vw] font-epic font-extrabold uppercase text-red-600/75 tracking-tight leading-none filter blur-[5px] sm:blur-[8px] pointer-events-none select-none z-0 whitespace-nowrap px-4">
+        SENTINEL OPS
       </div>
 
       {/* ========================================================================= */}
@@ -87,7 +87,7 @@ export default function ExactPosterCloneLanding() {
       {/* ========================================================================= */}
       {/* 5. CENTER HERO: "My Harness Agent" + STACKED KINETIC BLURRED "SENTINEL OPS" */}
       {/* ========================================================================= */}
-      <div className="relative z-40 my-auto text-center py-6">
+      <div className="relative z-40 my-auto text-center py-4">
         <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2">
           My Harness Agent
         </p>
