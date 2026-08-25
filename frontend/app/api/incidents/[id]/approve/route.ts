@@ -26,30 +26,39 @@ export async function POST(
 
     const client = getTrueForgeClient();
 
-    if (pendingCallId) {
-      // 1. Tool approval event
-      await client.sessions.createTurn(sessionId, {
-        input: [
-          {
-            type: "user.tool_approval",
-            threadId: threadId,
-            toolCallId: pendingCallId,
-            approval:
-              decision === "approve"
-                ? { status: "allow" }
-                : { status: "deny", reason: reason || "Rejected by Incident Commander" },
-          },
-        ],
-      });
-    } else {
-      // 2. Conversational approval turn resume
-      const approvalMessage =
-        decision === "approve"
-          ? checkpointType === "pull_request"
-            ? "Approved. Please proceed with opening the pull request on GitHub."
-            : "Approved. Please proceed with drafting and testing the fix in the sandbox."
-          : `Denied. Do not proceed. Reason: ${reason || "Action rejected by Incident Commander"}`;
+    const approvalMessage =
+      decision === "approve"
+        ? checkpointType === "pull_request"
+          ? "Approved. Please proceed with opening the pull request on GitHub."
+          : "Approved. Please proceed with drafting and testing the fix in the sandbox."
+        : `Denied. Do not proceed. Reason: ${reason || "Action rejected by Incident Commander"}`;
 
+    let turnSent = false;
+
+    // 1. If tool approval ID is present, try tool approval first
+    if (pendingCallId) {
+      try {
+        await client.sessions.createTurn(sessionId, {
+          input: [
+            {
+              type: "user.tool_approval",
+              threadId: threadId,
+              toolCallId: pendingCallId,
+              approval:
+                decision === "approve"
+                  ? { status: "allow" }
+                  : { status: "deny", reason: reason || "Rejected by Incident Commander" },
+            },
+          ],
+        });
+        turnSent = true;
+      } catch (toolErr) {
+        console.warn("Tool approval failed, falling back to conversational message turn:", toolErr);
+      }
+    }
+
+    // 2. Fall back to conversational user message if tool approval failed or was not needed
+    if (!turnSent) {
       await client.sessions.createTurn(sessionId, {
         input: [
           {
