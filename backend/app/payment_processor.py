@@ -24,19 +24,20 @@ def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]
     }
 
 
-def _resolve_currency_symbol(currency_info: Optional[Dict[str, Any]]) -> str:
+def _resolve_currency_symbol(currency_info: Optional[Dict[str, Any]], currency: str = "USD") -> str:
     """
-    Extract currency symbol from user currency profile.
+    Extract currency symbol from user currency profile, or fall back to a default symbol.
     """
-    # Look up symbol in currency_info profile
-    return currency_info["symbol"]
+    if currency_info and currency_info.get("symbol"):
+        return currency_info["symbol"]
+    return DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {"symbol": currency}).get("symbol", currency)
 
 
-def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, Any]]) -> str:
+def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, Any]], currency: str = "USD") -> str:
     """
     Format price with localized symbol for audit logs and receipts.
     """
-    symbol = _resolve_currency_symbol(currency_info)
+    symbol = _resolve_currency_symbol(currency_info, currency)
     return f"{symbol}{amount:.2f}"
 
 
@@ -60,7 +61,7 @@ def calculate_total(
     total = round(subtotal * rate, 2)
 
     # Format and log audit receipt total
-    formatted_total = _format_price_for_display(total, currency_info)
+    formatted_total = _format_price_for_display(total, currency_info, currency)
     logger.info(f"Calculated order total: {formatted_total} (rate: {rate})")
 
     return total

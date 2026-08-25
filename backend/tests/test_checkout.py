@@ -1,11 +1,10 @@
 import pytest
-import traceback
 from fastapi.testclient import TestClient
 from app.main import app
 from app.payment_processor import calculate_total
 from app.models import CartItem
 
-# Use raise_server_exceptions=False so we can assert the 500 response code
+# Use raise_server_exceptions=False so we can assert the HTTP response code
 client = TestClient(app, raise_server_exceptions=False)
 
 
@@ -28,7 +27,6 @@ def test_checkout_logged_in_success():
         "is_guest": False,
     }
     response = client.post("/checkout", json=payload)
-    print(f"\n[Logged-In Checkout] Status: {response.status_code}, Body: {response.text}")
     assert response.status_code == 200
     data = response.json()
     assert "order_id" in data
@@ -37,11 +35,8 @@ def test_checkout_logged_in_success():
     assert data["status"] == "completed"
 
 
-def test_checkout_guest_failure_500():
-    """
-    Verify checkout returns 500 for guest checkouts due to the seeded regression.
-    Captures and prints the exact exception and stack trace.
-    """
+def test_checkout_guest_success():
+    """Verify guest checkout no longer crashes when currency profile is absent."""
     payload = {
         "user_id": None,
         "cart_items": [
@@ -52,24 +47,13 @@ def test_checkout_guest_failure_500():
         "is_guest": True,
     }
 
-    # 1. Capture the exact internal exception and stack trace
-    print("\n" + "=" * 70)
-    print("DEMO VERIFICATION: TRIGGERING GUEST CHECKOUT REGRESSION (TARGET BUG)")
-    print("=" * 70)
+    items = [CartItem(**item) for item in payload["cart_items"]]
+    currency_info = None
+    assert calculate_total(items, currency_info, currency="USD") == 149.0
 
-    try:
-        # Directly invoke the logic to obtain the raw traceback
-        items = [CartItem(**item) for item in payload["cart_items"]]
-        currency_info = None  # Guest checkout has no saved profile
-        calculate_total(items, currency_info, currency="USD")
-    except Exception as exc:
-        print("\n--- EXACT CAPTURED EXCEPTION & STACK TRACE ---")
-        traceback.print_exc()
-        print("----------------------------------------------\n")
-        assert isinstance(exc, TypeError)
-        assert "'NoneType' object is not subscriptable" in str(exc)
-
-    # 2. Verify FastAPI returns 500 Internal Server Error over HTTP
     response = client.post("/checkout", json=payload)
-    print(f"[Guest Checkout HTTP Response] Status: {response.status_code}, Body: {response.text}")
-    assert response.status_code == 500
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] == 149.0
+    assert data["currency"] == "USD"
+    assert data["status"] == "completed"
