@@ -30,6 +30,14 @@ export const SENTINELOPS_AGENT_SPEC = {
       require_approval_for_tools: [],
       preload: false,
     },
+    {
+      name: "supabase",
+      enable_tools: [],
+      disable_tools: [],
+      preload_tools: [],
+      require_approval_for_tools: [],
+      preload: false,
+    },
   ],
   skills: [
     {
