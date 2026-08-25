@@ -24,19 +24,20 @@ def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]
     }
 
 
-def _resolve_currency_symbol(currency_info: Optional[Dict[str, Any]]) -> str:
+def _resolve_currency_symbol(currency_info: Optional[Dict[str, Any]], currency: str = "USD") -> str:
     """
     Extract currency symbol from user currency profile.
     """
-    # Regression: Assumes currency_info profile is always present
-    return currency_info["symbol"]
+    if currency_info and isinstance(currency_info, dict) and "symbol" in currency_info:
+        return currency_info["symbol"]
+    return DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {}).get("symbol", currency)
 
 
 def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, Any]]) -> str:
     """
     Format price with localized symbol for audit logs and receipts.
     """
-    symbol = _resolve_currency_symbol(currency_info)
+    symbol = _resolve_currency_symbol(currency_info, currency=currency_info.get("currency", "USD") if isinstance(currency_info, dict) else "USD")
     return f"{symbol}{amount:.2f}"
 
 
