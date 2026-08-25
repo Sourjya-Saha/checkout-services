@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Blurred404Background from "@/components/Blurred404Background";
 
 interface CartItem {
@@ -27,10 +28,14 @@ const INITIAL_CART: CartItem[] = [
 ];
 
 export default function CheckoutServiceGatewayPage() {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART);
   const [currency, setCurrency] = useState<string>("USD");
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [reportingIncident, setReportingIncident] = useState<boolean>(false);
+  const [showIncidentModal, setShowIncidentModal] = useState<boolean>(false);
+
   const [orderResult, setOrderResult] = useState<any | null>(null);
   const [errorState, setErrorState] = useState<{
     status?: number;
@@ -95,6 +100,7 @@ export default function CheckoutServiceGatewayPage() {
     setLoading(true);
     setOrderResult(null);
     setErrorState(null);
+    setShowIncidentModal(false);
 
     const payload = {
       user_id: isGuest ? null : "usr_8fa93c20-7e1d-481b-9721-e019f2a938c4",
@@ -118,27 +124,63 @@ export default function CheckoutServiceGatewayPage() {
       }
 
       if (!response.ok) {
-        setErrorState({
+        const errObj = {
           status: response.status,
           errorType: responseData.type || "ServerError",
           message: responseData.message || responseData.detail || "Unhandled Server Exception",
           detail: responseData,
-          traceback: responseData.traceback_tail || [],
-        });
+          traceback: responseData.traceback_tail || [
+            "payment_processor.py: calculate_total()",
+            "KeyError: 'STANDARD' or TypeError in payment_processor.py",
+          ],
+        };
+        setErrorState(errObj);
+        setShowIncidentModal(true);
       } else {
         setOrderResult(responseData);
         fetchOrders();
       }
     } catch (err: any) {
-      setErrorState({
+      const errObj = {
         status: 500,
         errorType: "NetworkFetchException",
         message: err.message || "Failed to communicate with FastAPI backend (:8000)",
         detail: err,
-        traceback: ["Check if FastAPI server is running: uvicorn app.main:app --port 8000 --reload"],
-      });
+        traceback: ["Check if FastAPI server is running on port 8000"],
+      };
+      setErrorState(errObj);
+      setShowIncidentModal(true);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleReportIncident = async () => {
+    if (!errorState) return;
+    setReportingIncident(true);
+    try {
+      const res = await fetch("/api/incidents/report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          error_message: errorState.message,
+          stack_trace: errorState.traceback?.join("\n") || errorState.message,
+          endpoint: "/checkout",
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.id) {
+        router.push(`/sentinelops?incident=${data.id}`);
+      } else {
+        router.push("/sentinelops");
+      }
+    } catch (e) {
+      console.error("Failed to report incident:", e);
+      router.push("/sentinelops");
+    } finally {
+      setReportingIncident(false);
     }
   };
 
@@ -229,7 +271,7 @@ export default function CheckoutServiceGatewayPage() {
                       }`}
                     >
                       <span className="block">👤 Registered User</span>
-                      <span className="text-[10px] text-emerald-400 block mt-1">Status: 200 OK</span>
+                      <span className="text-[10px] text-emerald-400 block mt-1">Status: Standard Mode</span>
                     </button>
 
                     <button
@@ -242,7 +284,7 @@ export default function CheckoutServiceGatewayPage() {
                       }`}
                     >
                       <span className="block">⚡ Guest Checkout</span>
-                      <span className="text-[10px] text-red-400 block mt-1">Triggers 500 Incident</span>
+                      <span className="text-[10px] text-red-400 block mt-1">Unauthenticated Flow</span>
                     </button>
                   </div>
                 </div>
@@ -280,8 +322,6 @@ export default function CheckoutServiceGatewayPage() {
                 >
                   {loading
                     ? "Processing..."
-                    : isGuest
-                    ? "Trigger Guest Checkout Regression (500 Error)"
                     : `Process Checkout ($${subtotalUSD.toFixed(2)} USD)`}
                 </button>
               </div>
@@ -294,7 +334,7 @@ export default function CheckoutServiceGatewayPage() {
                   <p className="font-bold text-sm font-epic">HTTP 200: Order Successfully Processed</p>
                   <p>Order ID: {orderResult.order_id}</p>
                   <p>Total: {orderResult.currency} {orderResult.total}</p>
-                  <p className="text-emerald-400">Recorded to Supabase PostgreSQL database.</p>
+                  <p className="text-emerald-400">Recorded to database.</p>
                 </div>
               )}
 
@@ -317,12 +357,13 @@ export default function CheckoutServiceGatewayPage() {
                     </div>
                   )}
 
-                  <Link
-                    href="/sentinelops"
-                    className="block w-full py-3 bg-red-600 hover:bg-red-500 text-white text-center font-bold uppercase tracking-wider rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all font-epic"
+                  <button
+                    onClick={handleReportIncident}
+                    disabled={reportingIncident}
+                    className="block w-full py-3.5 bg-red-600 hover:bg-red-500 text-white text-center font-bold uppercase tracking-wider rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all font-epic disabled:opacity-50"
                   >
-                    Remediate with SentinelOps Swarm &rarr;
-                  </Link>
+                    {reportingIncident ? "Initializing TrueForge Swarm..." : "Report Incident & Launch SentinelOps ↗"}
+                  </button>
                 </div>
               )}
 
@@ -352,6 +393,54 @@ export default function CheckoutServiceGatewayPage() {
           </div>
         </div>
       </div>
+
+      {/* Automatic Incident Popup Modal (Step 6) */}
+      {showIncidentModal && errorState && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-black/90 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border-2 border-red-500/80 backdrop-blur-2xl font-mono text-xs">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2 text-red-400 font-bold font-epic text-sm">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+                AUTOMATED INCIDENT DETECTOR
+              </div>
+              <button
+                onClick={() => setShowIncidentModal(false)}
+                className="text-zinc-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-2 text-zinc-200">
+              <p className="text-sm font-bold text-white">
+                We detected an unhandled HTTP {errorState.status} anomaly on /checkout.
+              </p>
+              <div className="p-3 bg-red-950/60 rounded-xl border border-red-900 text-red-300 text-[11px]">
+                {errorState.message}
+              </div>
+              <p className="text-zinc-400 text-[11px]">
+                Would you like to report this incident to TrueForge SentinelOps? This will automatically spawn parallel subagents to investigate, sandbox, and remediate.
+              </p>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={handleReportIncident}
+                disabled={reportingIncident}
+                className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white font-bold uppercase tracking-wider rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all font-epic disabled:opacity-50 text-center"
+              >
+                {reportingIncident ? "Spawning Agent..." : "Report Incident & Launch SentinelOps ↗"}
+              </button>
+              <button
+                onClick={() => setShowIncidentModal(false)}
+                className="px-4 py-3 bg-white/10 hover:bg-white/20 text-zinc-300 rounded-xl transition-all"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Blurred404Background>
   );
 }
