@@ -55,59 +55,9 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# Seed initial demo data for immediate rich display in UI
-INITIAL_SAMPLE_ORDERS = {
-    "ord_demo_101": {
-        "id": "ord_demo_101",
-        "user_id": "usr_8fa93c20-7e1d-481b-9721-e019f2a938c4",
-        "is_guest": False,
-        "currency": "USD",
-        "total": 149.0,
-        "status": "completed",
-        "items": [
-            {"id": "item_1", "sku": "SKU-SENTINEL-PRO", "qty": 1, "price": 99.0},
-            {"id": "item_2", "sku": "SKU-CLOUD-CREDITS", "qty": 2, "price": 25.0},
-        ],
-    },
-    "ord_demo_102": {
-        "id": "ord_demo_102",
-        "user_id": "usr_8fa93c20-7e1d-481b-9721-e019f2a938c4",
-        "is_guest": False,
-        "currency": "EUR",
-        "total": 182.16,
-        "status": "completed",
-        "items": [
-            {"id": "item_3", "sku": "SKU-SENTINEL-PRO", "qty": 2, "price": 99.0},
-        ],
-    },
-}
-
-INITIAL_SAMPLE_INCIDENT = {
-    "id": "INC-20260825-checkout",
-    "title": "500 Internal Server Error on Guest Checkout in payment_processor.py",
-    "service": "checkout-service",
-    "root_cause": "payment_processor.py:32 accessed currency_info['symbol'] without a None-check. Guest checkouts pass currency_info=None, raising an unhandled TypeError.",
-    "evidence_summary": "Git diff on commit beda01a ('Add guest checkout support') showed unhandled lookup. Logs confirmed TypeError: 'NoneType' object is not subscriptable. Supabase orders table showed 100% failure rate for is_guest=true.",
-    "verification_result": "Daytona sandbox reproduction confirmed: failed on commit beda01a (500), succeeded on commit d420a68 (200). Candidate patch adding None-check fallback verified: 4/4 pytest suites passed.",
-    "approval_record": "Approved by Incident Commander via TrueForge Human-in-the-Loop prompt.",
-    "pr_link": "https://github.com/Sourjya-Saha/checkout-services/pull/2",
-    "resolution_status": "resolved",
-    "created_at": datetime.utcnow().isoformat(),
-}
-
-_in_memory_orders: Dict[str, Dict[str, Any]] = dict(INITIAL_SAMPLE_ORDERS)
-_in_memory_incidents: Dict[str, Dict[str, Any]] = {"INC-20260825-checkout": INITIAL_SAMPLE_INCIDENT}
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Attempt to sync initial records into Supabase if configured."""
-    client = get_supabase_client()
-    if client:
-        try:
-            client.table("incidents").upsert(INITIAL_SAMPLE_INCIDENT).execute()
-        except Exception:
-            pass
+# In-memory caches for live data
+_in_memory_orders: Dict[str, Dict[str, Any]] = {}
+_in_memory_incidents: Dict[str, Dict[str, Any]] = {}
 
 
 @app.get("/health", tags=["Monitoring"])
@@ -356,7 +306,7 @@ async def list_incidents():
     if client:
         try:
             res = client.table("incidents").select("*").order("created_at", desc=True).limit(50).execute()
-            if res.data and len(res.data) > 0:
+            if res.data is not None:
                 return [IncidentResponse(**row) for row in res.data]
         except Exception:
             pass
