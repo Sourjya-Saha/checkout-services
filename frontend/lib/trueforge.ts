@@ -28,7 +28,7 @@ export const SENTINELOPS_AGENT_SPEC = {
       disable_tools: [],
       preload_tools: [],
       require_approval_for_tools: [],
-      preload: false,
+      preload: true,
     },
     {
       name: "supabase",
@@ -36,7 +36,7 @@ export const SENTINELOPS_AGENT_SPEC = {
       disable_tools: [],
       preload_tools: [],
       require_approval_for_tools: [],
-      preload: false,
+      preload: true,
     },
   ],
   skills: [
