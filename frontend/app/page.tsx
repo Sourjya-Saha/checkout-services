@@ -181,9 +181,12 @@ export default function SentinelOpsExactCloneHero() {
           </div>
         </div>
 
-        {/* CENTER HERO STACK: "My Harness Agent" + KINETIC MOTION STACKED "SENTINEL OPS" */}
+        {/* CENTER HERO STACK: "My Harness Agent" (Arial Bold) + KINETIC MOTION STACKED "SENTINEL OPS" */}
         <div className="relative z-10 my-auto text-center py-16">
-          <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2">
+          <p
+            className="text-sm sm:text-base font-bold text-white mb-2 select-none"
+            style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
+          >
             My Harness Agent
           </p>
 
@@ -198,8 +201,8 @@ export default function SentinelOpsExactCloneHero() {
               SENTINEL OPS
             </span>
 
-            {/* Sharp Front Title */}
-            <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-extrabold uppercase tracking-tighter text-red-600 drop-shadow-[0_0_25px_rgba(220,38,38,0.8)] z-10">
+            {/* Sharp Front Title (Clean, no glow shadow) */}
+            <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-extrabold uppercase tracking-tighter text-red-600 z-10 select-none">
               SENTINEL OPS
             </h1>
           </div>
