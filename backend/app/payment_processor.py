@@ -17,6 +17,12 @@ REGIONAL_TAX_RATES = {
     "EU_FR": 0.20,
 }
 
+PROMO_CODE_DISCOUNTS = {
+    "SUMMER20": 0.20,
+    "WELCOME10": 0.10,
+    "VIP50": 0.50,
+}
+
 
 def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]:
     """
@@ -44,8 +50,7 @@ def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, A
     """
     Format price with localized symbol for audit logs and receipts.
     """
-    # Regression: Direct dictionary key lookup on currency_info throws TypeError for guest checkouts
-    symbol = currency_info["symbol"]
+    symbol = _resolve_currency_symbol(currency_info, currency=currency_info.get("currency", "USD") if isinstance(currency_info, dict) else "USD")
     return f"{symbol}{amount:.2f}"
 
 
@@ -56,9 +61,20 @@ def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) ->
     if not tax_region:
         tax_region = "STANDARD"
 
-    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default regions
-    tax_rate = REGIONAL_TAX_RATES[tax_region]
+    tax_rate = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
     return round(subtotal * tax_rate, 2)
+
+
+def apply_promo_discount(subtotal: float, promo_code: Optional[str] = None) -> float:
+    """
+    Calculate promotional discount applied to the cart subtotal.
+    """
+    if not promo_code:
+        promo_code = "NONE"
+
+    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default promo codes
+    discount_rate = PROMO_CODE_DISCOUNTS[promo_code]
+    return round(subtotal * discount_rate, 2)
 
 
 def calculate_total(
@@ -66,12 +82,17 @@ def calculate_total(
     currency_info: Optional[Dict[str, Any]],
     currency: str = "USD",
     tax_region: Optional[str] = None,
+    promo_code: Optional[str] = None,
 ) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
-    Applies regional tax calculation and currency conversion rate.
+    Applies promo code discounts, regional tax calculation, and currency conversion rate.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
+
+    # Apply promo discount (triggers KeyError: 'NONE' when promo_code is empty or not in PROMO_CODE_DISCOUNTS)
+    discount = apply_promo_discount(subtotal, promo_code)
+    discounted_subtotal = max(0.0, subtotal - discount)
 
     # Retrieve exchange rate from user preferences if available, or fallback to default table
     if currency_info and isinstance(currency_info, dict) and "rate" in currency_info:
@@ -79,12 +100,12 @@ def calculate_total(
     else:
         rate = DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {}).get("rate", 1.0)
 
-    # Calculate regional tax (triggers KeyError: 'STANDARD' when tax_region is not in REGIONAL_TAX_RATES)
-    tax_amount = calculate_regional_tax(subtotal, tax_region)
-    total = round((subtotal + tax_amount) * rate, 2)
+    # Calculate regional tax
+    tax_amount = calculate_regional_tax(discounted_subtotal, tax_region)
+    total = round((discounted_subtotal + tax_amount) * rate, 2)
 
     # Format and log audit receipt total
     formatted_total = _format_price_for_display(total, currency_info)
-    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, tax: {tax_amount})")
+    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, tax: {tax_amount})")
 
     return total
