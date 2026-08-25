@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-export default function DeepRed404TightLanding() {
+export default function DeepRed404CombinedLanding() {
   const [hoverTopLeft, setHoverTopLeft] = useState<boolean>(false);
   const [hoverTopRight, setHoverTopRight] = useState<boolean>(false);
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
@@ -21,24 +21,32 @@ export default function DeepRed404TightLanding() {
       />
 
       {/* ========================================================================= */}
-      {/* 2. TIGHTEST CENTERED 404: BLURRED LEFT/RIGHT + CRISP CENTER 0 */}
+      {/* 2. EXACT GIANT 404 BACKGROUND: BLURRED LEFT & RIGHT EDGES + SHARP CENTER */}
       {/* ========================================================================= */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden -space-x-14 sm:-space-x-28 md:-space-x-36">
-        {/* Left '4' - Heavy Edge Blur */}
-        <span className="text-[56vw] sm:text-[50vw] font-black leading-none text-[#dc2626] tracking-tighter filter blur-[10px] sm:blur-[16px] opacity-95 transform scale-y-125 select-none">
-          4
-        </span>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
 
-        {/* Center '0' - Ultra Sharp Crisp Tower */}
-        <span className="text-[58vw] sm:text-[52vw] font-black leading-none text-[#dc2626] tracking-tighter filter blur-0 opacity-100 transform scale-y-125 drop-shadow-[0_0_60px_rgba(220,38,38,0.85)] z-10 select-none">
-          0
-        </span>
+  {/* LEFT 4 */}
+  <div className="absolute top-[64%] left-0 -translate-y-1/2 -translate-x-[19%] whitespace-nowrap">
+    <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+      4
+    </span>
+  </div>
 
-        {/* Right '4' - Heavy Edge Blur */}
-        <span className="text-[56vw] sm:text-[50vw] font-black leading-none text-[#dc2626] tracking-tighter filter blur-[10px] sm:blur-[16px] opacity-95 transform scale-y-125 select-none">
-          4
-        </span>
-      </div>
+  {/* CENTER 0 */}
+  <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
+    <span className="font-anton font-normal text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
+      0
+    </span>
+  </div>
+
+  {/* RIGHT 4 */}
+  <div className="absolute top-[64%] right-0 translate-x-[1%] -translate-y-1/2 whitespace-nowrap">
+    <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+      4
+    </span>
+  </div>
+
+</div>
 
       {/* ========================================================================= */}
       {/* 3. TOP METADATA & INTERACTIVE HOVER REDIRECTS */}
@@ -64,7 +72,7 @@ export default function DeepRed404TightLanding() {
           )}
         </Link>
 
-        {/* Top Center: "404 ERROR PAGE" */}
+        {/* Top Center: Exact "404 ERROR PAGE" */}
         <div className="text-center font-mono text-[10px] sm:text-xs uppercase tracking-widest text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           <p className="font-bold">404</p>
           <p className="text-zinc-400">ERROR PAGE</p>
@@ -92,15 +100,15 @@ export default function DeepRed404TightLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 4. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" + AUTONOMOUS */}
+      {/* 4. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" + GO BACK */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
-        {/* Eyebrow */}
+        {/* Eyebrow Label */}
         <p className="text-xs sm:text-sm font-epic font-medium tracking-[0.2em] text-zinc-300 uppercase mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           My Harness Agent
         </p>
 
-        {/* Center Title Stack */}
+        {/* Center Title Stack with Kinetic Motion Blur */}
         <div className="relative inline-block select-none my-1">
           {/* Motion Blur Trail Underlayer */}
           <span className="absolute top-1 left-4 sm:left-8 text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black/60 filter blur-[4px] sm:blur-[6px] select-none pointer-events-none">
@@ -113,7 +121,7 @@ export default function DeepRed404TightLanding() {
           </h1>
         </div>
 
-        {/* 404 Overlay Details with Underline */}
+        {/* 404 Overlay Details with Underline Scribble Effect */}
         <div className="mt-3 space-y-1 max-w-md mx-auto">
           <p className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
             SORRY, WE DETECTED AN ANOMALY IN THIS SERVICE
@@ -131,7 +139,7 @@ export default function DeepRed404TightLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. BOTTOM METADATA CALLOUTS & "CREATE BY SOURJYA SAHA" */}
+      {/* 5. BOTTOM METADATA CALLOUTS & EXACT "CREATE BY SOURJYA SAHA" */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex flex-col sm:flex-row justify-between items-center sm:items-end font-mono text-xs sm:text-sm text-zinc-300 leading-tight gap-4">
         {/* Bottom Left */}
@@ -154,7 +162,7 @@ export default function DeepRed404TightLanding() {
           )}
         </Link>
 
-        {/* Center Bottom Subtitle */}
+        {/* Center Bottom Subtitle from Reference */}
         <div className="text-center text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-400 max-w-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           THE PAGE YOU ARE LOOKING FOR DOESN&apos;T EXIST OR AN OTHER ERROR OCCURRED.
         </div>

@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         epic: ["GCEpicPro", "system-ui", "-apple-system", "sans-serif"],
+        anton: ["Anton", "Impact", "sans-serif"],
       },
     },
   },

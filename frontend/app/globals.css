@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -68,6 +70,10 @@
 
 .font-epic {
   font-family: 'GCEpicPro', system-ui, -apple-system, sans-serif;
+}
+
+.font-anton {
+  font-family: 'Anton', Impact, sans-serif;
 }
 
 :root {
