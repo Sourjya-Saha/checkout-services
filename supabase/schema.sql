@@ -1,10 +1,12 @@
--- Supabase Schema for SentinelOps & checkout-service
--- Run this in the Supabase SQL Editor to set up all tables including incident persistent memory.
+-- ==============================================================================
+-- SentinelOps & checkout-service: Complete Supabase Database Schema
+-- Copy and paste this ENTIRE block into your Supabase SQL Editor and click "Run".
+-- ==============================================================================
 
--- Enable UUID extension if not already enabled
+-- 1. Enable UUID Extension
 create extension if not exists "uuid-ossp";
 
--- Users table
+-- 2. Users Table
 create table if not exists users (
     id uuid primary key default gen_random_uuid(),
     email text not null,
@@ -12,7 +14,7 @@ create table if not exists users (
     created_at timestamptz default now()
 );
 
--- Orders table
+-- 3. Orders Table
 create table if not exists orders (
     id uuid primary key default gen_random_uuid(),
     user_id uuid references users(id) on delete set null,
@@ -23,7 +25,7 @@ create table if not exists orders (
     created_at timestamptz default now()
 );
 
--- Order items table
+-- 4. Order Items Table
 create table if not exists order_items (
     id uuid primary key default gen_random_uuid(),
     order_id uuid references orders(id) on delete cascade not null,
@@ -33,7 +35,7 @@ create table if not exists order_items (
     created_at timestamptz default now()
 );
 
--- Incidents table (Persistent Memory & Command Center for SentinelOps)
+-- 5. Incidents Table (SentinelOps Persistent Memory & Command Center)
 create table if not exists incidents (
     id text primary key,
     title text not null,
@@ -47,7 +49,19 @@ create table if not exists incidents (
     created_at timestamptz default now()
 );
 
--- Indexes for quick lookups
+-- 6. Indexes for Performance
 create index if not exists idx_orders_user_id on orders(user_id);
 create index if not exists idx_order_items_order_id on order_items(order_id);
 create index if not exists idx_incidents_created_at on incidents(created_at desc);
+
+-- 7. Disable Row Level Security (RLS) to ensure full read/write access for demo APIs
+alter table users disable row level security;
+alter table orders disable row level security;
+alter table order_items disable row level security;
+alter table incidents disable row level security;
+
+-- 8. Grant full permissions to anon and authenticated roles
+grant all on table users to anon, authenticated, service_role;
+grant all on table orders to anon, authenticated, service_role;
+grant all on table order_items to anon, authenticated, service_role;
+grant all on table incidents to anon, authenticated, service_role;
