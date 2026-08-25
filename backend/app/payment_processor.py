@@ -51,13 +51,12 @@ def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, A
 def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) -> float:
     """
     Calculate regional sales tax or VAT based on shipping destination.
-    Applies safe fallback (0.0) for unmapped, standard, or guest regions.
     """
     if not tax_region:
         tax_region = "STANDARD"
 
-    # Safe fallback for unmapped, STANDARD, or guest checkout regions
-    tax_rate = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
+    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default regions
+    tax_rate = REGIONAL_TAX_RATES[tax_region]
     return round(subtotal * tax_rate, 2)
 
 
