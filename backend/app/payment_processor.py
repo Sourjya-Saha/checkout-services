@@ -56,8 +56,8 @@ def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) ->
     if not tax_region:
         tax_region = "STANDARD"
 
-    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default regions
-    tax_rate = REGIONAL_TAX_RATES[tax_region]
+    # Safe fallback: Default to 0.0 tax for unmapped or standard regions
+    tax_rate = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
     return round(subtotal * tax_rate, 2)
 
 
