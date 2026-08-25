@@ -60,3 +60,13 @@ def test_checkout_guest_success():
     assert "order_id" in data
     assert data["total"] == 99.0
     assert data["status"] == "completed"
+
+
+def test_calculate_total_missing_shipping_tier_defaults_safely():
+    items = [CartItem(sku="SKU-SENTINEL-PRO", qty=1, price=99.0)]
+    assert calculate_total(items, currency_info=None, currency="USD") == 99.0
+
+
+def test_calculate_shipping_fee_unknown_tier_does_not_raise():
+    from app.payment_processor import calculate_shipping_fee
+    assert calculate_shipping_fee(99.0, "DEFAULT") == 0.0
