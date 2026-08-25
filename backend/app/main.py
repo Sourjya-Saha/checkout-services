@@ -37,7 +37,7 @@ app.add_middleware(
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     """
-    Ensure unhandled 500 exceptions always return proper CORS headers and full error details to the frontend.
+    Ensure unhandled 500 exceptions always return proper CORS headers and full dynamic error details to the frontend.
     """
     tb = traceback.format_exc()
     return JSONResponse(
@@ -45,8 +45,9 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={
             "error": "Internal Server Error",
             "type": type(exc).__name__,
-            "message": str(exc),
-            "traceback_tail": tb.splitlines()[-4:] if tb else [],
+            "message": f"{type(exc).__name__}: {str(exc)}",
+            "stack_trace": tb,
+            "traceback_tail": [line.strip() for line in tb.splitlines() if line.strip()][-6:] if tb else [],
         },
         headers={
             "Access-Control-Allow-Origin": "*",
