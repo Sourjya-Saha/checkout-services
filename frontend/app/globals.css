@@ -86,3 +86,49 @@ body {
   background-color: rgb(var(--background-rgb));
   font-family: 'GCEpicPro', system-ui, -apple-system, sans-serif;
 }
+
+/* ========================================================================= */
+/* DOTTED CIRCULAR MOVING LOOP ANIMATIONS (MARCHING ANTS) & SILK WAVE FLOW */
+/* ========================================================================= */
+
+@keyframes marchingDottedAnts {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -96;
+  }
+}
+
+@keyframes waveUndulateMotion {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.015);
+  }
+}
+
+@keyframes waveDriftSlow {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(10px) translateY(-6px) rotate(0.4deg);
+  }
+}
+
+.animate-dotted-border {
+  stroke-dasharray: 5 6;
+  animation: marchingDottedAnts 3.5s linear infinite;
+}
+
+.animate-silk-undulate {
+  animation: waveUndulateMotion 7s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-silk-drift {
+  animation: waveDriftSlow 11s ease-in-out infinite;
+  transform-origin: center;
+}

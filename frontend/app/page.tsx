@@ -47,7 +47,7 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. DENSE SILK / SMOKE / COBWEB FILAMENT WAVY TEXTURES (AS IN IMAGE) */}
+      {/* 3. DENSE SILK / SMOKE / COBWEB FILAMENT WAVY TEXTURES (WITH SMOOTH WAVE LOOP) */}
       {/* ========================================================================= */}
       <svg
         aria-hidden="true"
@@ -70,8 +70,8 @@ export default function Exact404SentinelOpsLanding() {
           </filter>
         </defs>
 
-        {/* Dense Waving Filament Ribbons Across Top Left & Top Right */}
-        <g filter="url(#silkFlow)" className="opacity-70">
+        {/* Dense Waving Filament Ribbons Across Top Left & Top Right (Animated Wave Loop) */}
+        <g filter="url(#silkFlow)" className="opacity-75 animate-silk-undulate">
           <path d="M -100 180 C 250 40, 550 360, 950 140 C 1200 20, 1400 300, 1600 120" stroke="white" strokeWidth="1.8" fill="none" />
           <path d="M -100 200 C 260 60, 560 380, 960 160 C 1210 40, 1410 320, 1600 140" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
           <path d="M -100 220 C 270 80, 570 400, 970 180 C 1220 60, 1420 340, 1600 160" stroke="white" strokeWidth="1.1" fill="none" opacity="0.6" />
@@ -79,8 +79,8 @@ export default function Exact404SentinelOpsLanding() {
           <path d="M -100 260 C 290 120, 590 440, 990 220 C 1240 100, 1440 380, 1600 200" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
         </g>
 
-        {/* Dense Waving Filament Ribbons Across Center & Bottom */}
-        <g filter="url(#silkFlow)" className="opacity-75">
+        {/* Dense Waving Filament Ribbons Across Center & Bottom (Animated Drift Loop) */}
+        <g filter="url(#silkFlow)" className="opacity-80 animate-silk-drift">
           <path d="M -80 620 C 320 440, 620 780, 1020 460 C 1250 300, 1420 680, 1620 480" stroke="white" strokeWidth="2.0" fill="none" />
           <path d="M -80 640 C 330 460, 630 800, 1030 480 C 1260 320, 1430 700, 1620 500" stroke="white" strokeWidth="1.5" fill="none" opacity="0.8" />
           <path d="M -80 660 C 340 480, 640 820, 1040 500 C 1270 340, 1440 720, 1620 520" stroke="white" strokeWidth="1.2" fill="none" opacity="0.6" />
@@ -89,7 +89,7 @@ export default function Exact404SentinelOpsLanding() {
         </g>
 
         {/* Swirling Cobweb Filaments Draping Around 4 Corners and Center */}
-        <g filter="url(#cobwebMicro)" className="opacity-60">
+        <g filter="url(#cobwebMicro)" className="opacity-65 animate-silk-undulate">
           <path d="M 0 100 Q 300 400, 720 220 T 1440 280" stroke="white" strokeWidth="1.2" fill="none" />
           <path d="M 0 350 Q 500 150, 920 480 T 1440 400" stroke="white" strokeWidth="1.0" fill="none" opacity="0.7" />
           <path d="M 0 750 Q 400 500, 850 720 T 1440 680" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
@@ -98,17 +98,17 @@ export default function Exact404SentinelOpsLanding() {
       </svg>
 
       {/* ========================================================================= */}
-      {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS */}
+      {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (DOTTED MOVING LOOP) */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-start font-mono text-xs text-zinc-200 leading-tight">
-        {/* Top-Left Hand-Drawn Wobbly Chalk Loop */}
+        {/* Top-Left Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
         <Link
           href="/sentinelops"
           onMouseEnter={() => setHoverTopLeft(true)}
           onMouseLeave={() => setHoverTopLeft(false)}
           className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105"
         >
-          {/* Hand-drawn SVG wavy outline */}
+          {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 160 70"
@@ -118,9 +118,9 @@ export default function Exact404SentinelOpsLanding() {
               d="M 12 10 C 35 4, 115 8, 146 5 C 160 14, 154 48, 147 60 C 138 68, 110 63, 75 66 C 38 68, 12 64, 6 52 C 2 36, 4 18, 12 10 Z"
               fill="rgba(0,0,0,0.15)"
               stroke="white"
-              strokeWidth="1.2"
+              strokeWidth="1.4"
               filter="url(#pencilChalk)"
-              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-85 animate-dotted-border group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
@@ -139,14 +139,14 @@ export default function Exact404SentinelOpsLanding() {
           </div>
         </Link>
 
-        {/* Top-Right Hand-Drawn Wobbly Chalk Loop */}
+        {/* Top-Right Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
         <Link
           href="/checkout"
           onMouseEnter={() => setHoverTopRight(true)}
           onMouseLeave={() => setHoverTopRight(false)}
           className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105"
         >
-          {/* Hand-drawn SVG wavy outline */}
+          {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 165 70"
@@ -156,9 +156,9 @@ export default function Exact404SentinelOpsLanding() {
               d="M 15 8 C 50 4, 125 9, 152 6 C 164 18, 157 52, 149 63 C 132 69, 82 64, 42 67 C 16 69, 4 56, 6 40 C 7 22, 6 14, 15 8 Z"
               fill="rgba(0,0,0,0.15)"
               stroke="white"
-              strokeWidth="1.2"
+              strokeWidth="1.4"
               filter="url(#pencilChalk)"
-              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-85 animate-dotted-border group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
@@ -183,7 +183,7 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Previous "My Harness Agent" Text Styling */}
-        <p className="text-sm sm:text-base font-epic font-medium tracking-wider text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           My Harness Agent
         </p>
 
@@ -202,17 +202,17 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS */}
+      {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (DOTTED MOVING LOOP) */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-end font-mono text-xs text-zinc-200 leading-tight">
-        {/* Bottom-Left Hand-Drawn Wobbly Chalk Loop */}
+        {/* Bottom-Left Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
         <Link
           href="/incidents"
           onMouseEnter={() => setHoverBottomLeft(true)}
           onMouseLeave={() => setHoverBottomLeft(false)}
           className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105"
         >
-          {/* Hand-drawn SVG wavy outline */}
+          {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 145 70"
@@ -222,9 +222,9 @@ export default function Exact404SentinelOpsLanding() {
               d="M 12 12 C 38 6, 85 9, 126 6 C 140 16, 135 48, 127 60 C 110 67, 65 63, 34 66 C 12 68, 3 55, 5 38 C 6 22, 5 15, 12 12 Z"
               fill="rgba(0,0,0,0.15)"
               stroke="white"
-              strokeWidth="1.2"
+              strokeWidth="1.4"
               filter="url(#pencilChalk)"
-              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-85 animate-dotted-border group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
@@ -243,14 +243,14 @@ export default function Exact404SentinelOpsLanding() {
           </div>
         </Link>
 
-        {/* Bottom-Right Hand-Drawn Wobbly Chalk Loop */}
+        {/* Bottom-Right Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
         <a
           href="https://github.com/Sourjya-Saha"
           target="_blank"
           rel="noopener noreferrer"
           className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105"
         >
-          {/* Hand-drawn SVG wavy outline */}
+          {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 165 70"
@@ -260,14 +260,14 @@ export default function Exact404SentinelOpsLanding() {
               d="M 15 7 C 55 4, 118 10, 150 6 C 163 18, 156 50, 148 62 C 130 69, 75 64, 40 67 C 16 69, 4 57, 6 40 C 7 24, 7 14, 15 7 Z"
               fill="rgba(0,0,0,0.15)"
               stroke="white"
-              strokeWidth="1.2"
+              strokeWidth="1.4"
               filter="url(#pencilChalk)"
-              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-85 animate-dotted-border group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
           <div className="relative z-10 p-2.5">
-            <p className="text-[10px] text-white">Create by</p>
+            <p className="text-[10px] text-zinc-400">Create by</p>
             <p className="text-white group-hover:text-red-400 font-bold tracking-wider text-xs sm:text-sm font-mono uppercase transition-colors">
               SOURJYA SAHA ↗
             </p>

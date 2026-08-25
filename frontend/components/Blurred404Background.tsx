@@ -32,7 +32,7 @@ export default function Blurred404Background({
       />
 
       {/* ========================================================================= */}
-      {/* 2. ENTIRE 404 & WAVY TEXTURE CANVAS FIXED (DOES NOT MOVE ON SCROLL) */}
+      {/* 2. ENTIRE 404 & WAVY TEXTURE CANVAS FIXED (WITH ORGANIC WAVE ANIMATIONS) */}
       {/* ========================================================================= */}
       <div
         aria-hidden="true"
@@ -79,16 +79,16 @@ export default function Blurred404Background({
             </filter>
           </defs>
 
-          {/* Top Waving Filament Bands */}
-          <g filter="url(#silkFlowBg)" className="opacity-80">
+          {/* Top Waving Filament Bands (Animated Wave Loop) */}
+          <g filter="url(#silkFlowBg)" className="opacity-80 animate-silk-undulate">
             <path d="M -100 180 C 250 40, 550 360, 950 140 C 1200 20, 1400 300, 1600 120" stroke="white" strokeWidth="2.4" fill="none" />
             <path d="M -100 200 C 260 60, 560 380, 960 160 C 1210 40, 1410 320, 1600 140" stroke="white" strokeWidth="1.8" fill="none" />
             <path d="M -100 220 C 270 80, 570 400, 970 180 C 1220 60, 1420 340, 1600 160" stroke="white" strokeWidth="1.4" fill="none" />
             <path d="M -100 240 C 280 100, 580 420, 980 200 C 1230 80, 1430 360, 1600 180" stroke="white" strokeWidth="1.0" fill="none" />
           </g>
 
-          {/* Bottom Waving Filament Bands */}
-          <g filter="url(#silkFlowBg)" className="opacity-85">
+          {/* Bottom Waving Filament Bands (Animated Drift Loop) */}
+          <g filter="url(#silkFlowBg)" className="opacity-85 animate-silk-drift">
             <path d="M -80 620 C 320 440, 620 780, 1020 460 C 1250 300, 1420 680, 1620 480" stroke="white" strokeWidth="2.6" fill="none" />
             <path d="M -80 640 C 330 460, 630 800, 1030 480 C 1260 320, 1430 700, 1620 500" stroke="white" strokeWidth="2.0" fill="none" />
             <path d="M -80 660 C 340 480, 640 820, 1040 500 C 1270 340, 1440 720, 1620 520" stroke="white" strokeWidth="1.5" fill="none" />
@@ -96,7 +96,7 @@ export default function Blurred404Background({
           </g>
 
           {/* Swirling Filaments */}
-          <g filter="url(#cobwebMicroBg)" className="opacity-70">
+          <g filter="url(#cobwebMicroBg)" className="opacity-70 animate-silk-undulate">
             <path d="M 0 100 Q 300 400, 720 220 T 1440 280" stroke="white" strokeWidth="1.6" fill="none" />
             <path d="M 0 350 Q 500 150, 920 480 T 1440 400" stroke="white" strokeWidth="1.4" fill="none" />
             <path d="M 0 750 Q 400 500, 850 720 T 1440 680" stroke="white" strokeWidth="1.8" fill="none" />
