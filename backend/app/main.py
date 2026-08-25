@@ -9,8 +9,8 @@ from app.payment_processor import get_user_currency_preferences, calculate_total
 
 app = FastAPI(
     title="Checkout Service",
-    description="E-commerce checkout backend service",
-    version="1.0.0",
+    description="E-commerce checkout backend service with guest checkout support",
+    version="1.1.0",
 )
 
 # Enable CORS for frontend requests
@@ -35,7 +35,7 @@ async def health_check():
 @app.post("/checkout", response_model=CheckoutResponse, tags=["Checkout"])
 async def checkout(request: CheckoutRequest):
     """
-    Process checkout for user cart.
+    Process checkout for user cart. Supports both logged-in and guest checkout.
     Calculates total and records order into Supabase.
     """
     if not request.cart_items:
@@ -44,11 +44,16 @@ async def checkout(request: CheckoutRequest):
             detail="Cart is empty",
         )
 
-    # In Commit 1 (logged-in only):
-    user_id = request.user_id or "usr_demo_12345"
-    currency_info = get_user_currency_preferences(user_id, request.currency)
+    # Guest checkouts do not have saved user profiles/preferences
+    if request.is_guest:
+        user_id = None
+        currency_info = None
+    else:
+        user_id = request.user_id or "usr_demo_12345"
+        currency_info = get_user_currency_preferences(user_id, request.currency)
 
-    total = calculate_total(request.cart_items, currency_info)
+    # Calculate total and generate order ID
+    total = calculate_total(request.cart_items, currency_info, currency=request.currency)
     order_id = str(uuid.uuid4())
 
     # Persist to Supabase if configured, otherwise fallback to in-memory store
@@ -57,8 +62,8 @@ async def checkout(request: CheckoutRequest):
         try:
             order_data = {
                 "id": order_id,
-                "user_id": request.user_id,
-                "is_guest": False,
+                "user_id": user_id,
+                "is_guest": request.is_guest,
                 "currency": request.currency.upper(),
                 "total": total,
                 "status": "completed",
@@ -76,12 +81,11 @@ async def checkout(request: CheckoutRequest):
                 for item in request.cart_items
             ]
             client.table("order_items").insert(items_data).execute()
-        except Exception as e:
-            # Fallback to local memory if Supabase table is unreachable
+        except Exception:
             _in_memory_orders[order_id] = {
                 "id": order_id,
-                "user_id": request.user_id,
-                "is_guest": False,
+                "user_id": user_id,
+                "is_guest": request.is_guest,
                 "currency": request.currency.upper(),
                 "total": total,
                 "status": "completed",
@@ -90,8 +94,8 @@ async def checkout(request: CheckoutRequest):
     else:
         _in_memory_orders[order_id] = {
             "id": order_id,
-            "user_id": request.user_id,
-            "is_guest": False,
+            "user_id": user_id,
+            "is_guest": request.is_guest,
             "currency": request.currency.upper(),
             "total": total,
             "status": "completed",

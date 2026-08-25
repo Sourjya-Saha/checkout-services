@@ -1,5 +1,8 @@
 from typing import List, Dict, Any, Optional
+import logging
 from app.models import CartItem
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_CURRENCY_CONFIG = {
     "USD": {"symbol": "$", "rate": 1.0},
@@ -21,19 +24,43 @@ def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]
     }
 
 
-def format_currency_amount(amount: float, currency_info: Dict[str, Any]) -> str:
+def _resolve_currency_symbol(currency_info: Optional[Dict[str, Any]]) -> str:
     """
-    Format the numeric amount with the user's localized currency symbol.
+    Extract currency symbol from user currency profile.
     """
-    symbol = currency_info["symbol"]
+    # Look up symbol in currency_info profile
+    return currency_info["symbol"]
+
+
+def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, Any]]) -> str:
+    """
+    Format price with localized symbol for audit logs and receipts.
+    """
+    symbol = _resolve_currency_symbol(currency_info)
     return f"{symbol}{amount:.2f}"
 
 
-def calculate_total(cart_items: List[CartItem], currency_info: Dict[str, Any]) -> float:
+def calculate_total(
+    cart_items: List[CartItem],
+    currency_info: Optional[Dict[str, Any]],
+    currency: str = "USD",
+) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
+    Applies currency conversion rate and logs formatted transaction total.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
-    rate = currency_info.get("rate", 1.0)
+
+    # Retrieve exchange rate from user preferences if available, or fallback to default table
+    if currency_info and "rate" in currency_info:
+        rate = currency_info["rate"]
+    else:
+        rate = DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {}).get("rate", 1.0)
+
     total = round(subtotal * rate, 2)
+
+    # Format and log audit receipt total
+    formatted_total = _format_price_for_display(total, currency_info)
+    logger.info(f"Calculated order total: {formatted_total} (rate: {rate})")
+
     return total
