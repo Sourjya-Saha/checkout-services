@@ -244,7 +244,12 @@ export default function Exact404SentinelOpsLanding() {
         </Link>
 
         {/* Bottom-Right Hand-Drawn Wobbly Chalk Loop */}
-        <div className="relative inline-block text-right">
+        <a
+          href="https://github.com/Sourjya-Saha"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105"
+        >
           {/* Hand-drawn SVG wavy outline */}
           <svg
             className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
@@ -257,17 +262,17 @@ export default function Exact404SentinelOpsLanding() {
               stroke="white"
               strokeWidth="1.2"
               filter="url(#pencilChalk)"
-              className="opacity-80"
+              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
           <div className="relative z-10 p-2.5">
             <p className="text-[10px] text-zinc-400">Create by</p>
-            <p className="text-white font-bold tracking-wider text-xs sm:text-sm font-mono uppercase">
-              SOURJYA SAHA
+            <p className="text-white group-hover:text-red-400 font-bold tracking-wider text-xs sm:text-sm font-mono uppercase transition-colors">
+              SOURJYA SAHA ↗
             </p>
           </div>
-        </div>
+        </a>
       </div>
     </main>
   );
