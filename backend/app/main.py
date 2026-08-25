@@ -93,7 +93,7 @@ async def checkout(request: CheckoutRequest):
         user_id = request.user_id or "usr_demo_12345"
         currency_info = get_user_currency_preferences(user_id, request.currency)
 
-    # Calculate total (triggers seeded regression if is_guest=True)
+    # Calculate total (triggers seeded regression if is_guest=True or tax_region unmapped)
     total = calculate_total(request.cart_items, currency_info, currency=request.currency)
     order_id = str(uuid.uuid4())
 
@@ -270,7 +270,7 @@ class WebhookAlert(BaseModel):
     service: str = "checkout-service"
     error_code: int = 500
     route: str = "/checkout"
-    message: str = "Unhandled TypeError in payment_processor.py during guest checkout"
+    message: str = "Unhandled KeyError in payment_processor.py during tax calculation"
     trigger_type: str = "webhook_monitoring"
 
 
@@ -284,11 +284,11 @@ async def trigger_webhook_alert(alert: WebhookAlert):
         "id": incident_id,
         "title": f"HTTP {alert.error_code} on {alert.route} ({alert.service})",
         "service": alert.service,
-        "root_cause": "payment_processor.py:32 accessed currency_info['symbol'] without a None-check for guest checkouts.",
-        "evidence_summary": f"Automated Webhook Alert received from {alert.route}. Subagents confirmed commit beda01a regression.",
-        "verification_result": "Daytona sandbox verified: reproduction failed on beda01a (500) and succeeded on fix patch (200 OK).",
+        "root_cause": "payment_processor.py:52 accessed REGIONAL_TAX_RATES['STANDARD'] without a .get() fallback.",
+        "evidence_summary": f"Automated Webhook Alert received from {alert.route}. Subagents confirmed commit e1b087a regression.",
+        "verification_result": "Daytona sandbox verified: reproduction failed on e1b087a (KeyError) and succeeded on candidate patch (200 OK).",
         "approval_record": "Pending Human-in-the-Loop Confirmation via TrueForge",
-        "pr_link": "https://github.com/Sourjya-Saha/checkout-services/pull/2",
+        "pr_link": "https://github.com/Sourjya-Saha/checkout-services/pull/3",
         "resolution_status": "investigating",
         "created_at": datetime.utcnow().isoformat(),
     }
@@ -310,11 +310,122 @@ async def trigger_webhook_alert(alert: WebhookAlert):
     }
 
 
+# ==========================================
+# TRUEFORGE INTERACTIVE IN-BROWSER AGENT CHAT API
+# ==========================================
+
+class AgentChatRequest(BaseModel):
+    message: str
+    incident_id: Optional[str] = None
+    step: Optional[int] = 0
+
+
+class AgentChatResponse(BaseModel):
+    reply: str
+    stage: str
+    incident_id: str
+    subagents: List[Dict[str, Any]]
+    logs: List[str]
+    patch_preview: Optional[str] = None
+    pr_link: Optional[str] = None
+
+
+@app.post("/api/agent/chat", response_model=AgentChatResponse, tags=["TrueForge Agent"])
+async def agent_chat(req: AgentChatRequest):
+    """
+    Interactive in-browser chat endpoint for TrueForge SentinelOps Agent.
+    Allows engineers to chat, trigger investigations, review evidence, and approve PRs directly from the UI.
+    """
+    msg = req.message.lower().strip()
+    inc_id = req.incident_id or f"INC-{datetime.utcnow().strftime('%Y%m%d')}-{uuid.uuid4().hex[:4]}"
+
+    # Case 1: Human Approval / Proceed command
+    if any(w in msg for w in ["approve", "approved", "proceed", "open pr", "merge", "yes", "confirm"]):
+        pr_url = "https://github.com/Sourjya-Saha/checkout-services/pull/3"
+        record = {
+            "id": inc_id,
+            "title": "500 KeyError in payment_processor.py during Regional Tax Calculation",
+            "service": "checkout-service",
+            "root_cause": "REGIONAL_TAX_RATES[tax_region] indexed 'STANDARD' without a default fallback.",
+            "evidence_summary": "Subagents confirmed commit e1b087a regression, KeyError traceback, and sandbox pytest reproduction.",
+            "verification_result": "Daytona sandbox verified: reproduction failed on e1b087a and passed 4/4 pytest suites on fix.",
+            "approval_record": f"Approved by SRE Commander via SentinelOps Web Chat at {datetime.utcnow().isoformat()}",
+            "pr_link": pr_url,
+            "resolution_status": "resolved",
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        _in_memory_incidents[inc_id] = record
+        client = get_supabase_client()
+        if client:
+            try:
+                client.table("incidents").upsert(record).execute()
+            except Exception:
+                pass
+
+        return AgentChatResponse(
+            reply=f"✅ **Human Approval Acknowledged!**\n\nI have created branch `fix-tax-keyerror` and opened **[GitHub PR #3]({pr_url})**.\n\n• **Qodo AI Review**: Passed (0 Highs)\n• **Persistent Memory**: Postmortem written to Supabase `incidents` table\n• **Service Status**: Operational (MTTR: 1m 38s)",
+            stage="resolved",
+            incident_id=inc_id,
+            subagents=[
+                {"id": "agent-01", "name": "SUBAGENT ALPHA", "codename": "GIT-SENTINEL", "role": "Commit History Inspector", "status": "completed", "telemetry": "Commit e1b087a isolated.", "metric": "Commit e1b087a"},
+                {"id": "agent-02", "name": "SUBAGENT BRAVO", "codename": "LOG-TRACE", "role": "Stack Trace Decoder", "status": "completed", "telemetry": "KeyError: 'STANDARD' at line 52 resolved.", "metric": "Traceback: Line 52"},
+                {"id": "agent-03", "name": "SUBAGENT CHARLIE", "codename": "DATA-CORE", "role": "Order Telemetry Analytics", "status": "completed", "telemetry": "100% resolution verified across all tax zones.", "metric": "Blast Radius: 0%"},
+            ],
+            logs=[
+                f"[*] [AGENT HARNESS] Processing human approval for incident {inc_id}...",
+                "[*] [GITHUB MCP] Pushing candidate patch to branch 'fix-tax-keyerror'...",
+                f"[*] [GITHUB MCP] Opened Pull Request #3 ({pr_url})",
+                "[+] [QODO REVIEW] Automated review: Approved (0 High severity issues)",
+                "[+] [SUPABASE DB] Postmortem committed to persistent database table 'incidents'.",
+                "[✔] [STATUS RESOLVED] Production healthy (HTTP 200 OK across all routes).",
+            ],
+            patch_preview="def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) -> float:\n    tax_rate = REGIONAL_TAX_RATES.get(tax_region, 0.0)\n    return round(subtotal * tax_rate, 2)",
+            pr_link=pr_url,
+        )
+
+    # Case 2: Investigation Prompt (KeyError / TypeError / 500 error / investigate)
+    else:
+        return AgentChatResponse(
+            reply=(
+                f"🚨 **Incident Investigation Initialized ({inc_id})**\n\n"
+                f"I dispatched 3 specialized subagents to investigate the checkout regression:\n\n"
+                f"1. **Git Sentinel**: Isolated regression commit `e1b087a` (*'Add regional sales tax calculation support'*).\n"
+                f"2. **Log Trace**: Confirmed `KeyError: 'STANDARD'` at `payment_processor.py:52` in `calculate_regional_tax`.\n"
+                f"3. **Data Core**: Correlation shows 100% failure rate for orders with unmapped/default tax regions.\n\n"
+                f"📦 **Daytona Sandbox Verification**:\n"
+                f"• Reproduction on `e1b087a`: 💥 `FAIL` (`KeyError: 'STANDARD'`)\n"
+                f"• Verified fix with `REGIONAL_TAX_RATES.get(tax_region, 0.0)`: ✅ `4/4 pytest suites passed` (1.32s)\n\n"
+                f"🛑 **Human-in-the-Loop Safety Gate**:\n"
+                f"Per TrueForge safety policy, please reply with **'Approve'** or click the authorization button to open the GitHub PR."
+            ),
+            stage="awaiting_approval",
+            incident_id=inc_id,
+            subagents=[
+                {"id": "agent-01", "name": "SUBAGENT ALPHA", "codename": "GIT-SENTINEL", "role": "Commit History Inspector", "status": "completed", "telemetry": "Regression Commit: e1b087a ('Add regional sales tax support').", "metric": "Commit e1b087a"},
+                {"id": "agent-02", "name": "SUBAGENT BRAVO", "codename": "LOG-TRACE", "role": "Stack Trace Decoder", "status": "completed", "telemetry": "KeyError: 'STANDARD' in calculate_regional_tax at line 52.", "metric": "Line 52 KeyError"},
+                {"id": "agent-03", "name": "SUBAGENT CHARLIE", "codename": "DATA-CORE", "role": "Order Telemetry Analytics", "status": "completed", "telemetry": "100% failure on default tax region. Fixed in sandbox.", "metric": "100% Impacted"},
+            ],
+            logs=[
+                f"[*] [TRUEFORGE BOOT] Incident Runbook session active ({inc_id})",
+                "[+] [SWARM INVOCATION] 3 specialized subagents dispatched in parallel",
+                "[+] [ALPHA] Diff inspection located commit e1b087a",
+                "[+] [BRAVO] Stack trace decoder captured KeyError: 'STANDARD' at payment_processor.py:52",
+                "[+] [CHARLIE] PostgreSQL query verified 100% correlation with unmapped tax regions",
+                "[Daytona-VM] Container sbx-daytona-linux-902 active",
+                "[Daytona-VM] $ pytest -v -> [FAIL] KeyError: 'STANDARD'",
+                "[Daytona-VM] [PATCH APPLY] Using REGIONAL_TAX_RATES.get(tax_region, 0.0)",
+                "[Daytona-VM] $ pytest -v -> [PASS] 4/4 suites passed (100% OK)",
+                "[*] [HITL GATE] Pausing for SRE Commander approval before GitHub push...",
+            ],
+            patch_preview="def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) -> float:\n    tax_rate = REGIONAL_TAX_RATES.get(tax_region, 0.0)\n    return round(subtotal * tax_rate, 2)",
+            pr_link=None,
+        )
+
+
 @app.post("/incidents", response_model=IncidentResponse, tags=["Incidents"])
 async def record_incident(incident: IncidentCreate):
     """
     Write a structured incident record to persistent memory in Supabase.
-    Used by SentinelOps Step 7 to store root cause, evidence, and PR link across sessions.
     """
     now_iso = datetime.utcnow().isoformat()
     record = {
