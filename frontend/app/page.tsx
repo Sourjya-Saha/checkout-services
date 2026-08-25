@@ -25,7 +25,7 @@ const INITIAL_CART: CartItem[] = [
   { sku: "SKU-SANDBOX-CLUSTER", name: "Daytona Sandboxed Container Nodes", qty: 2, price: 25.0 },
 ];
 
-export default function SentinelOpsCinematicLanding() {
+export default function SentinelOpsExactCloneHero() {
   const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART);
   const [currency, setCurrency] = useState<string>("USD");
   const [isGuest, setIsGuest] = useState<boolean>(false);
@@ -142,125 +142,117 @@ export default function SentinelOpsCinematicLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070102] text-white selection:bg-red-600 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0506] text-white selection:bg-red-600 selection:text-white font-sans antialiased overflow-x-hidden relative">
       {/* ========================================================================= */}
-      {/* EXACT CINEMATIC CRIMSON HERO SECTION (AS IN REFERENCE IMAGE) */}
+      {/* EXACT 1:1 CLONE HERO SECTION (NOISE TEXTURE, RED GLOW, KINETIC BLURS) */}
       {/* ========================================================================= */}
-      <section className="relative min-h-screen flex flex-col justify-between items-center px-6 sm:px-12 py-10 overflow-hidden bg-radial from-[#67070e] via-[#240307] to-[#070102]">
-        {/* Subtle Ambient Vignette and Radial Red Light Overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-600/30 via-transparent to-black/80 pointer-events-none" />
+      <section className="relative min-h-screen flex flex-col justify-between p-8 sm:p-14 overflow-hidden border-b border-red-950/40 select-none">
+        {/* SVG Film Grain / Analogue Noise Overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-40 mix-blend-overlay z-20"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.7'/%3E%3C/svg%3E")`,
+          }}
+        />
 
-        {/* Massive 3D Background Watermark Typography: "SOON" / "SENTINEL" */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
-          <div className="text-[34vw] sm:text-[38vw] font-black tracking-tighter leading-none text-red-950/40 uppercase transform scale-y-125 filter blur-[0.5px] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]">
-            SOON
+        {/* Ambient Radial Red Light Bleed */}
+        <div className="absolute top-1/4 right-0 w-[600px] sm:w-[900px] h-[500px] bg-red-600/25 blur-[160px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[500px] sm:w-[700px] h-[400px] bg-red-700/20 blur-[140px] pointer-events-none rounded-full" />
+
+        {/* TOP RIGHT BACKGROUND BLURRED MOTION GLYPH: "SENTINEL" */}
+        <div className="absolute -top-6 -right-16 text-[14vw] sm:text-[16vw] font-black uppercase text-red-600/70 tracking-tighter filter blur-[6px] sm:blur-[10px] pointer-events-none select-none z-0">
+          SENTINEL
+        </div>
+
+        {/* BOTTOM BACKGROUND MASSIVE BLURRED GLYPH: "SENTINEL" */}
+        <div className="absolute -bottom-16 -left-10 text-[20vw] sm:text-[23vw] font-black uppercase text-red-600/80 tracking-tighter filter blur-[8px] sm:blur-[14px] pointer-events-none select-none z-0">
+          SENTINEL
+        </div>
+
+        {/* TOP EDITORIAL METADATA CALLOUTS (EXACT CORNER PLACEMENT) */}
+        <div className="relative z-10 flex justify-between items-start font-mono text-xs text-zinc-300 leading-tight">
+          <div className="space-y-0.5">
+            <p>kill that</p>
+            <p>anxiety and fear</p>
+          </div>
+          <div className="text-right space-y-0.5">
+            <p>face it or be</p>
+            <p>destroyed with it</p>
           </div>
         </div>
 
-        {/* Top Centered Eyebrow */}
-        <div className="relative z-10 text-center space-y-0.5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/90 font-mono">
-            SENTINELOPS
-          </p>
-          <p className="text-[9px] uppercase tracking-[0.25em] text-zinc-400 font-mono">
-            AUTONOMOUS INCIDENT HARNESS
-          </p>
-        </div>
-
-        {/* Center Hero Typographic Stack */}
-        <div className="relative z-10 text-center my-auto py-8 max-w-4xl mx-auto">
-          <p className="text-xs sm:text-sm font-medium tracking-[0.2em] text-zinc-300 uppercase mb-2 font-mono">
-            TRUEFORGE HARNESS 2.0.
+        {/* CENTER HERO STACK: "My Harness Agent" + KINETIC MOTION STACKED "SENTINEL OPS" */}
+        <div className="relative z-10 my-auto text-center py-16">
+          <p className="text-sm sm:text-base font-medium tracking-wide text-white mb-2 font-mono">
+            My Harness Agent
           </p>
 
-          {/* Main Title with Overlaid Signature Script */}
-          <div className="relative inline-block select-none">
-            <h1 className="text-[15vw] sm:text-[13vw] font-black uppercase tracking-[-0.03em] leading-[0.85] text-white transform scale-y-110">
-              REMEDIATION
-            </h1>
-
-            {/* Overlapping Red Neon Signature Cursive Script */}
-            <span
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10vw] sm:text-[8vw] text-red-500 font-serif italic whitespace-nowrap pointer-events-none select-none opacity-90 drop-shadow-[0_0_20px_rgba(239,68,68,0.8)]"
-              style={{
-                fontFamily: "'Brush Script MT', 'Dancing Script', cursive, sans-serif",
-                transform: "translate(-50%, -40%) rotate(-6deg)",
-              }}
-            >
-              Autonomous
+          <div className="relative inline-block">
+            {/* Motion Blur Trail Underlayer 1 */}
+            <span className="absolute top-2 left-6 sm:left-10 text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tighter text-red-600/50 filter blur-[4px] sm:blur-[7px] select-none pointer-events-none">
+              SENTINEL OPS
             </span>
+
+            {/* Motion Blur Trail Underlayer 2 */}
+            <span className="absolute -top-1 left-3 sm:left-6 text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tighter text-red-500/70 filter blur-[2px] sm:blur-[3px] select-none pointer-events-none">
+              SENTINEL OPS
+            </span>
+
+            {/* Sharp Front Title */}
+            <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tighter text-red-600 drop-shadow-[0_0_25px_rgba(220,38,38,0.8)] z-10">
+              SENTINEL OPS
+            </h1>
           </div>
         </div>
 
-        {/* Bottom Context Statement & Meta Links */}
-        <div className="relative z-10 text-center space-y-4 max-w-2xl mx-auto pt-6">
-          <p className="text-[11px] sm:text-xs uppercase tracking-wider text-zinc-300 font-light leading-relaxed">
-            AUTONOMOUS INCIDENT INVESTIGATION, DAYTONA SANDBOX VERIFICATION, AND QODO-REVIEWED REMEDIATION FOR PRODUCTION MICROSERVICES.
-          </p>
+        {/* BOTTOM EDITORIAL METADATA CALLOUTS (EXACT CORNER PLACEMENT) */}
+        <div className="relative z-10 flex justify-between items-end font-mono text-xs text-zinc-300">
+          <div className="space-y-0.5">
+            <p>You have</p>
+            <p>to face it!</p>
+          </div>
 
-          <div className="flex items-center justify-center gap-6 text-xs font-mono tracking-widest text-zinc-400">
+          <div className="flex items-center gap-3">
             <a
               href="#checkout"
-              className="hover:text-white transition-colors underline underline-offset-4 decoration-red-500"
+              className="px-4 py-2 rounded-full bg-red-600/80 hover:bg-red-500 text-white font-mono text-xs font-bold backdrop-blur-md border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all"
             >
-              SENTINELOPS.IO
+              Test Live Service &darr;
             </a>
-            <span>&bull;</span>
-            <a
-              href="mailto:support@sentinelops.io"
-              className="hover:text-white transition-colors underline underline-offset-4 decoration-red-500"
+            <Link
+              href="/sentinelops"
+              className="px-4 py-2 rounded-full bg-black/60 hover:bg-black text-white font-mono text-xs border border-zinc-700 backdrop-blur-md transition-all"
             >
-              SUPPORT@SENTINELOPS.IO
-            </a>
+              Swarm HUD &rarr;
+            </Link>
           </div>
-        </div>
 
-        {/* Bottom Floating Navigation Action Pills (as in image) */}
-        <div className="absolute bottom-6 left-6 z-20">
-          <a
-            href="#checkout"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono backdrop-blur-md border border-white/20 shadow-lg transition-all"
-          >
-            <span>↗</span>
-            <span>Test Checkout Service</span>
-          </a>
-        </div>
-
-        <div className="absolute bottom-6 right-6 z-20 flex items-center gap-2">
-          <Link
-            href="/sentinelops"
-            className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-mono font-bold shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all uppercase tracking-wider"
-          >
-            SentinelOps Swarm &rarr;
-          </Link>
-          <Link
-            href="/incidents"
-            className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono backdrop-blur-md border border-white/20 transition-all uppercase tracking-wider"
-          >
-            Audit Log
-          </Link>
+          <div className="text-right space-y-0.5">
+            <p>Created for</p>
+            <p className="text-white font-bold">TrueForge Hackathon</p>
+          </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* INTERACTIVE CHECKOUT & ERROR INCIDENT REPRODUCTION ENGINE */}
+      {/* LIVE TARGET CHECKOUT & INCIDENT DETECTION TERMINAL */}
       {/* ========================================================================= */}
-      <section id="checkout" className="px-6 sm:px-12 py-24 bg-black border-t border-zinc-900">
+      <section id="checkout" className="px-6 sm:px-12 py-24 bg-[#080203] border-t border-red-950/60">
         <div className="max-w-6xl mx-auto space-y-12">
-          {/* Section Heading */}
-          <div className="border-b border-zinc-800 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-1">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-red-500">
-                02 // LIVE REPRODUCTION TARGET
+          {/* Header */}
+          <div className="border-b border-red-950/80 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-red-500">
+                02 // REPRODUCTION ENVIRONMENT
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
+              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mt-1">
                 Checkout Service Gateway
               </h2>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5 bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-800/60">
+            <div className="flex items-center gap-3 font-mono text-xs">
+              <span className="text-emerald-400 flex items-center gap-1.5 bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-800/60">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Backend API: {backendHealth ? "8000 ONLINE" : "CONNECTING"}
+                API STATUS: {backendHealth ? "ONLINE (8000)" : "CONNECTING"}
               </span>
             </div>
           </div>
@@ -268,7 +260,7 @@ export default function SentinelOpsCinematicLanding() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left: Cart & Configuration */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 space-y-4">
+              <div className="p-6 rounded-2xl bg-black/70 border border-zinc-900 space-y-4">
                 <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-400">
                   Cart Order Items
                 </h3>
@@ -276,14 +268,14 @@ export default function SentinelOpsCinematicLanding() {
                   {cartItems.map((item) => (
                     <div
                       key={item.sku}
-                      className="p-4 rounded-xl bg-black border border-zinc-800/80 flex items-center justify-between"
+                      className="p-4 rounded-xl bg-zinc-950 border border-zinc-800/80 flex items-center justify-between"
                     >
                       <div>
                         <p className="font-bold text-sm text-white">{item.name}</p>
                         <span className="text-[11px] font-mono text-zinc-500">{item.sku}</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center border border-zinc-800 rounded-lg bg-zinc-950 text-xs font-mono">
+                        <div className="flex items-center border border-zinc-800 rounded-lg bg-black text-xs font-mono">
                           <button
                             onClick={() => updateQuantity(item.sku, -1)}
                             className="px-2.5 py-1 text-zinc-400 hover:text-white"
@@ -308,7 +300,7 @@ export default function SentinelOpsCinematicLanding() {
               </div>
 
               {/* Mode Selection */}
-              <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 space-y-6">
+              <div className="p-6 rounded-2xl bg-black/70 border border-zinc-900 space-y-6">
                 <div className="space-y-2">
                   <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider block">
                     Select User Authentication Mode
@@ -332,7 +324,7 @@ export default function SentinelOpsCinematicLanding() {
                       onClick={() => setIsGuest(true)}
                       className={`p-4 rounded-xl border text-left font-mono text-xs transition-all ${
                         isGuest
-                          ? "bg-red-950/50 border-red-500 text-red-300 font-bold shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+                          ? "bg-red-950/60 border-red-500 text-red-300 font-bold shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                           : "bg-black border-zinc-800 text-zinc-400 hover:border-zinc-700"
                       }`}
                     >
@@ -344,7 +336,7 @@ export default function SentinelOpsCinematicLanding() {
 
                 <div className="space-y-2">
                   <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider block">
-                    Currency
+                    Settlement Currency
                   </label>
                   <div className="grid grid-cols-3 gap-3">
                     {["USD", "EUR", "GBP"].map((curr) => (
@@ -369,7 +361,7 @@ export default function SentinelOpsCinematicLanding() {
                   disabled={loading}
                   className={`w-full py-4 rounded-xl font-mono text-xs font-black uppercase tracking-widest transition-all ${
                     isGuest
-                      ? "bg-red-600 hover:bg-red-500 text-white shadow-[0_0_25px_rgba(239,68,68,0.4)]"
+                      ? "bg-red-600 hover:bg-red-500 text-white shadow-[0_0_25px_rgba(239,68,68,0.5)]"
                       : "bg-white hover:bg-zinc-200 text-black shadow-lg"
                   } disabled:opacity-40`}
                 >
@@ -382,19 +374,19 @@ export default function SentinelOpsCinematicLanding() {
               </div>
             </div>
 
-            {/* Right: Real-Time Dynamic Feedback */}
+            {/* Right: Dynamic Incident & Success Feedback */}
             <div className="lg:col-span-5 space-y-6">
               {orderResult && (
                 <div className="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500 text-emerald-300 space-y-3 font-mono text-xs">
-                  <p className="font-bold text-sm">HTTP 200: Order Completed Successfully</p>
+                  <p className="font-bold text-sm">HTTP 200: Order Successfully Processed</p>
                   <p>Order ID: {orderResult.order_id}</p>
                   <p>Total: {orderResult.currency} {orderResult.total}</p>
-                  <p className="text-emerald-400">Written to Supabase PostgreSQL orders table.</p>
+                  <p className="text-emerald-400">Recorded to Supabase PostgreSQL database.</p>
                 </div>
               )}
 
               {errorState && (
-                <div className="p-6 rounded-2xl bg-red-950/60 border-2 border-red-600 text-red-200 space-y-4 font-mono text-xs shadow-[0_0_30px_rgba(239,68,68,0.3)]">
+                <div className="p-6 rounded-2xl bg-red-950/70 border-2 border-red-600 text-red-200 space-y-4 font-mono text-xs shadow-[0_0_30px_rgba(239,68,68,0.4)]">
                   <div className="flex items-center justify-between border-b border-red-800 pb-2">
                     <span className="font-bold text-sm text-red-300">
                       INCIDENT DETECTED: HTTP {errorState.status}
@@ -421,22 +413,22 @@ export default function SentinelOpsCinematicLanding() {
                 </div>
               )}
 
-              {/* Navigation Cards */}
-              <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 space-y-4">
+              {/* Ecosystem Navigation */}
+              <div className="p-6 rounded-2xl bg-black/70 border border-zinc-900 space-y-4">
                 <h4 className="text-xs font-mono uppercase tracking-widest text-zinc-400">
-                  Autonomous SRE Ecosystem
+                  Autonomous SRE Architecture
                 </h4>
                 <div className="flex flex-col gap-2">
                   <Link
                     href="/sentinelops"
-                    className="p-3.5 rounded-xl bg-black border border-zinc-800 text-xs font-mono text-white hover:border-red-500 transition-colors flex items-center justify-between"
+                    className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-mono text-white hover:border-red-500 transition-colors flex items-center justify-between"
                   >
-                    <span>SentinelOps Commander HUD</span>
+                    <span>SentinelOps Commander Swarm HUD</span>
                     <span>&rarr;</span>
                   </Link>
                   <Link
                     href="/incidents"
-                    className="p-3.5 rounded-xl bg-black border border-zinc-800 text-xs font-mono text-white hover:border-red-500 transition-colors flex items-center justify-between"
+                    className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-mono text-white hover:border-red-500 transition-colors flex items-center justify-between"
                   >
                     <span>Supabase Postmortem Audit Log</span>
                     <span>&rarr;</span>
