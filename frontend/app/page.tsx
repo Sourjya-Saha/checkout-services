@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface CartItem {
   sku: string;
@@ -27,8 +28,8 @@ interface Order {
 }
 
 const INITIAL_CART: CartItem[] = [
-  { sku: "SKU-SENTINEL-PRO", name: "SentinelOps Pro Enterprise", qty: 1, price: 99.0 },
-  { sku: "SKU-CLOUD-CREDITS", name: "Incident Response Credits (500)", qty: 2, price: 25.0 },
+  { sku: "SKU-SENTINEL-PRO", name: "SentinelOps Autonomous SRE Pro License", qty: 1, price: 99.0 },
+  { sku: "SKU-CLOUD-CREDITS", name: "Daytona Sandboxed Compute Credits (x500)", qty: 2, price: 25.0 },
 ];
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
@@ -79,7 +80,7 @@ export default function CheckoutPage() {
       const res = await fetch(`${apiBase}/orders`);
       if (res.ok) {
         const data = await res.json();
-        setOrdersList(data);
+        setOrdersList(data || []);
       }
     } catch (err) {
       console.error("Failed to fetch orders", err);
@@ -145,12 +146,11 @@ export default function CheckoutPage() {
       }
     } catch (err: any) {
       setErrorState({
-        status: 0,
-        errorType: "ConnectionError",
-        message: err.message || "Failed to communicate with FastAPI backend",
-        detail: {
-          hint: "Ensure FastAPI backend is running on " + apiBase,
-        },
+        status: 500,
+        errorType: "NetworkFetchException",
+        message: err.message || "Failed to communicate with FastAPI backend (:8000)",
+        detail: err,
+        traceback: ["Check if FastAPI server is running: uvicorn app.main:app --port 8000 --reload"],
       });
     } finally {
       setLoading(false);
@@ -158,357 +158,343 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-      {/* Top Header */}
-      <div className="border-b border-slate-200 pb-6 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-black">
+      {/* Top Navigation */}
+      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
-              SentinelOps Checkout Service
-            </h1>
-            <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700 ring-1 ring-inset ring-red-600/10">
-              Incident Demo Target
-            </span>
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-black text-slate-950 text-sm shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+              🛒
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold tracking-wider text-sm text-white uppercase font-mono">
+                  Checkout-Service
+                </span>
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/60 font-bold">
+                  Live Target App
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-mono">
+                FastAPI :8000 &bull; Supabase PostgreSQL &bull; Next.js 14
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
-            FastAPI &bull; Supabase &bull; Next.js &bull; Live Regression Demo
-          </p>
-        </div>
 
-        {/* Status Indicators & Navigation */}
-        <div className="flex items-center gap-2.5 flex-wrap">
-          <a
-            href="/sentinelops"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm transition-all"
-          >
-            SentinelOps Agent Visualizer &rarr;
-          </a>
-          <a
-            href="/incidents"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all"
-          >
-            Incident Command Center
-          </a>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <Link
+              href="/sentinelops"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.3)] transition-all uppercase tracking-wider"
+            >
+              SentinelOps HUD &rarr;
+            </Link>
+            <Link
+              href="/incidents"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all uppercase tracking-wider"
+            >
+              Incident Log
+            </Link>
+            <button
+              onClick={checkHealth}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono bg-slate-900 border border-slate-800 text-emerald-400"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse"></span>
+              API: {backendHealth ? "ONLINE (8000)" : "OFFLINE"}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-8">
+        {/* Navigation Tabs */}
+        <div className="flex border-b border-slate-800 pb-2 gap-4 text-xs font-mono">
           <button
-            onClick={checkHealth}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+            onClick={() => setActiveTab("checkout")}
+            className={`pb-2 px-3 border-b-2 font-bold transition-all ${
+              activeTab === "checkout"
+                ? "border-cyan-400 text-cyan-300"
+                : "border-transparent text-slate-400 hover:text-slate-200"
+            }`}
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Backend: {backendHealth ? "Online (8000)" : "Offline"}
+            01 // LIVE CHECKOUT TERMINAL
           </button>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-            Database: {backendHealth?.database === "connected" ? "Supabase Connected" : "Active"}
-          </div>
+          <button
+            onClick={() => {
+              setActiveTab("orders");
+              fetchOrders();
+            }}
+            className={`pb-2 px-3 border-b-2 font-bold transition-all ${
+              activeTab === "orders"
+                ? "border-cyan-400 text-cyan-300"
+                : "border-transparent text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            02 // DATABASE ORDER AUDIT ({ordersList.length})
+          </button>
         </div>
-      </div>
 
-      {/* Tabs */}
-      <div className="flex space-x-1 rounded-xl bg-slate-200/80 p-1 mb-8 max-w-md">
-        <button
-          onClick={() => setActiveTab("checkout")}
-          className={`w-full rounded-lg py-2.5 text-sm font-semibold leading-5 transition-all ${
-            activeTab === "checkout"
-              ? "bg-white text-slate-900 shadow"
-              : "text-slate-600 hover:text-slate-900"
-          }`}
-        >
-          Checkout Page
-        </button>
-        <button
-          onClick={() => {
-            setActiveTab("orders");
-            fetchOrders();
-          }}
-          className={`w-full rounded-lg py-2.5 text-sm font-semibold leading-5 transition-all ${
-            activeTab === "orders"
-              ? "bg-white text-slate-900 shadow"
-              : "text-slate-600 hover:text-slate-900"
-          }`}
-        >
-          Order History ({ordersList.length})
-        </button>
-      </div>
+        {activeTab === "checkout" ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Column: Cart & Configuration */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Cart Container */}
+              <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl space-y-5">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
+                    Cart Items &bull; Active Payload
+                  </h2>
+                  <span className="text-xs font-mono text-slate-400">{cartItems.length} Products</span>
+                </div>
 
-      {activeTab === "checkout" ? (
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {/* Left Column: Cart & Checkout Form */}
-          <div className="md:col-span-2 space-y-6">
-            {/* Cart Box */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center justify-between">
-                <span>Cart Items</span>
-                <span className="text-xs font-normal text-slate-500">{cartItems.length} items</span>
-              </h2>
-              <div className="divide-y divide-slate-100">
-                {cartItems.map((item) => (
-                  <div key={item.sku} className="py-4 flex justify-between items-center text-sm">
-                    <div>
-                      <p className="font-semibold text-slate-900">{item.name}</p>
-                      <p className="text-xs text-slate-400 font-mono mt-0.5">SKU: {item.sku}</p>
-                      <p className="text-xs text-slate-500 mt-1">${item.price.toFixed(2)} each</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center border border-slate-200 rounded-lg">
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(item.sku, -1)}
-                          className="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded-l-lg font-bold"
-                        >
-                          -
-                        </button>
-                        <span className="px-3 py-1 font-semibold text-slate-800 text-xs">
-                          {item.qty}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(item.sku, 1)}
-                          className="px-2.5 py-1 text-slate-600 hover:bg-slate-100 rounded-r-lg font-bold"
-                        >
-                          +
-                        </button>
+                <div className="space-y-3">
+                  {cartItems.map((item) => (
+                    <div
+                      key={item.sku}
+                      className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between gap-3"
+                    >
+                      <div>
+                        <p className="font-bold text-xs text-white">{item.name}</p>
+                        <span className="text-[10px] font-mono text-slate-500">{item.sku}</span>
                       </div>
-                      <span className="font-bold text-slate-900 min-w-[70px] text-right">
-                        ${(item.qty * item.price).toFixed(2)}
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center border border-slate-800 rounded-lg bg-slate-900 text-xs font-mono">
+                          <button
+                            onClick={() => updateQuantity(item.sku, -1)}
+                            className="px-2.5 py-1 hover:bg-slate-800 text-slate-300"
+                          >
+                            -
+                          </button>
+                          <span className="px-3 py-1 font-bold text-cyan-400">{item.qty}</span>
+                          <button
+                            onClick={() => updateQuantity(item.sku, 1)}
+                            className="px-2.5 py-1 hover:bg-slate-800 text-slate-300"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <span className="font-mono text-xs font-bold text-white min-w-[65px] text-right">
+                          ${(item.price * item.qty).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Settings Container */}
+              <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl space-y-5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono border-b border-slate-800 pb-3">
+                  Checkout Configuration Matrix
+                </h3>
+
+                {/* Registered vs Guest Mode */}
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-slate-300 font-bold block">
+                    USER AUTHENTICATION STATE
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setIsGuest(false)}
+                      className={`p-3.5 rounded-xl border font-mono text-xs text-left transition-all ${
+                        !isGuest
+                          ? "bg-slate-900 border-cyan-500/80 text-cyan-300 ring-1 ring-cyan-500/30"
+                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                      }`}
+                    >
+                      <span className="block font-bold">👤 Registered User</span>
+                      <span className="text-[10px] text-slate-500 block mt-0.5">Returns 200 OK</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsGuest(true)}
+                      className={`p-3.5 rounded-xl border font-mono text-xs text-left transition-all ${
+                        isGuest
+                          ? "bg-red-950/40 border-red-500/80 text-red-300 ring-1 ring-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                      }`}
+                    >
+                      <span className="block font-bold">⚡ Guest Checkout</span>
+                      <span className="text-[10px] text-red-400 block mt-0.5">Triggers 500 Incident</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Currency Selection */}
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-slate-300 font-bold block">
+                    PAYMENT CURRENCY
+                  </label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {["USD", "EUR", "GBP"].map((curr) => (
+                      <button
+                        key={curr}
+                        type="button"
+                        onClick={() => setCurrency(curr)}
+                        className={`py-2.5 rounded-xl border font-mono text-xs font-bold transition-all ${
+                          currency === curr
+                            ? "bg-slate-900 border-cyan-500 text-cyan-300"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                        }`}
+                      >
+                        {curr} ({CURRENCY_SYMBOLS[curr]})
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Submit CTA */}
+                <button
+                  onClick={handleCheckout}
+                  disabled={loading}
+                  className={`w-full py-3.5 rounded-xl font-mono text-xs font-black uppercase tracking-wider transition-all shadow-lg ${
+                    isGuest
+                      ? "bg-red-600 hover:bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                      : "bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                  } disabled:opacity-40`}
+                >
+                  {loading
+                    ? "Executing Payment Process..."
+                    : isGuest
+                    ? "Trigger Guest Checkout (Seeded Regression)"
+                    : `Process Payment ($${subtotalUSD.toFixed(2)} USD)`}
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column: Dynamic Live Response */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Order Success Card */}
+              {orderResult && (
+                <div className="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/80 shadow-[0_0_25px_rgba(16,185,129,0.15)] space-y-4 animate-fadeIn">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                    <h3 className="font-mono text-sm font-bold text-emerald-300">
+                      HTTP 200: ORDER COMPLETED
+                    </h3>
+                  </div>
+                  <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-1.5 text-slate-300">
+                    <p>
+                      <strong>Order ID:</strong> <span className="text-emerald-400">{orderResult.order_id}</span>
+                    </p>
+                    <p>
+                      <strong>Total:</strong> {orderResult.currency} {orderResult.total}
+                    </p>
+                    <p>
+                      <strong>Database:</strong> Written to Supabase PostgreSQL (orders table)
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Incident Card */}
+              {errorState && (
+                <div className="p-6 rounded-2xl bg-red-950/50 border-2 border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.25)] space-y-4 animate-shake">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
+                      <h3 className="font-mono text-sm font-bold text-red-300">
+                        INCIDENT DETECTED: HTTP {errorState.status}
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-900 text-red-200 font-bold">
+                      {errorState.errorType}
+                    </span>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-2 text-slate-300">
+                    <p className="text-red-400 font-bold">{errorState.message}</p>
+                    {errorState.traceback && errorState.traceback.length > 0 && (
+                      <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 space-y-1">
+                        <p className="font-bold text-slate-300">Stack Trace Tail:</p>
+                        {errorState.traceback.map((line, i) => (
+                          <p key={i} className="text-slate-400">
+                            {line}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-2 flex flex-col gap-2">
+                    <Link
+                      href="/sentinelops"
+                      className="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono font-bold text-xs rounded-xl shadow text-center uppercase tracking-wider"
+                    >
+                      Remediate with SentinelOps Swarm &rarr;
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              {/* System Architecture Blueprint */}
+              <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono border-b border-slate-800 pb-2">
+                  System Telemetry &amp; SRE Guardrails
+                </h3>
+                <ul className="text-xs font-mono space-y-2.5 text-slate-400">
+                  <li className="flex items-center gap-2">
+                    <span className="text-cyan-400">✓</span> Backend CORS exception handling active
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-cyan-400">✓</span> Supabase PostgreSQL persistence connected
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-cyan-400">✓</span> Daytona isolated sandbox runner ready
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-cyan-400">✓</span> Qodo AI automated code review integrated
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* Orders Audit Tab */
+          <div className="space-y-4">
+            <h3 className="text-sm font-bold text-cyan-400 font-mono">
+              Live Database Orders (Supabase orders table)
+            </h3>
+            {ordersList.length === 0 ? (
+              <div className="p-12 rounded-2xl bg-slate-900/40 border border-slate-800 text-center text-slate-500 font-mono text-xs">
+                No orders recorded yet. Complete a checkout transaction to record one.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {ordersList.map((ord) => (
+                  <div
+                    key={ord.id}
+                    className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3 font-mono text-xs"
+                  >
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                      <span className="text-cyan-400 font-bold">{ord.id.slice(0, 16)}...</span>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                          ord.is_guest
+                            ? "bg-amber-950 text-amber-300 border border-amber-800"
+                            : "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                        }`}
+                      >
+                        {ord.is_guest ? "GUEST ORDER" : "AUTHENTICATED"}
                       </span>
+                    </div>
+                    <div className="space-y-1 text-slate-300">
+                      <p>
+                        Total: <strong>{ord.currency} {ord.total}</strong>
+                      </p>
+                      <p className="text-slate-500 text-[11px]">
+                        Items: {ord.items ? ord.items.map((i) => `${i.qty}x ${i.sku}`).join(", ") : "N/A"}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
-
-              <div className="border-t border-slate-200 mt-4 pt-4 flex justify-between items-center">
-                <span className="font-semibold text-slate-700">Subtotal (USD Base)</span>
-                <span className="font-bold text-xl text-slate-900">${subtotalUSD.toFixed(2)}</span>
-              </div>
-            </div>
-
-            {/* Options Form */}
-            <form
-              onSubmit={handleCheckout}
-              className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6"
-            >
-              <h2 className="text-lg font-bold text-slate-900">Checkout Settings</h2>
-
-              {/* Currency Selector */}
-              <div>
-                <label htmlFor="currency" className="block text-sm font-medium text-slate-700 mb-1.5">
-                  Select Currency
-                </label>
-                <select
-                  id="currency"
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                >
-                  <option value="USD">USD ($) - US Dollar</option>
-                  <option value="EUR">EUR (€) - Euro (0.92x)</option>
-                  <option value="GBP">GBP (£) - British Pound (0.79x)</option>
-                </select>
-              </div>
-
-              {/* Identity Mode */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Customer Identity Mode
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsGuest(false)}
-                    className={`p-4 text-left rounded-xl border transition-all ${
-                      !isGuest
-                        ? "bg-slate-900 text-white border-slate-900 shadow-md"
-                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                    }`}
-                  >
-                    <div className="font-bold text-sm">Registered User</div>
-                    <div className="text-xs opacity-75 mt-0.5">&bull; Loads profile &rarr; 200 OK</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsGuest(true)}
-                    className={`p-4 text-left rounded-xl border transition-all ${
-                      isGuest
-                        ? "bg-red-600 text-white border-red-600 shadow-md"
-                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                    }`}
-                  >
-                    <div className="font-bold text-sm flex items-center gap-1.5">
-                      Guest Checkout <span className="text-[10px] bg-red-800 px-1.5 py-0.5 rounded font-mono">TARGET BUG</span>
-                    </div>
-                    <div className="text-xs opacity-75 mt-0.5">&bull; Triggers TypeError 500</div>
-                  </button>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading || cartItems.length === 0}
-                className={`w-full py-3.5 px-4 rounded-xl font-bold text-white shadow-md transition-all ${
-                  loading
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : isGuest
-                    ? "bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200"
-                    : "bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200"
-                }`}
-              >
-                {loading
-                  ? "Processing Order..."
-                  : isGuest
-                  ? `Trigger Guest Checkout (${currency} ${CURRENCY_SYMBOLS[currency] || ""})`
-                  : `Place Order as Registered User (${currency} ${CURRENCY_SYMBOLS[currency] || ""})`}
-              </button>
-            </form>
-          </div>
-
-          {/* Right Column: Real-Time Confirmation / Incident Details */}
-          <div className="space-y-5">
-            {/* Live Order Confirmation (200 OK) */}
-            {orderResult && (
-              <div className="bg-emerald-50 border-2 border-emerald-400 rounded-2xl p-6 shadow-md text-emerald-950 animate-fadeIn">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">
-                    ✓
-                  </div>
-                  <h3 className="font-bold text-base text-emerald-900">Order Confirmed (200 OK)</h3>
-                </div>
-                <p className="text-xs text-emerald-800 mb-4">
-                  Registered user checkout succeeded without error.
-                </p>
-                <div className="bg-white p-3.5 rounded-xl border border-emerald-200 space-y-1.5 text-xs font-mono text-slate-800">
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Order ID:</span>
-                    <span className="font-bold">{orderResult.order_id.slice(0, 13)}...</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Total Billed:</span>
-                    <span className="font-bold text-emerald-700">
-                      {CURRENCY_SYMBOLS[orderResult.currency] || ""}
-                      {orderResult.total} {orderResult.currency}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Status:</span>
-                    <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                      {orderResult.status.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-              </div>
             )}
-
-            {/* Incident / Bug Display (500 Error) */}
-            {errorState && (
-              <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-6 shadow-lg text-red-950 animate-fadeIn">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm">
-                    !
-                  </div>
-                  <h3 className="font-bold text-base text-red-900">
-                    Incident Detected: HTTP {errorState.status || 500}
-                  </h3>
-                </div>
-
-                <div className="mt-3 p-3 bg-red-100 border border-red-300 rounded-xl space-y-1">
-                  <p className="text-xs font-bold text-red-900">
-                    Exception: <span className="font-mono">{errorState.errorType}: {errorState.message}</span>
-                  </p>
-                  <p className="text-[11px] text-red-700">
-                    <strong>File:</strong> <code>backend/app/payment_processor.py:32</code> in <code>_resolve_currency_symbol</code>
-                  </p>
-                </div>
-
-                {/* Server Response Payload */}
-                <div className="mt-3">
-                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
-                    Live Server Error Payload:
-                  </div>
-                  <pre className="bg-slate-900 text-red-400 p-3 rounded-xl text-[11px] font-mono overflow-x-auto">
-                    {JSON.stringify(errorState.detail, null, 2)}
-                  </pre>
-                </div>
-              </div>
-            )}
-
-            {/* Architecture Card */}
-            <div className="bg-slate-100 p-5 rounded-2xl border border-slate-200 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                Incident Information
-              </h4>
-              <ul className="text-xs text-slate-600 space-y-1.5">
-                <li>&bull; <strong>Registered User:</strong> Profile is loaded &rarr; succeeds (200 OK).</li>
-                <li>&bull; <strong>Guest Checkout:</strong> Profile is <code>None</code> &rarr; accesses <code>currency_info["symbol"]</code> and throws <code>TypeError</code> (500 Error).</li>
-              </ul>
-            </div>
           </div>
-        </div>
-      ) : (
-        /* Orders History Tab */
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-slate-900">Processed Orders ({ordersList.length})</h2>
-            <button
-              onClick={fetchOrders}
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
-            >
-              Refresh Orders
-            </button>
-          </div>
-
-          {ordersList.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 text-sm">
-              No orders found yet. Place a new order on the Checkout tab!
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {ordersList.map((ord) => (
-                <div
-                  key={ord.id}
-                  className="p-4 rounded-xl border border-slate-200 hover:border-slate-300 transition-all bg-slate-50/50"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                    <div>
-                      <span className="font-mono font-bold text-sm text-slate-900">{ord.id}</span>
-                      <span
-                        className={`ml-2 inline-flex px-2 py-0.5 rounded text-[11px] font-semibold ${
-                          ord.is_guest
-                            ? "bg-purple-100 text-purple-700"
-                            : "bg-blue-100 text-blue-700"
-                        }`}
-                      >
-                        {ord.is_guest ? "Guest" : "Registered User"}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-extrabold text-base text-slate-900">
-                        {CURRENCY_SYMBOLS[ord.currency] || ""}
-                        {ord.total.toFixed(2)} {ord.currency}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="text-xs text-slate-500 border-t border-slate-200 pt-2 space-y-1">
-                    {ord.items && ord.items.length > 0 ? (
-                      ord.items.map((item, idx) => (
-                        <div key={idx} className="flex justify-between">
-                          <span>
-                            {item.sku} &times; {item.qty}
-                          </span>
-                          <span>${(item.qty * item.price).toFixed(2)}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <div>Items recorded in database</div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-    </main>
+        )}
+      </main>
+    </div>
   );
 }
