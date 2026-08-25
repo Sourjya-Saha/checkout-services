@@ -178,10 +178,16 @@ export default function CheckoutPage() {
         {/* Status Indicators & Navigation */}
         <div className="flex items-center gap-2.5 flex-wrap">
           <a
+            href="/sentinelops"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm transition-all"
+          >
+            SentinelOps Agent Visualizer &rarr;
+          </a>
+          <a
             href="/incidents"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all"
           >
-            Incident Command Center &rarr;
+            Incident Command Center
           </a>
           <button
             onClick={checkHealth}
