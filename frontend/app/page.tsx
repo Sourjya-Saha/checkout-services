@@ -9,7 +9,7 @@ export default function DeepRed404CombinedLanding() {
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
 
   return (
-    <main className="relative w-screen h-screen min-h-screen bg-[#070d0d] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
+    <main className="relative w-screen h-screen min-h-screen bg-[#070d0d] text-white selection:bg-red-600 selection:text-white font-anton antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
       {/* ========================================================================= */}
       {/* 1. ANALOGUE FILM GRAIN NOISE TEXTURE */}
       {/* ========================================================================= */}
@@ -21,46 +21,44 @@ export default function DeepRed404CombinedLanding() {
       />
 
       {/* ========================================================================= */}
-      {/* 2. EXACT GIANT 404 BACKGROUND: BLURRED LEFT & RIGHT EDGES + SHARP CENTER */}
+      {/* 2. EXACT GIANT 404 BACKGROUND (GOOGLE ANTON FONT): BLURRED LEFT/RIGHT + SHARP CENTER */}
       {/* ========================================================================= */}
-   <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+        {/* LEFT 4 */}
+        <div className="absolute top-[64%] left-0 -translate-y-1/2 -translate-x-[19%] whitespace-nowrap">
+          <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+            4
+          </span>
+        </div>
 
-  {/* LEFT 4 */}
-  <div className="absolute top-[55%] left-0 -translate-y-1/2 -translate-x-[3%] whitespace-nowrap">
-    <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
-      4
-    </span>
-  </div>
+        {/* CENTER 0 */}
+        <div className="absolute top-[64%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
+          <span className="font-anton font-normal text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
+            0
+          </span>
+        </div>
 
-  {/* CENTER 0 */}
-  <div className="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
-    <span className="font-anton text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
-      0
-    </span>
-  </div>
-
-  {/* RIGHT 4 */}
-  <div className="absolute top-[55%] right-0 -translate-y-1/2 translate-x-[3%] whitespace-nowrap">
-    <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
-      4
-    </span>
-  </div>
-
-</div>
+        {/* RIGHT 4 */}
+        <div className="absolute top-[64%] right-0 translate-x-[1%] -translate-y-1/2 whitespace-nowrap">
+          <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+            4
+          </span>
+        </div>
+      </div>
 
       {/* ========================================================================= */}
-      {/* 3. TOP METADATA & INTERACTIVE HOVER REDIRECTS */}
+      {/* 3. TOP METADATA & INTERACTIVE HOVER REDIRECTS (ANTON FONT) */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex justify-between items-start font-mono text-xs sm:text-sm text-zinc-200 leading-tight">
+      <div className="relative z-50 flex justify-between items-start font-anton tracking-wider text-xs sm:text-base text-zinc-200 uppercase leading-snug">
         {/* Top Left: On hover -> "kill your bug in real-time" -> Redirects to /sentinelops */}
         <Link
           href="/sentinelops"
           onMouseEnter={() => setHoverTopLeft(true)}
           onMouseLeave={() => setHoverTopLeft(false)}
-          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
         >
           {hoverTopLeft ? (
-            <div className="text-red-400 font-bold animate-fadeIn">
+            <div className="text-red-400 animate-fadeIn">
               <p>kill your</p>
               <p>bug in real-time ↗</p>
             </div>
@@ -72,17 +70,15 @@ export default function DeepRed404CombinedLanding() {
           )}
         </Link>
 
-     
-
         {/* Top Right: On hover -> "face the actual service page" -> Redirects to /checkout */}
         <Link
           href="/checkout"
           onMouseEnter={() => setHoverTopRight(true)}
           onMouseLeave={() => setHoverTopRight(false)}
-          className="group block text-right cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+          className="group block text-right cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
         >
           {hoverTopRight ? (
-            <div className="text-red-400 font-bold animate-fadeIn">
+            <div className="text-red-400 animate-fadeIn">
               <p>face the actual</p>
               <p>service page ↗</p>
             </div>
@@ -96,54 +92,41 @@ export default function DeepRed404CombinedLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 4. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" + GO BACK */}
+      {/* 4. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Eyebrow Label */}
-        <p className="text-xs sm:text-sm font-epic font-medium tracking-[0.2em] text-zinc-300 uppercase mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+        <p className="text-sm sm:text-base font-anton font-normal tracking-[0.25em] text-zinc-300 uppercase mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]">
           My Harness Agent
         </p>
 
-        {/* Center Title Stack with Deep, Wide, Distributed Black Shadow */}
+        {/* Center Title Stack with Tight Black Shadow Behind */}
         <div className="relative inline-block select-none my-1">
-          {/* Wide Distributed Ambient Black Halo */}
-          <span className="absolute inset-0 scale-110 translate-y-[6px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[20px] sm:blur-[28px] opacity-100 select-none pointer-events-none z-0 whitespace-nowrap">
+          {/* Black Shadow Directly Behind */}
+          <span className="absolute inset-0 translate-x-[2px] translate-y-[3px] sm:translate-x-[3px] sm:translate-y-[4px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[2px] sm:blur-[3px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap">
             SENTINEL OPS
           </span>
 
-          {/* Medium Deep Black Shadow Layer */}
-          <span className="absolute inset-0 translate-y-[4px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[8px] sm:blur-[12px] opacity-100 select-none pointer-events-none z-0 whitespace-nowrap">
-            SENTINEL OPS
-          </span>
-
-          {/* Close Tight Core Occlusion Shadow */}
-          <span className="absolute inset-0 translate-x-[2px] translate-y-[3px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[3px] opacity-100 select-none pointer-events-none z-0 whitespace-nowrap">
-            SENTINEL OPS
-          </span>
-
-          {/* Sharp Front Title with Rich Dark Text Shadows */}
-          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-white drop-shadow-[0_0_30px_rgba(0,0,0,1)] drop-shadow-[0_8px_20px_rgba(0,0,0,1)] z-10 whitespace-nowrap">
+          {/* Sharp Front Title */}
+          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] z-10 whitespace-nowrap">
             SENTINEL OPS
           </h1>
         </div>
-
-        {/* 404 Overlay Details with Underline Scribble Effect */}
-    
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. BOTTOM METADATA CALLOUTS & EXACT "CREATE BY SOURJYA SAHA" */}
+      {/* 5. BOTTOM METADATA CALLOUTS (ANTON FONT) */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex flex-col sm:flex-row justify-between items-center sm:items-end font-mono text-xs sm:text-sm text-zinc-300 leading-tight gap-4">
-        {/* Bottom Left */}
+      <div className="relative z-50 flex flex-col sm:flex-row justify-between items-center sm:items-end font-anton tracking-wider text-xs sm:text-base text-zinc-200 uppercase leading-snug gap-4">
+        {/* Bottom Left: Links to /incidents */}
         <Link
           href="/incidents"
           onMouseEnter={() => setHoverBottomLeft(true)}
           onMouseLeave={() => setHoverBottomLeft(false)}
-          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
+          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
         >
           {hoverBottomLeft ? (
-            <div className="text-red-400 font-bold animate-fadeIn">
+            <div className="text-red-400 animate-fadeIn">
               <p>Explore</p>
               <p>Postmortem Audit ↗</p>
             </div>
@@ -155,12 +138,10 @@ export default function DeepRed404CombinedLanding() {
           )}
         </Link>
 
-     
-
         {/* Bottom Right: "Create by Sourjya Saha" */}
-        <div className="text-right space-y-0.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-          <p className="text-zinc-400 text-xs">Create by</p>
-          <p className="text-white font-bold font-epic tracking-wide text-sm sm:text-base">Sourjya Saha</p>
+        <div className="text-right space-y-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+          <p className="text-zinc-400 text-xs sm:text-sm">Create by</p>
+          <p className="text-white tracking-widest text-sm sm:text-lg">Sourjya Saha</p>
         </div>
       </div>
     </main>
