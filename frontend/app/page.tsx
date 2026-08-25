@@ -23,7 +23,7 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       {/* 2. EXACT GIANT 404 BACKGROUND (ANTON FONT): BLURRED SIDES + CRISP 0 */}
       {/* ========================================================================= */}
-      <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 animate-entrance-bg">
         {/* LEFT 4 */}
         <div className="absolute top-[54%] left-0 -translate-y-1/2 -translate-x-[4%] sm:-translate-x-[2%] whitespace-nowrap">
           <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
@@ -51,7 +51,7 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       <svg
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen"
+        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen animate-entrance-bg"
         viewBox="0 0 1440 900"
         preserveAspectRatio="none"
       >
@@ -98,15 +98,15 @@ export default function Exact404SentinelOpsLanding() {
       </svg>
 
       {/* ========================================================================= */}
-      {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (DOTTED MOVING LOOP) */}
+      {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (ENTRANCE ANIMATIONS) */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-start font-mono text-xs text-zinc-200 leading-tight">
-        {/* Top-Left Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
+        {/* Top-Left Hand-Drawn Wobbly Chalk Loop */}
         <Link
           href="/sentinelops"
           onMouseEnter={() => setHoverTopLeft(true)}
           onMouseLeave={() => setHoverTopLeft(false)}
-          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105"
+          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tl"
         >
           {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
@@ -139,12 +139,12 @@ export default function Exact404SentinelOpsLanding() {
           </div>
         </Link>
 
-        {/* Top-Right Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
+        {/* Top-Right Hand-Drawn Wobbly Chalk Loop */}
         <Link
           href="/checkout"
           onMouseEnter={() => setHoverTopRight(true)}
           onMouseLeave={() => setHoverTopRight(false)}
-          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105"
+          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tr"
         >
           {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
@@ -179,16 +179,16 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" */}
+      {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" (ENTRANCE) */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
-        {/* Previous "My Harness Agent" Text Styling */}
-        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+        {/* Previous "My Harness Agent" Text Styling with Staggered Fade Down */}
+        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-entrance-eyebrow">
           My Harness Agent
         </p>
 
-        {/* Giant Main Title: "SENTINEL OPS" in White with Tight Dark Shadow */}
-        <div className="relative inline-block select-none my-1">
+        {/* Giant Main Title: "SENTINEL OPS" in White with Cinematic Blur/Scale Reveal */}
+        <div className="relative inline-block select-none my-1 animate-entrance-hero">
           {/* Soft tight black shadow underlayer */}
           <span className="absolute inset-0 translate-x-[3px] translate-y-[5px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-black filter blur-[4px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap">
             SENTINEL OPS
@@ -202,15 +202,15 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (DOTTED MOVING LOOP) */}
+      {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS (ENTRANCE) */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-end font-mono text-xs text-zinc-200 leading-tight">
-        {/* Bottom-Left Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
+        {/* Bottom-Left Hand-Drawn Wobbly Chalk Loop */}
         <Link
           href="/incidents"
           onMouseEnter={() => setHoverBottomLeft(true)}
           onMouseLeave={() => setHoverBottomLeft(false)}
-          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105"
+          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-bl"
         >
           {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg
@@ -243,12 +243,12 @@ export default function Exact404SentinelOpsLanding() {
           </div>
         </Link>
 
-        {/* Bottom-Right Hand-Drawn Wobbly Chalk Loop with Dotted Marching Animation */}
+        {/* Bottom-Right Hand-Drawn Wobbly Chalk Loop */}
         <a
           href="https://github.com/Sourjya-Saha"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105"
+          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-br"
         >
           {/* Hand-drawn SVG wavy outline animating continuously */}
           <svg

@@ -132,3 +132,120 @@ body {
   animation: waveDriftSlow 11s ease-in-out infinite;
   transform-origin: center;
 }
+
+/* ========================================================================= */
+/* CINEMATIC PAGE OPENING ENTRANCE ANIMATIONS */
+/* ========================================================================= */
+
+@keyframes entranceCenterTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.9);
+    filter: blur(16px);
+  }
+  60% {
+    opacity: 0.85;
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes entranceEyebrow {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+    letter-spacing: 0.35em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+    letter-spacing: 0.05em;
+  }
+}
+
+@keyframes entranceCornerTL {
+  0% {
+    opacity: 0;
+    transform: translate(-30px, -24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes entranceCornerTR {
+  0% {
+    opacity: 0;
+    transform: translate(30px, -24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes entranceCornerBL {
+  0% {
+    opacity: 0;
+    transform: translate(-30px, 24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes entranceCornerBR {
+  0% {
+    opacity: 0;
+    transform: translate(30px, 24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes entrance404Canvas {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+}
+
+.animate-entrance-bg {
+  animation: entrance404Canvas 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-entrance-hero {
+  animation: entranceCenterTitle 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+}
+
+.animate-entrance-eyebrow {
+  animation: entranceEyebrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+}
+
+.animate-entrance-tl {
+  animation: entranceCornerTL 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
+}
+
+.animate-entrance-tr {
+  animation: entranceCornerTR 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
+}
+
+.animate-entrance-bl {
+  animation: entranceCornerBL 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s backwards;
+}
+
+.animate-entrance-br {
+  animation: entranceCornerBR 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s backwards;
+}
