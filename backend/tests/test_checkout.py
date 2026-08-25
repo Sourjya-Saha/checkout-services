@@ -1,5 +1,4 @@
 import pytest
-import traceback
 from fastapi.testclient import TestClient
 from app.main import app
 from app.payment_processor import calculate_total
@@ -35,10 +34,9 @@ def test_checkout_logged_in_success():
     assert data["status"] == "completed"
 
 
-def test_checkout_guest_failure_500():
+def test_checkout_guest_success():
     """
-    Verify checkout returns 500 for guest checkouts due to the seeded regression.
-    Captures and prints the exact exception and stack trace.
+    Verify guest checkout now succeeds with 200 OK following the TrueForge fix.
     """
     payload = {
         "user_id": None,
@@ -49,15 +47,16 @@ def test_checkout_guest_failure_500():
         "is_guest": True,
     }
 
-    # 1. Capture the exact internal exception and stack trace
-    try:
-        items = [CartItem(**item) for item in payload["cart_items"]]
-        currency_info = None  # Guest checkout has no saved profile
-        calculate_total(items, currency_info, currency="USD")
-    except Exception as exc:
-        assert isinstance(exc, TypeError)
-        assert "'NoneType' object is not subscriptable" in str(exc)
+    # 1. Total calculation succeeds without throwing TypeError
+    items = [CartItem(**item) for item in payload["cart_items"]]
+    currency_info = None  # Guest checkout has no saved profile
+    total = calculate_total(items, currency_info, currency="USD")
+    assert total == 99.0
 
-    # 2. Verify FastAPI returns 500 Internal Server Error over HTTP
+    # 2. FastAPI endpoint returns 200 OK
     response = client.post("/checkout", json=payload)
-    assert response.status_code == 500
+    assert response.status_code == 200
+    data = response.json()
+    assert "order_id" in data
+    assert data["total"] == 99.0
+    assert data["status"] == "completed"

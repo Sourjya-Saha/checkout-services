@@ -271,7 +271,7 @@ export default function Exact404SentinelOpsLanding() {
           </svg>
 
           <div className="relative z-10 p-2.5">
-            <p className="text-[10px] text-zinc-400">Create by</p>
+            <p className="text-[10px] text-white">Create by</p>
             <p className="text-white group-hover:text-red-400 font-bold tracking-wider text-xs sm:text-sm font-mono uppercase transition-colors">
               SOURJYA SAHA ↗
             </p>
