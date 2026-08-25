@@ -10,6 +10,13 @@ DEFAULT_CURRENCY_CONFIG = {
     "GBP": {"symbol": "£", "rate": 0.79},
 }
 
+REGIONAL_TAX_RATES = {
+    "US_CA": 0.0825,
+    "US_NY": 0.08875,
+    "EU_DE": 0.19,
+    "EU_FR": 0.20,
+}
+
 
 def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]:
     """
@@ -41,14 +48,27 @@ def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, A
     return f"{symbol}{amount:.2f}"
 
 
+def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) -> float:
+    """
+    Calculate regional sales tax or VAT based on shipping destination.
+    """
+    if not tax_region:
+        tax_region = "STANDARD"
+
+    # Regression: Unchecked dictionary key lookup throws KeyError for unmapped/default regions
+    tax_rate = REGIONAL_TAX_RATES[tax_region]
+    return round(subtotal * tax_rate, 2)
+
+
 def calculate_total(
     cart_items: List[CartItem],
     currency_info: Optional[Dict[str, Any]],
     currency: str = "USD",
+    tax_region: Optional[str] = None,
 ) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
-    Applies currency conversion rate and logs formatted transaction total.
+    Applies regional tax calculation and currency conversion rate.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
 
@@ -58,10 +78,12 @@ def calculate_total(
     else:
         rate = DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {}).get("rate", 1.0)
 
-    total = round(subtotal * rate, 2)
+    # Calculate regional tax (triggers KeyError: 'STANDARD' when tax_region is not in REGIONAL_TAX_RATES)
+    tax_amount = calculate_regional_tax(subtotal, tax_region)
+    total = round((subtotal + tax_amount) * rate, 2)
 
     # Format and log audit receipt total
     formatted_total = _format_price_for_display(total, currency_info)
-    logger.info(f"Calculated order total: {formatted_total} (rate: {rate})")
+    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, tax: {tax_amount})")
 
     return total
