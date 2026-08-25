@@ -28,8 +28,8 @@ interface Order {
 }
 
 const INITIAL_CART: CartItem[] = [
-  { sku: "SKU-SENTINEL-PRO", name: "SentinelOps Autonomous SRE Pro License", qty: 1, price: 99.0 },
-  { sku: "SKU-CLOUD-CREDITS", name: "Daytona Sandboxed Compute Credits (x500)", qty: 2, price: 25.0 },
+  { sku: "SKU-SENTINEL-PRO", name: "SentinelOps Autonomous SRE Platform", qty: 1, price: 99.0 },
+  { sku: "SKU-SANDBOX-CLUSTER", name: "Daytona Sandboxed Container Nodes", qty: 2, price: 25.0 },
 ];
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
@@ -38,7 +38,7 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
   GBP: "£",
 };
 
-export default function CheckoutPage() {
+export default function VanguardCheckoutPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART);
   const [currency, setCurrency] = useState<string>("USD");
   const [isGuest, setIsGuest] = useState<boolean>(false);
@@ -158,340 +158,358 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-black">
-      {/* Top Navigation */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-violet-500 selection:text-white relative overflow-hidden font-sans">
+      {/* Ambient Background Glow Mesh */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-gradient-to-b from-violet-600/10 via-fuchsia-600/5 to-transparent blur-[120px] pointer-events-none -z-10" />
+
+      {/* Floating Fluid Island Navigation */}
+      <header className="pt-6 px-4 sm:px-6 sticky top-0 z-50">
+        <nav className="max-w-5xl mx-auto rounded-full bg-zinc-900/70 border border-white/10 backdrop-blur-2xl px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-black text-slate-950 text-sm shadow-[0_0_15px_rgba(6,182,212,0.4)]">
-              🛒
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-xs font-bold shadow-[0_0_15px_rgba(139,92,246,0.5)]">
+              ✦
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold tracking-wider text-sm text-white uppercase font-mono">
-                  Checkout-Service
-                </span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/60 font-bold">
-                  Live Target App
+                <span className="font-semibold text-sm tracking-tight text-white">checkout-service</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                  Target Service
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-mono">
-                FastAPI :8000 &bull; Supabase PostgreSQL &bull; Next.js 14
-              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
             <Link
               href="/sentinelops"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.3)] transition-all uppercase tracking-wider"
+              className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300"
             >
-              SentinelOps HUD &rarr;
+              <span>SentinelOps Commander</span>
+              <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px] group-hover:translate-x-0.5 transition-transform">
+                ↗
+              </span>
             </Link>
             <Link
               href="/incidents"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-300 border border-white/5 transition-colors"
             >
-              Incident Log
+              Postmortems
             </Link>
-            <button
-              onClick={checkHealth}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono bg-slate-900 border border-slate-800 text-emerald-400"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse"></span>
-              API: {backendHealth ? "ONLINE (8000)" : "OFFLINE"}
-            </button>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono bg-zinc-900 border border-white/5 text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+              {backendHealth ? "API Online :8000" : "Connecting..."}
+            </div>
           </div>
-        </div>
+        </nav>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-8">
-        {/* Navigation Tabs */}
-        <div className="flex border-b border-slate-800 pb-2 gap-4 text-xs font-mono">
-          <button
-            onClick={() => setActiveTab("checkout")}
-            className={`pb-2 px-3 border-b-2 font-bold transition-all ${
-              activeTab === "checkout"
-                ? "border-cyan-400 text-cyan-300"
-                : "border-transparent text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            01 // LIVE CHECKOUT TERMINAL
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab("orders");
-              fetchOrders();
-            }}
-            className={`pb-2 px-3 border-b-2 font-bold transition-all ${
-              activeTab === "orders"
-                ? "border-cyan-400 text-cyan-300"
-                : "border-transparent text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            02 // DATABASE ORDER AUDIT ({ordersList.length})
-          </button>
+      {/* Main Container */}
+      <main className="max-w-5xl mx-auto py-12 px-4 sm:px-6 space-y-10">
+        {/* Hero Title Block */}
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-medium">
+            <span>E-Commerce Microservice</span>
+            <span>&bull;</span>
+            <span className="text-violet-400">FastAPI &amp; Supabase</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Target Checkout Service
+          </h1>
+          <p className="text-sm text-zinc-400 leading-relaxed">
+            A production checkout service seeded with an unhandled currency symbol regression on guest transactions. Defended autonomously by SentinelOps.
+          </p>
+        </div>
+
+        {/* Tab Switcher */}
+        <div className="flex justify-center">
+          <div className="p-1 rounded-full bg-zinc-900/90 border border-white/10 flex gap-1 shadow-inner">
+            <button
+              onClick={() => setActiveTab("checkout")}
+              className={`px-5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                activeTab === "checkout"
+                  ? "bg-white text-zinc-950 shadow-md font-semibold"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              Live Checkout Experience
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("orders");
+                fetchOrders();
+              }}
+              className={`px-5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                activeTab === "orders"
+                  ? "bg-white text-zinc-950 shadow-md font-semibold"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              Database Transactions ({ordersList.length})
+            </button>
+          </div>
         </div>
 
         {activeTab === "checkout" ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left Column: Cart & Configuration */}
+            {/* Left: Cart & Config (Double-Bezel Architecture) */}
             <div className="lg:col-span-7 space-y-6">
-              {/* Cart Container */}
-              <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl space-y-5">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
-                    Cart Items &bull; Active Payload
-                  </h2>
-                  <span className="text-xs font-mono text-slate-400">{cartItems.length} Products</span>
-                </div>
-
-                <div className="space-y-3">
-                  {cartItems.map((item) => (
-                    <div
-                      key={item.sku}
-                      className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between gap-3"
-                    >
-                      <div>
-                        <p className="font-bold text-xs text-white">{item.name}</p>
-                        <span className="text-[10px] font-mono text-slate-500">{item.sku}</span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center border border-slate-800 rounded-lg bg-slate-900 text-xs font-mono">
-                          <button
-                            onClick={() => updateQuantity(item.sku, -1)}
-                            className="px-2.5 py-1 hover:bg-slate-800 text-slate-300"
-                          >
-                            -
-                          </button>
-                          <span className="px-3 py-1 font-bold text-cyan-400">{item.qty}</span>
-                          <button
-                            onClick={() => updateQuantity(item.sku, 1)}
-                            className="px-2.5 py-1 hover:bg-slate-800 text-slate-300"
-                          >
-                            +
-                          </button>
-                        </div>
-                        <span className="font-mono text-xs font-bold text-white min-w-[65px] text-right">
-                          ${(item.price * item.qty).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Settings Container */}
-              <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl space-y-5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono border-b border-slate-800 pb-3">
-                  Checkout Configuration Matrix
-                </h3>
-
-                {/* Registered vs Guest Mode */}
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-slate-300 font-bold block">
-                    USER AUTHENTICATION STATE
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setIsGuest(false)}
-                      className={`p-3.5 rounded-xl border font-mono text-xs text-left transition-all ${
-                        !isGuest
-                          ? "bg-slate-900 border-cyan-500/80 text-cyan-300 ring-1 ring-cyan-500/30"
-                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                      }`}
-                    >
-                      <span className="block font-bold">👤 Registered User</span>
-                      <span className="text-[10px] text-slate-500 block mt-0.5">Returns 200 OK</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setIsGuest(true)}
-                      className={`p-3.5 rounded-xl border font-mono text-xs text-left transition-all ${
-                        isGuest
-                          ? "bg-red-950/40 border-red-500/80 text-red-300 ring-1 ring-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
-                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                      }`}
-                    >
-                      <span className="block font-bold">⚡ Guest Checkout</span>
-                      <span className="text-[10px] text-red-400 block mt-0.5">Triggers 500 Incident</span>
-                    </button>
+              {/* Cart Double-Bezel */}
+              <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-2xl">
+                <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] space-y-5">
+                  <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                    <h2 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400">
+                      Selected Items
+                    </h2>
+                    <span className="text-xs text-zinc-500 font-mono">{cartItems.length} Products</span>
                   </div>
-                </div>
 
-                {/* Currency Selection */}
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-slate-300 font-bold block">
-                    PAYMENT CURRENCY
-                  </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {["USD", "EUR", "GBP"].map((curr) => (
-                      <button
-                        key={curr}
-                        type="button"
-                        onClick={() => setCurrency(curr)}
-                        className={`py-2.5 rounded-xl border font-mono text-xs font-bold transition-all ${
-                          currency === curr
-                            ? "bg-slate-900 border-cyan-500 text-cyan-300"
-                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                        }`}
+                  <div className="space-y-3">
+                    {cartItems.map((item) => (
+                      <div
+                        key={item.sku}
+                        className="p-4 rounded-2xl bg-zinc-900/50 border border-white/5 flex items-center justify-between gap-3 hover:border-white/10 transition-colors"
                       >
-                        {curr} ({CURRENCY_SYMBOLS[curr]})
-                      </button>
+                        <div className="space-y-0.5">
+                          <p className="font-medium text-sm text-zinc-100">{item.name}</p>
+                          <span className="text-[11px] font-mono text-zinc-500">{item.sku}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center border border-white/10 rounded-full bg-zinc-900 px-2 py-0.5 text-xs font-mono">
+                            <button
+                              onClick={() => updateQuantity(item.sku, -1)}
+                              className="px-2 py-0.5 text-zinc-400 hover:text-white"
+                            >
+                              -
+                            </button>
+                            <span className="px-2 font-bold text-violet-400">{item.qty}</span>
+                            <button
+                              onClick={() => updateQuantity(item.sku, 1)}
+                              className="px-2 py-0.5 text-zinc-400 hover:text-white"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span className="text-sm font-semibold text-white min-w-[65px] text-right font-mono">
+                            ${(item.price * item.qty).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
+              </div>
 
-                {/* Submit CTA */}
-                <button
-                  onClick={handleCheckout}
-                  disabled={loading}
-                  className={`w-full py-3.5 rounded-xl font-mono text-xs font-black uppercase tracking-wider transition-all shadow-lg ${
-                    isGuest
-                      ? "bg-red-600 hover:bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                      : "bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.3)]"
-                  } disabled:opacity-40`}
-                >
-                  {loading
-                    ? "Executing Payment Process..."
-                    : isGuest
-                    ? "Trigger Guest Checkout (Seeded Regression)"
-                    : `Process Payment ($${subtotalUSD.toFixed(2)} USD)`}
-                </button>
+              {/* Checkout Controls Double-Bezel */}
+              <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-2xl">
+                <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] space-y-6">
+                  <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400 border-b border-white/5 pb-4">
+                    Transaction Profile
+                  </h3>
+
+                  {/* Mode Toggle */}
+                  <div className="space-y-2">
+                    <label className="text-xs text-zinc-400 font-medium block">
+                      Account Type (Simulate Failure)
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setIsGuest(false)}
+                        className={`p-4 rounded-2xl border text-left transition-all duration-300 ${
+                          !isGuest
+                            ? "bg-violet-950/30 border-violet-500/50 shadow-[0_0_20px_rgba(139,92,246,0.15)] ring-1 ring-violet-500/30"
+                            : "bg-zinc-900/40 border-white/5 text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <span className="block text-sm font-semibold text-white">Registered User</span>
+                        <span className="text-[11px] text-zinc-400 block mt-0.5">Known Profile &bull; 200 OK</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setIsGuest(true)}
+                        className={`p-4 rounded-2xl border text-left transition-all duration-300 ${
+                          isGuest
+                            ? "bg-rose-950/30 border-rose-500/50 shadow-[0_0_20px_rgba(244,63,94,0.15)] ring-1 ring-rose-500/30"
+                            : "bg-zinc-900/40 border-white/5 text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <span className="block text-sm font-semibold text-rose-300">Guest Checkout</span>
+                        <span className="text-[11px] text-rose-400/80 block mt-0.5">Seeded Regression &bull; 500 Error</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Currency Selection */}
+                  <div className="space-y-2">
+                    <label className="text-xs text-zinc-400 font-medium block">Settlement Currency</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {["USD", "EUR", "GBP"].map((curr) => (
+                        <button
+                          key={curr}
+                          type="button"
+                          onClick={() => setCurrency(curr)}
+                          className={`py-3 rounded-2xl border text-xs font-semibold font-mono transition-all ${
+                            currency === curr
+                              ? "bg-white text-zinc-950 border-white shadow-md"
+                              : "bg-zinc-900/40 border-white/5 text-zinc-400 hover:border-white/10"
+                          }`}
+                        >
+                          {curr} ({CURRENCY_SYMBOLS[curr]})
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA Button-in-Button */}
+                  <button
+                    onClick={handleCheckout}
+                    disabled={loading}
+                    className={`group w-full py-4 px-6 rounded-full font-medium text-sm flex items-center justify-between transition-all duration-300 ${
+                      isGuest
+                        ? "bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-[0_0_25px_rgba(244,63,94,0.3)]"
+                        : "bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-[0_0_25px_rgba(139,92,246,0.3)]"
+                    } disabled:opacity-40 active:scale-[0.99]`}
+                  >
+                    <span className="font-semibold">
+                      {loading
+                        ? "Processing Payment Gateway..."
+                        : isGuest
+                        ? "Trigger Guest Checkout Regression"
+                        : `Complete Order ($${subtotalUSD.toFixed(2)} USD)`}
+                    </span>
+                    <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs group-hover:scale-105 group-hover:translate-x-0.5 transition-all">
+                      →
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Right Column: Dynamic Live Response */}
+            {/* Right: Real-Time Dynamic Feedback */}
             <div className="lg:col-span-5 space-y-6">
-              {/* Order Success Card */}
+              {/* Order Success */}
               {orderResult && (
-                <div className="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/80 shadow-[0_0_25px_rgba(16,185,129,0.15)] space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
-                    <h3 className="font-mono text-sm font-bold text-emerald-300">
-                      HTTP 200: ORDER COMPLETED
-                    </h3>
-                  </div>
-                  <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-1.5 text-slate-300">
-                    <p>
-                      <strong>Order ID:</strong> <span className="text-emerald-400">{orderResult.order_id}</span>
-                    </p>
-                    <p>
-                      <strong>Total:</strong> {orderResult.currency} {orderResult.total}
-                    </p>
-                    <p>
-                      <strong>Database:</strong> Written to Supabase PostgreSQL (orders table)
-                    </p>
+                <div className="p-2 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/30 shadow-2xl animate-fadeIn">
+                  <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                      <h3 className="font-semibold text-sm text-emerald-300">Order Confirmed (HTTP 200)</h3>
+                    </div>
+                    <div className="p-4 rounded-xl bg-zinc-900/60 border border-white/5 font-mono text-xs space-y-1 text-zinc-300">
+                      <p>Order ID: {orderResult.order_id}</p>
+                      <p>Total: {orderResult.currency} {orderResult.total}</p>
+                      <p className="text-emerald-400">Written to Supabase orders table</p>
+                    </div>
                   </div>
                 </div>
               )}
 
               {/* Error Incident Card */}
               {errorState && (
-                <div className="p-6 rounded-2xl bg-red-950/50 border-2 border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.25)] space-y-4 animate-shake">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-                      <h3 className="font-mono text-sm font-bold text-red-300">
-                        INCIDENT DETECTED: HTTP {errorState.status}
-                      </h3>
-                    </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-900 text-red-200 font-bold">
-                      {errorState.errorType}
-                    </span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-2 text-slate-300">
-                    <p className="text-red-400 font-bold">{errorState.message}</p>
-                    {errorState.traceback && errorState.traceback.length > 0 && (
-                      <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 space-y-1">
-                        <p className="font-bold text-slate-300">Stack Trace Tail:</p>
-                        {errorState.traceback.map((line, i) => (
-                          <p key={i} className="text-slate-400">
-                            {line}
-                          </p>
-                        ))}
+                <div className="p-2 rounded-[2rem] bg-rose-500/10 border-2 border-rose-500/50 shadow-[0_0_30px_rgba(244,63,94,0.2)] animate-fadeIn">
+                  <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+                        <h3 className="font-semibold text-sm text-rose-300">
+                          Incident Detected (HTTP {errorState.status})
+                        </h3>
                       </div>
-                    )}
-                  </div>
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800">
+                        {errorState.errorType}
+                      </span>
+                    </div>
 
-                  <div className="pt-2 flex flex-col gap-2">
+                    <div className="p-4 rounded-xl bg-zinc-900/80 border border-white/5 font-mono text-xs space-y-2 text-zinc-300">
+                      <p className="text-rose-400 font-semibold">{errorState.message}</p>
+                      {errorState.traceback && (
+                        <div className="pt-2 border-t border-white/5 text-[11px] text-zinc-500 space-y-1">
+                          {errorState.traceback.map((line, idx) => (
+                            <p key={idx}>{line}</p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
                     <Link
                       href="/sentinelops"
-                      className="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono font-bold text-xs rounded-xl shadow text-center uppercase tracking-wider"
+                      className="group w-full py-3 px-5 rounded-full bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold flex items-center justify-between shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all"
                     >
-                      Remediate with SentinelOps Swarm &rarr;
+                      <span>Investigate in SentinelOps Swarm</span>
+                      <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                        ↗
+                      </span>
                     </Link>
                   </div>
                 </div>
               )}
 
-              {/* System Architecture Blueprint */}
-              <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono border-b border-slate-800 pb-2">
-                  System Telemetry &amp; SRE Guardrails
-                </h3>
-                <ul className="text-xs font-mono space-y-2.5 text-slate-400">
-                  <li className="flex items-center gap-2">
-                    <span className="text-cyan-400">✓</span> Backend CORS exception handling active
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-cyan-400">✓</span> Supabase PostgreSQL persistence connected
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-cyan-400">✓</span> Daytona isolated sandbox runner ready
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-cyan-400">✓</span> Qodo AI automated code review integrated
-                  </li>
-                </ul>
+              {/* Architecture Info Tile */}
+              <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10">
+                <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 space-y-3">
+                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400">
+                    System Safeguards
+                  </h4>
+                  <ul className="text-xs space-y-2.5 text-zinc-400 font-mono">
+                    <li className="flex items-center gap-2">
+                      <span className="text-violet-400">✦</span> TrueForge autonomous agent harness
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-violet-400">✦</span> Daytona isolated sandbox runner
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-violet-400">✦</span> Qodo AI automated repository review
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-violet-400">✦</span> Supabase persistent postmortem memory
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         ) : (
           /* Orders Audit Tab */
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-cyan-400 font-mono">
-              Live Database Orders (Supabase orders table)
-            </h3>
-            {ordersList.length === 0 ? (
-              <div className="p-12 rounded-2xl bg-slate-900/40 border border-slate-800 text-center text-slate-500 font-mono text-xs">
-                No orders recorded yet. Complete a checkout transaction to record one.
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {ordersList.map((ord) => (
-                  <div
-                    key={ord.id}
-                    className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3 font-mono text-xs"
-                  >
-                    <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                      <span className="text-cyan-400 font-bold">{ord.id.slice(0, 16)}...</span>
-                      <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                          ord.is_guest
-                            ? "bg-amber-950 text-amber-300 border border-amber-800"
-                            : "bg-emerald-950 text-emerald-300 border border-emerald-800"
-                        }`}
-                      >
-                        {ord.is_guest ? "GUEST ORDER" : "AUTHENTICATED"}
-                      </span>
-                    </div>
-                    <div className="space-y-1 text-slate-300">
-                      <p>
-                        Total: <strong>{ord.currency} {ord.total}</strong>
+          <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-2xl">
+            <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 space-y-4">
+              <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400">
+                PostgreSQL Transaction Records
+              </h3>
+              {ordersList.length === 0 ? (
+                <div className="py-12 text-center text-zinc-500 text-xs font-mono">
+                  No orders recorded yet. Complete a checkout above to record one.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {ordersList.map((ord) => (
+                    <div
+                      key={ord.id}
+                      className="p-5 rounded-2xl bg-zinc-900/50 border border-white/5 space-y-2 font-mono text-xs"
+                    >
+                      <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                        <span className="text-violet-400 font-bold">{ord.id.slice(0, 16)}...</span>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            ord.is_guest
+                              ? "bg-amber-950 text-amber-300 border border-amber-800"
+                              : "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                          }`}
+                        >
+                          {ord.is_guest ? "GUEST" : "AUTHENTICATED"}
+                        </span>
+                      </div>
+                      <p className="text-white font-semibold">
+                        Total: {ord.currency} {ord.total}
                       </p>
-                      <p className="text-slate-500 text-[11px]">
+                      <p className="text-zinc-500 text-[11px]">
                         Items: {ord.items ? ord.items.map((i) => `${i.qty}x ${i.sku}`).join(", ") : "N/A"}
                       </p>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </main>

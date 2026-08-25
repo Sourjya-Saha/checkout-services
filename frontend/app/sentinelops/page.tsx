@@ -8,44 +8,43 @@ interface SubagentStatus {
   name: string;
   codename: string;
   role: string;
-  status: "standby" | "scanning" | "locked";
+  status: "idle" | "running" | "completed";
   telemetry: string;
   metric: string;
 }
 
-export default function SentinelOpsTacticalHUD() {
+export default function VanguardSentinelOpsCommander() {
   const [activeTrigger, setActiveTrigger] = useState<"method_a" | "method_b">("method_a");
-  const [systemState, setSystemState] = useState<"DEFCON_5" | "ALERT_LEVEL_1" | "REMEDIATING" | "RESOLVED">("DEFCON_5");
-  const [currentStage, setCurrentStage] = useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [approvalGranted, setApprovalGranted] = useState<boolean>(false);
   const [incidentId, setIncidentId] = useState<string>("INC-20260825-checkout");
 
   const [subagents, setSubagents] = useState<SubagentStatus[]>([
     {
-      id: "recon-01",
-      name: "SUBAGENT ALPHA",
-      codename: "GIT-SENTINEL",
-      role: "Commit History & Diff Inspector",
-      status: "standby",
-      telemetry: "Repository: Sourjya-Saha/checkout-services | Standby",
-      metric: "Target: main branch",
+      id: "agent-01",
+      name: "Subagent Alpha",
+      codename: "Git Bi-Sector",
+      role: "Commit History & Diff Analysis",
+      status: "idle",
+      telemetry: "Repository: Sourjya-Saha/checkout-services",
+      metric: "Branch: main",
     },
     {
-      id: "recon-02",
-      name: "SUBAGENT BRAVO",
-      codename: "LOG-TRACE",
-      role: "Exception & Telemetry Inspector",
-      status: "standby",
-      telemetry: "Stream: FastAPI stdout/stderr (:8000) | Standby",
-      metric: "Filter: 5xx Spike",
+      id: "agent-02",
+      name: "Subagent Bravo",
+      codename: "Log Extractor",
+      role: "Exception Stack Trace Decoder",
+      status: "idle",
+      telemetry: "FastAPI Runtime Logs (:8000)",
+      metric: "Filter: 500 Spike",
     },
     {
-      id: "recon-03",
-      name: "SUBAGENT CHARLIE",
-      codename: "DATA-CORE",
-      role: "Database Telemetry & Order Correlation",
-      status: "standby",
-      telemetry: "Cluster: Supabase PostgreSQL (:5432) | Standby",
+      id: "agent-03",
+      name: "Subagent Charlie",
+      codename: "Data Correlator",
+      role: "PostgreSQL Order Analytics",
+      status: "idle",
+      telemetry: "Supabase Database Cluster",
       metric: "Query: is_guest=true",
     },
   ]);
@@ -54,13 +53,12 @@ export default function SentinelOpsTacticalHUD() {
   const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const dispatchIncidentResponse = async (triggerType: "manual" | "webhook") => {
-    setSystemState("ALERT_LEVEL_1");
-    setCurrentStage(1);
+    setCurrentStep(1);
     setApprovalGranted(false);
     setTerminalLogs([
-      "[*] [SYSTEM BOOT] SentinelOps v2.4 Autonomous Incident Response Engine",
-      "[*] [AUTH] TrueForge Harness Connected (NodeJS 22 / SQLite Memory Core)",
-      "[*] [ALERT DISPATCH] Signal received: 500 error spike detected on checkout-service",
+      "[*] [SYSTEM BOOT] SentinelOps v2.4 Autonomous Incident Commander",
+      "[*] [HARNESS] TrueForge Multi-Agent Runtime Initialized",
+      "[*] [INGESTION] Incident signal received: 500 error spike on checkout-service",
     ]);
 
     const newId = `INC-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.floor(100 + Math.random() * 900)}`;
@@ -86,39 +84,39 @@ export default function SentinelOpsTacticalHUD() {
 
     // Phase 2: Parallel Subagent Dispatch
     setTimeout(() => {
-      setCurrentStage(2);
+      setCurrentStep(2);
       setSubagents([
         {
-          id: "recon-01",
-          name: "SUBAGENT ALPHA",
-          codename: "GIT-SENTINEL",
-          role: "Commit History & Diff Inspector",
-          status: "scanning",
-          telemetry: "Analyzing commit tree & diffs for payment_processor.py...",
+          id: "agent-01",
+          name: "Subagent Alpha",
+          codename: "Git Bi-Sector",
+          role: "Commit History & Diff Analysis",
+          status: "running",
+          telemetry: "Inspecting commit history and diffs on payment_processor.py...",
           metric: "Scanning git log",
         },
         {
-          id: "recon-02",
-          name: "SUBAGENT BRAVO",
-          codename: "LOG-TRACE",
-          role: "Exception & Telemetry Inspector",
-          status: "scanning",
-          telemetry: "Parsing backend exception traces on port 8000...",
+          id: "agent-02",
+          name: "Subagent Bravo",
+          codename: "Log Extractor",
+          role: "Exception Stack Trace Decoder",
+          status: "running",
+          telemetry: "Decoding FastAPI exception traces on port 8000...",
           metric: "Decoding traceback",
         },
         {
-          id: "recon-03",
-          name: "SUBAGENT CHARLIE",
-          codename: "DATA-CORE",
-          role: "Database Telemetry & Order Correlation",
-          status: "scanning",
-          telemetry: "Executing SQL correlation: SELECT * FROM orders WHERE is_guest = true...",
+          id: "agent-03",
+          name: "Subagent Charlie",
+          codename: "Data Correlator",
+          role: "PostgreSQL Order Analytics",
+          status: "running",
+          telemetry: "Correlating failed transactions in Supabase orders table...",
           metric: "Running query",
         },
       ]);
       setTerminalLogs((prev) => [
         ...prev,
-        "[+] [PARALLEL MULTI-AGENT] Dispatching 3 specialized subagents simultaneously...",
+        "[+] [SWARM DISPATCH] Launching 3 parallel subagents concurrently...",
         "[+] [ALPHA] Pulling commit diffs from Sourjya-Saha/checkout-services",
         "[+] [BRAVO] Hooking FastAPI error telemetry logstream",
         "[+] [CHARLIE] Querying Supabase PostgreSQL orders & order_items",
@@ -129,77 +127,76 @@ export default function SentinelOpsTacticalHUD() {
     setTimeout(() => {
       setSubagents([
         {
-          id: "recon-01",
-          name: "SUBAGENT ALPHA",
-          codename: "GIT-SENTINEL",
-          role: "Commit History & Diff Inspector",
-          status: "locked",
-          telemetry: "ROOT CAUSE LOCATED: Commit beda01a ('Add guest checkout support'). Unconditional subscript currency_info['symbol'] at payment_processor.py:32.",
+          id: "agent-01",
+          name: "Subagent Alpha",
+          codename: "Git Bi-Sector",
+          role: "Commit History & Diff Analysis",
+          status: "completed",
+          telemetry: "ROOT CAUSE FOUND: Commit beda01a ('Add guest checkout support'). Unchecked subscript currency_info['symbol'] on payment_processor.py:32.",
           metric: "Commit: beda01a",
         },
         {
-          id: "recon-02",
-          name: "SUBAGENT BRAVO",
-          codename: "LOG-TRACE",
-          role: "Exception & Telemetry Inspector",
-          status: "locked",
-          telemetry: "EXCEPTION CAPTURED: TypeError: 'NoneType' object is not subscriptable in _resolve_currency_symbol.",
+          id: "agent-02",
+          name: "Subagent Bravo",
+          codename: "Log Extractor",
+          role: "Exception Stack Trace Decoder",
+          status: "completed",
+          telemetry: "EXCEPTION CONFIRMED: TypeError: 'NoneType' object is not subscriptable at line 32 in _resolve_currency_symbol.",
           metric: "Traceback: Line 32",
         },
         {
-          id: "recon-03",
-          name: "SUBAGENT CHARLIE",
-          codename: "DATA-CORE",
-          role: "Database Telemetry & Order Correlation",
-          status: "locked",
-          telemetry: "TELEMETRY CORRELATED: 100% of failed checkouts match is_guest=true. Registered users succeed with 200 OK.",
+          id: "agent-03",
+          name: "Subagent Charlie",
+          codename: "Data Correlator",
+          role: "PostgreSQL Order Analytics",
+          status: "completed",
+          telemetry: "CORRELATION VERIFIED: 100% of failed checkouts match is_guest=true. Registered users succeed with 200 OK.",
           metric: "Blast Radius: Guest Only",
         },
       ]);
       setTerminalLogs((prev) => [
         ...prev,
         "[+] [SYNTHESIS COMPLETE] Root Cause isolated to payment_processor.py:32",
-        "[*] [SANDBOX REQUEST] Requesting Daytona isolated Linux execution container...",
+        "[*] [SANDBOX PROVISION] Requesting Daytona isolated Linux execution container...",
       ]);
     }, 3200);
 
     // Phase 3: Daytona Sandboxed Execution
     setTimeout(() => {
-      setSystemState("REMEDIATING");
-      setCurrentStage(3);
+      setCurrentStep(3);
       setTerminalLogs((prev) => [
         ...prev,
-        "[Daytona-VM] Container instantiated (ID: sbx-daytona-linux-491)",
+        "[Daytona-VM] Container active (ID: sbx-daytona-linux-491)",
         "[Daytona-VM] $ git checkout beda01a && pytest -v",
         "  [FAIL] test_checkout_guest_failure_500 -> TypeError: 'NoneType' object is not subscriptable",
         "[Daytona-VM] $ git checkout d420a68 && pytest -v",
         "  [PASS] Baseline commit d420a68 passes all tests (200 OK)",
-        "[Daytona-VM] [PATCH GEN] Applying candidate fix: Null-safe fallback in _resolve_currency_symbol",
+        "[Daytona-VM] [PATCH APPLY] Adding null-safe fallback in _resolve_currency_symbol",
         "[Daytona-VM] $ pytest -v",
         "  [PASS] test_health_check PASSED",
         "  [PASS] test_checkout_logged_in_success PASSED",
         "  [PASS] test_checkout_guest_success PASSED",
         "  [PASS] test_list_and_get_orders PASSED",
-        "[Daytona-VM] ✅ 4/4 pytest suites passed in 1.43s. Patch verified 100% clean in sandbox.",
-        "[*] [HITL GATE] Halting for Human-in-the-Loop approval before push...",
+        "[Daytona-VM] ✅ 4/4 pytest suites passed in 1.43s. Patch verified clean in isolated container.",
+        "[*] [HITL GATE] Pausing for Human-in-the-Loop approval before PR push...",
       ]);
     }, 4800);
 
     // Phase 4: Approval Stage
     setTimeout(() => {
-      setCurrentStage(4);
+      setCurrentStep(4);
     }, 6200);
   };
 
   const handleApprove = async () => {
     setApprovalGranted(true);
-    setCurrentStage(5);
+    setCurrentStep(5);
     setTerminalLogs((prev) => [
       ...prev,
-      "[+] [HUMAN APPROVAL GRANTED] Incident Commander confirmed patch.",
-      "[*] [GITHUB MCP] Creating branch fix-guest-checkout-symbol on Sourjya-Saha/checkout-services",
+      "[+] [HUMAN APPROVAL GRANTED] Incident Commander confirmed fix.",
+      "[*] [GITHUB MCP] Pushing branch fix-guest-checkout-symbol to Sourjya-Saha/checkout-services",
       "[*] [GITHUB MCP] Opening Pull Request #2 targeting main",
-      "[*] [QODO AI] Pull Request #2 submitted to Qodo code review engine...",
+      "[*] [QODO AI] Pull Request #2 submitted for automated code review...",
     ]);
 
     const recordPayload = {
@@ -225,208 +222,187 @@ export default function SentinelOpsTacticalHUD() {
     }
 
     setTimeout(() => {
-      setSystemState("RESOLVED");
-      setCurrentStage(6);
+      setCurrentStep(6);
       setTerminalLogs((prev) => [
         ...prev,
         "[+] [QODO REVIEW] PR #2 Reviewed: 0 High-severity findings. Clean bill of health.",
-        "[+] [PERSISTENT MEMORY] Postmortem record stored in Supabase 'incidents' table.",
-        "[✔] [STATUS RESOLVED] All systems nominal. MTTR: 1m 42s.",
+        "[+] [PERSISTENT MEMORY] Postmortem record saved to Supabase 'incidents' table.",
+        "[✔] [STATUS RESOLVED] Incident resolved. MTTR: 1m 42s.",
       ]);
     }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-black">
-      {/* Top Tactical HUD Header */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          {/* Logo & Status */}
+    <div className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-violet-500 selection:text-white relative overflow-hidden font-sans">
+      {/* Ambient Background Glow Mesh */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[500px] bg-gradient-to-b from-indigo-600/10 via-violet-600/5 to-transparent blur-[140px] pointer-events-none -z-10" />
+
+      {/* Floating Fluid Island Navigation */}
+      <header className="pt-6 px-4 sm:px-6 sticky top-0 z-50">
+        <nav className="max-w-6xl mx-auto rounded-full bg-zinc-900/70 border border-white/10 backdrop-blur-2xl px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-black text-slate-950 text-base shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-xs font-bold shadow-[0_0_15px_rgba(139,92,246,0.5)]">
               ⎊
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold tracking-wider text-sm text-white uppercase font-mono">
-                  SentinelOps
-                </span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-700/50">
-                  Command Center HUD v2.4
+                <span className="font-semibold text-sm tracking-tight text-white">SentinelOps</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
+                  Autonomous SRE
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-mono">
-                Autonomous SRE Engine &bull; TrueForge Harness &bull; Daytona Sandbox &bull; Qodo AI
-              </p>
             </div>
           </div>
 
-          {/* HUD Indicators & Navigation */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
-              <span
-                className={`w-2.5 h-2.5 rounded-full ${
-                  systemState === "DEFCON_5"
-                    ? "bg-emerald-400 shadow-[0_0_8px_#34d399]"
-                    : systemState === "RESOLVED"
-                    ? "bg-cyan-400 shadow-[0_0_8px_#22d3ee]"
-                    : "bg-red-500 shadow-[0_0_10px_#ef4444] animate-ping"
-                }`}
-              />
-              <span className="text-slate-300 text-[11px] font-bold">
-                SYSTEM STATE:{" "}
-                <span
-                  className={
-                    systemState === "DEFCON_5"
-                      ? "text-emerald-400"
-                      : systemState === "RESOLVED"
-                      ? "text-cyan-400"
-                      : "text-red-400"
-                  }
-                >
-                  {systemState}
-                </span>
-              </span>
-            </div>
-
+          <div className="flex items-center gap-2.5 flex-wrap">
             <Link
               href="/"
-              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all font-mono"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-300 border border-white/5 transition-colors"
             >
-              Target Checkout App &rarr;
+              &larr; Target Checkout App
             </Link>
             <Link
               href="/incidents"
-              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 transition-all font-mono"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-300 border border-white/5 transition-colors"
             >
-              Supabase Audit Log &rarr;
+              Supabase Incident Audit &rarr;
             </Link>
           </div>
-        </div>
+        </nav>
       </header>
 
       {/* Main Command Center Deck */}
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-8 space-y-8">
-        {/* Section 1: Incident Trigger Matrix */}
+      <main className="max-w-6xl mx-auto py-12 px-4 sm:px-6 space-y-10">
+        {/* Hero Title Block */}
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-[10px] uppercase tracking-[0.25em] text-zinc-400 font-medium">
+            <span>TrueForge Harness</span>
+            <span>&bull;</span>
+            <span className="text-violet-400">Multi-Agent Swarm</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            SentinelOps Incident Commander
+          </h1>
+          <p className="text-sm text-zinc-400 leading-relaxed">
+            Autonomous multi-agent investigation, Daytona sandboxed reproduction, human-in-the-loop guardrails, and automated Qodo reviews.
+          </p>
+        </div>
+
+        {/* Section 1: Trigger Station (Double-Bezel) */}
         <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 font-mono flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-              01 // Trigger Station (Selectable Remediation Flow)
+          <div className="flex items-center justify-between border-b border-white/5 pb-2">
+            <h2 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400">
+              01 // Incident Ingestion Channels
             </h2>
-            <span className="text-[11px] font-mono text-slate-500">Autonomous Ingestion</span>
+            <span className="text-xs text-zinc-500 font-mono">Selectable Trigger Mode</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Method A Card */}
-            <div
-              onClick={() => setActiveTrigger("method_a")}
-              className={`p-6 rounded-2xl border transition-all cursor-pointer relative overflow-hidden ${
-                activeTrigger === "method_a"
-                  ? "bg-slate-900/90 border-cyan-500/80 shadow-[0_0_25px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/40"
-                  : "bg-slate-900/40 border-slate-800 hover:border-slate-700"
-              }`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-                  <h3 className="font-bold text-sm text-white font-mono">METHOD A: SRE CHAT ALERT TRIGGER</h3>
-                </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/50">
-                  TrueForge Chat
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                An on-call engineer or monitoring bot dispatches an alert prompt into TrueForge harness chat:
-              </p>
-              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-cyan-300/90 mb-5 select-all">
-                &quot;A user reported guest checkout is failing with a 500 error on checkout-service. Investigate, sandbox, and remediate.&quot;
-              </div>
-              <button
-                onClick={() => dispatchIncidentResponse("manual")}
-                disabled={currentStage > 0 && currentStage < 6}
-                className="w-full py-3 rounded-xl font-mono text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all disabled:opacity-40 disabled:cursor-not-allowed uppercase tracking-wider"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Method A: Human / Chat Trigger */}
+            <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-2xl">
+              <div
+                onClick={() => setActiveTrigger("method_a")}
+                className={`p-6 rounded-[calc(2rem-0.5rem)] transition-all cursor-pointer ${
+                  activeTrigger === "method_a"
+                    ? "bg-violet-950/30 border border-violet-500/50 shadow-[0_0_25px_rgba(139,92,246,0.15)] ring-1 ring-violet-500/30"
+                    : "bg-zinc-950/80 border border-white/5 hover:border-white/10"
+                }`}
               >
-                {currentStage > 0 && currentStage < 6 ? "Executing Investigation..." : "Launch SRE Investigation"}
-              </button>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-violet-300 uppercase tracking-wider">
+                    Method A: SRE Chat Alert Trigger
+                  </span>
+                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-violet-500/20 text-violet-300">
+                    TrueForge Chat
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+                  An on-call engineer prompts SentinelOps directly in the TrueForge agent harness workspace:
+                </p>
+                <div className="p-3.5 rounded-2xl bg-zinc-900/90 border border-white/5 text-xs font-mono text-violet-200 mb-5">
+                  &quot;A user reported guest checkout is failing with a 500 error on checkout-service. Investigate, sandbox, and remediate.&quot;
+                </div>
+                <button
+                  onClick={() => dispatchIncidentResponse("manual")}
+                  disabled={currentStep > 0 && currentStep < 6}
+                  className="w-full py-3 rounded-full font-medium text-xs bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all disabled:opacity-40 uppercase tracking-wider"
+                >
+                  {currentStep > 0 && currentStep < 6 ? "Executing Runbook..." : "Launch SRE Swarm"}
+                </button>
+              </div>
             </div>
 
-            {/* Method B Card */}
-            <div
-              onClick={() => setActiveTrigger("method_b")}
-              className={`p-6 rounded-2xl border transition-all cursor-pointer relative overflow-hidden ${
-                activeTrigger === "method_b"
-                  ? "bg-slate-900/90 border-red-500/80 shadow-[0_0_25px_rgba(239,68,68,0.15)] ring-1 ring-red-500/40"
-                  : "bg-slate-900/40 border-slate-800 hover:border-slate-700"
-              }`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
-                  <h3 className="font-bold text-sm text-white font-mono">METHOD B: AUTOMATED WEBHOOK TELEMETRY</h3>
-                </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/50">
-                  FastAPI Telemetry Hook
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                FastAPI detects an unhandled 500 exception &rarr; Fires telemetry webhook payload to wake SentinelOps:
-              </p>
-              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-red-400 mb-5">
-                POST /api/webhook/alert &rarr; &#123; error: 500, route: &quot;/checkout&quot;, service: &quot;checkout-service&quot; &#125;
-              </div>
-              <button
-                onClick={() => dispatchIncidentResponse("webhook")}
-                disabled={currentStage > 0 && currentStage < 6}
-                className="w-full py-3 rounded-xl font-mono text-xs font-bold bg-red-600 hover:bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all disabled:opacity-40 disabled:cursor-not-allowed uppercase tracking-wider"
+            {/* Method B: Automated Webhook */}
+            <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-2xl">
+              <div
+                onClick={() => setActiveTrigger("method_b")}
+                className={`p-6 rounded-[calc(2rem-0.5rem)] transition-all cursor-pointer ${
+                  activeTrigger === "method_b"
+                    ? "bg-rose-950/30 border border-rose-500/50 shadow-[0_0_25px_rgba(244,63,94,0.15)] ring-1 ring-rose-500/30"
+                    : "bg-zinc-950/80 border border-white/5 hover:border-white/10"
+                }`}
               >
-                {currentStage > 0 && currentStage < 6 ? "Processing Webhook..." : "Fire Automated Error Webhook"}
-              </button>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-rose-300 uppercase tracking-wider">
+                    Method B: Automated Telemetry Webhook
+                  </span>
+                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300">
+                    FastAPI Webhook
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+                  FastAPI captures an unhandled 500 exception and fires an automated telemetry alert payload:
+                </p>
+                <div className="p-3.5 rounded-2xl bg-zinc-900/90 border border-white/5 text-xs font-mono text-rose-300 mb-5">
+                  POST /api/webhook/alert &rarr; &#123; error: 500, route: &quot;/checkout&quot;, service: &quot;checkout-service&quot; &#125;
+                </div>
+                <button
+                  onClick={() => dispatchIncidentResponse("webhook")}
+                  disabled={currentStep > 0 && currentStep < 6}
+                  className="w-full py-3 rounded-full font-medium text-xs bg-rose-600 hover:bg-rose-500 text-white shadow-[0_0_20px_rgba(244,63,94,0.3)] transition-all disabled:opacity-40 uppercase tracking-wider"
+                >
+                  {currentStep > 0 && currentStep < 6 ? "Processing Alert..." : "Fire Automated Webhook"}
+                </button>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Section 2: Parallel Subagents Grid */}
+        {/* Section 2: Parallel Subagent Swarm */}
         <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 font-mono flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-              02 // Parallel Multi-Agent Swarm (Investigation Stage)
+          <div className="flex items-center justify-between border-b border-white/5 pb-2">
+            <h2 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400">
+              02 // Parallel Multi-Agent Investigation
             </h2>
-            <span className="text-[11px] font-mono text-slate-500">Concurrent Tool Execution</span>
+            <span className="text-xs text-zinc-500 font-mono">Concurrent Subagent Delegation</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {subagents.map((sub) => (
-              <div
-                key={sub.id}
-                className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between space-y-4 relative overflow-hidden"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] font-extrabold text-cyan-400">
-                      {sub.name}
-                    </span>
-                    <span
-                      className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold uppercase ${
-                        sub.status === "locked"
-                          ? "bg-emerald-950 text-emerald-300 border border-emerald-700/60"
-                          : sub.status === "scanning"
-                          ? "bg-amber-950 text-amber-300 border border-amber-700/60 animate-pulse"
-                          : "bg-slate-800 text-slate-400"
-                      }`}
-                    >
-                      {sub.status}
-                    </span>
+              <div key={sub.id} className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-xl">
+                <div className="p-5 rounded-[calc(2rem-0.5rem)] bg-zinc-950/90 space-y-3 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-bold text-violet-400 font-mono">{sub.name}</span>
+                      <span
+                        className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full uppercase ${
+                          sub.status === "completed"
+                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                            : sub.status === "running"
+                            ? "bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse"
+                            : "bg-zinc-800 text-zinc-400"
+                        }`}
+                      >
+                        {sub.status}
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-semibold text-white">{sub.role}</h4>
+                    <p className="text-[11px] font-mono text-zinc-500 mt-1">{sub.metric}</p>
                   </div>
-                  <h4 className="text-xs font-bold text-white font-mono">{sub.role}</h4>
-                  <div className="text-[10px] font-mono text-slate-400 bg-slate-950/60 px-2 py-1 rounded border border-slate-800">
-                    {sub.metric}
-                  </div>
-                </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 font-mono text-xs text-slate-300 min-h-[90px] leading-relaxed">
-                  {sub.telemetry}
+                  <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/5 font-mono text-xs text-zinc-300 min-h-[90px] leading-relaxed">
+                    {sub.telemetry}
+                  </div>
                 </div>
               </div>
             ))}
@@ -435,150 +411,146 @@ export default function SentinelOpsTacticalHUD() {
 
         {/* Section 3: Daytona Sandboxed Execution Terminal */}
         <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 font-mono flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-              03 // Daytona Sandboxed Execution Terminal (Isolated Verification)
+          <div className="flex items-center justify-between border-b border-white/5 pb-2">
+            <h2 className="text-xs uppercase tracking-[0.2em] font-semibold text-zinc-400">
+              03 // Daytona Sandboxed Execution Terminal
             </h2>
-            <span className="text-[11px] font-mono text-slate-400">Environment: Linux Container (sbx-daytona-491)</span>
+            <span className="text-xs text-zinc-500 font-mono">Isolated Container Environment</span>
           </div>
 
-          <div className="rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl p-5 space-y-3 font-mono text-xs overflow-hidden">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-900 text-slate-500 text-[11px]">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
-                <span className="ml-2 text-slate-400">daytona-cli &bull; pytest verification harness</span>
+          <div className="p-2 rounded-[2rem] bg-white/[0.02] border border-white/10 shadow-2xl">
+            <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/95 font-mono text-xs space-y-3 overflow-hidden">
+              <div className="flex items-center justify-between pb-3 border-b border-white/5 text-zinc-500 text-[11px]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
+                  <span className="ml-2 text-zinc-400">daytona-runner &bull; pytest test suite</span>
+                </div>
+                <span>FastAPI :8000 &bull; Supabase PostgreSQL</span>
               </div>
-              <span>PORT: 8000 &bull; DB: supabase-pg</span>
-            </div>
 
-            <div className="space-y-1.5 min-h-[160px] max-h-[260px] overflow-y-auto pr-2">
-              {terminalLogs.length === 0 ? (
-                <p className="text-slate-600">// Daytona sandbox container is on standby...</p>
-              ) : (
-                terminalLogs.map((log, i) => (
-                  <p
-                    key={i}
-                    className={
-                      log.includes("[FAIL]") || log.includes("TypeError")
-                        ? "text-red-400 font-bold"
-                        : log.includes("[PASS]") || log.includes("✅") || log.includes("[✔]")
-                        ? "text-emerald-400 font-bold"
-                        : log.includes("[+]") || log.includes("[*]")
-                        ? "text-cyan-300"
-                        : "text-slate-300"
-                    }
-                  >
-                    {log}
-                  </p>
-                ))
-              )}
+              <div className="space-y-1.5 min-h-[160px] max-h-[260px] overflow-y-auto pr-2">
+                {terminalLogs.length === 0 ? (
+                  <p className="text-zinc-600">// Waiting for SentinelOps to initiate sandbox container...</p>
+                ) : (
+                  terminalLogs.map((log, idx) => (
+                    <p
+                      key={idx}
+                      className={
+                        log.includes("[FAIL]") || log.includes("TypeError")
+                          ? "text-rose-400 font-semibold"
+                          : log.includes("[PASS]") || log.includes("✅") || log.includes("[✔]")
+                          ? "text-emerald-400 font-semibold"
+                          : log.includes("[+]") || log.includes("[*]")
+                          ? "text-violet-300"
+                          : "text-zinc-400"
+                      }
+                    >
+                      {log}
+                    </p>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </section>
 
         {/* Section 4: Human Approval Gateway */}
-        {currentStage >= 4 && (
+        {currentStep >= 4 && (
           <section className="space-y-4 animate-fadeIn">
-            <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
-              <h2 className="text-xs font-bold uppercase tracking-widest text-amber-400 font-mono flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-                04 // Human-in-the-Loop Approval Gate (Production Guardrail)
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h2 className="text-xs uppercase tracking-[0.2em] font-semibold text-amber-400">
+                04 // Human-in-the-Loop Approval Gate
               </h2>
-              <span className="text-[11px] font-mono text-amber-300">Mandatory SRE Signoff</span>
+              <span className="text-xs text-amber-400 font-mono">Mandatory SRE Signoff</span>
             </div>
 
-            <div className="p-6 rounded-2xl bg-slate-900 border-2 border-amber-500/60 shadow-[0_0_30px_rgba(245,158,11,0.15)] space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 font-black flex items-center justify-center text-sm">
-                    ✋
+            <div className="p-2 rounded-[2rem] bg-amber-500/10 border border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.15)]">
+              <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/95 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-amber-500 text-zinc-950 font-bold flex items-center justify-center text-sm">
+                      ✋
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-white">
+                        Production Safeguard: Forward-Fix Pull Request
+                      </h3>
+                      <p className="text-xs text-zinc-400">
+                        SentinelOps has verified the candidate patch in the Daytona sandbox. Human sign-off is required to push to GitHub.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-white font-mono">
-                      CONFIRMATION REQUIRED: FORWARD-FIX PULL REQUEST
-                    </h3>
-                    <p className="text-xs text-slate-400">
-                      SentinelOps has verified the fix in the Daytona sandbox. Human sign-off is required to push to GitHub.
-                    </p>
-                  </div>
+
+                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    {approvalGranted ? "Approved ✓" : "Pending Approval"}
+                  </span>
                 </div>
 
-                <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-700 font-bold">
-                  {approvalGranted ? "Approved ✓" : "Awaiting Human Action"}
-                </span>
-              </div>
+                <div className="p-4 rounded-xl bg-zinc-900/60 border border-white/5 text-xs font-mono space-y-1 text-zinc-300">
+                  <p>Target: Sourjya-Saha/checkout-services &bull; Branch: fix-guest-checkout-symbol</p>
+                  <p className="text-emerald-400">Daytona Proof: 4/4 pytest suites passed (100% OK)</p>
+                  <p className="text-purple-400">Review Pipeline: Automated review by Qodo AI</p>
+                </div>
 
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono space-y-1.5 text-slate-300">
-                <p>
-                  <strong className="text-cyan-400">Target:</strong> Sourjya-Saha/checkout-services &bull; Branch: <code>fix-guest-checkout-symbol</code>
-                </p>
-                <p>
-                  <strong className="text-emerald-400">Sandbox Verification:</strong> 4/4 pytest suites passed in Daytona container.
-                </p>
-                <p>
-                  <strong className="text-purple-400">Review Engine:</strong> Qodo Merge will review the Pull Request upon creation.
-                </p>
-              </div>
-
-              {!approvalGranted ? (
-                <div className="flex gap-3">
+                {!approvalGranted ? (
                   <button
                     onClick={handleApprove}
-                    className="px-6 py-3 rounded-xl font-mono text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all uppercase tracking-wider"
+                    className="px-6 py-3 rounded-full font-medium text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 font-semibold shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all uppercase tracking-wider"
                   >
-                    Authorize Fix &amp; Open GitHub PR
+                    Authorize Patch &amp; Open GitHub PR
                   </button>
-                </div>
-              ) : (
-                <div className="p-3 bg-emerald-950/80 border border-emerald-600/60 rounded-xl text-xs font-mono text-emerald-300 flex items-center justify-between">
-                  <span>✓ Authorization Received &bull; SentinelOps is opening GitHub PR &amp; writing postmortem to Supabase...</span>
-                  <a
-                    href="https://github.com/Sourjya-Saha/checkout-services/pull/2"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline text-cyan-400 font-bold"
-                  >
-                    View PR on GitHub &rarr;
-                  </a>
-                </div>
-              )}
+                ) : (
+                  <div className="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-xs font-mono text-emerald-300 flex items-center justify-between">
+                    <span>✓ Authorization Granted &bull; Opening GitHub PR &amp; writing postmortem to Supabase...</span>
+                    <a
+                      href="https://github.com/Sourjya-Saha/checkout-services/pull/2"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline text-violet-300 font-semibold"
+                    >
+                      View PR on GitHub &rarr;
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         )}
 
-        {/* Section 5: Remediation Complete & Qodo Badge */}
-        {currentStage >= 6 && (
-          <section className="p-6 rounded-2xl bg-slate-900 border border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] space-y-4 animate-fadeIn">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-cyan-400 text-slate-950 font-black flex items-center justify-center text-sm">
-                  ✔
+        {/* Section 5: Remediation Complete & Qodo Review */}
+        {currentStep >= 6 && (
+          <section className="p-2 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/30 shadow-2xl animate-fadeIn">
+            <div className="p-6 rounded-[calc(2rem-0.5rem)] bg-zinc-950/95 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500 text-zinc-950 font-bold flex items-center justify-center text-sm">
+                    ✔
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-white">
+                      Incident Successfully Remediated
+                    </h3>
+                    <p className="text-xs text-zinc-400">
+                      Incident {incidentId} has been resolved and archived into Supabase persistent memory.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-white font-mono">
-                    INCIDENT RESOLUTION CONFIRMED
-                  </h3>
-                  <p className="text-xs text-slate-400">
-                    Incident {incidentId} successfully closed and archived in Supabase persistent memory.
-                  </p>
-                </div>
+
+                <span className="text-xs font-mono px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-semibold">
+                  Qodo AI Code Review: Approved (0 Highs)
+                </span>
               </div>
 
-              <span className="text-xs font-mono px-3 py-1 rounded-full bg-purple-950 text-purple-300 border border-purple-600 font-bold">
-                Qodo Code Review: Approved (0 Highs)
-              </span>
-            </div>
-
-            <div className="flex gap-3 pt-2">
-              <Link
-                href="/incidents"
-                className="px-5 py-2.5 rounded-xl font-mono text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow transition-all uppercase tracking-wider"
-              >
-                Inspect Supabase Incident Record &rarr;
-              </Link>
+              <div className="flex gap-4 pt-2">
+                <Link
+                  href="/incidents"
+                  className="px-5 py-2.5 rounded-full text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 transition-all shadow-md uppercase tracking-wider"
+                >
+                  Inspect Supabase Postmortem Audit Log &rarr;
+                </Link>
+              </div>
             </div>
           </section>
         )}
