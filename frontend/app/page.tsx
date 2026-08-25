@@ -104,15 +104,25 @@ export default function DeepRed404CombinedLanding() {
           My Harness Agent
         </p>
 
-        {/* Center Title Stack with Tight Black Shadow Behind */}
+        {/* Center Title Stack with Deep, Wide, Distributed Black Shadow */}
         <div className="relative inline-block select-none my-1">
-          {/* Black Shadow Directly Behind */}
-          <span className="absolute inset-0 translate-x-[2px] translate-y-[3px] sm:translate-x-[3px] sm:translate-y-[4px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[2px] sm:blur-[3px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap">
+          {/* Wide Distributed Ambient Black Halo */}
+          <span className="absolute inset-0 scale-110 translate-y-[6px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[20px] sm:blur-[28px] opacity-100 select-none pointer-events-none z-0 whitespace-nowrap">
             SENTINEL OPS
           </span>
 
-          {/* Sharp Front Title */}
-          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] z-10 whitespace-nowrap">
+          {/* Medium Deep Black Shadow Layer */}
+          <span className="absolute inset-0 translate-y-[4px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[8px] sm:blur-[12px] opacity-100 select-none pointer-events-none z-0 whitespace-nowrap">
+            SENTINEL OPS
+          </span>
+
+          {/* Close Tight Core Occlusion Shadow */}
+          <span className="absolute inset-0 translate-x-[2px] translate-y-[3px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-black filter blur-[3px] opacity-100 select-none pointer-events-none z-0 whitespace-nowrap">
+            SENTINEL OPS
+          </span>
+
+          {/* Sharp Front Title with Rich Dark Text Shadows */}
+          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tighter text-white drop-shadow-[0_0_30px_rgba(0,0,0,1)] drop-shadow-[0_8px_20px_rgba(0,0,0,1)] z-10 whitespace-nowrap">
             SENTINEL OPS
           </h1>
         </div>
