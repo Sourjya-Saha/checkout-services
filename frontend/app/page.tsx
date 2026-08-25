@@ -45,8 +45,10 @@ export default function CheckoutPage() {
   const [orderResult, setOrderResult] = useState<any | null>(null);
   const [errorState, setErrorState] = useState<{
     status?: number;
+    errorType?: string;
     message: string;
     detail?: any;
+    traceback?: string[];
   } | null>(null);
 
   const [activeTab, setActiveTab] = useState<"checkout" | "orders">("checkout");
@@ -55,7 +57,6 @@ export default function CheckoutPage() {
 
   const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-  // Check health and load orders on mount
   useEffect(() => {
     checkHealth();
     fetchOrders();
@@ -123,28 +124,33 @@ export default function CheckoutPage() {
         body: JSON.stringify(payload),
       });
 
+      let responseData: any = {};
+      try {
+        responseData = await response.json();
+      } catch {
+        responseData = { message: "Internal server error" };
+      }
+
       if (!response.ok) {
-        let errorData: any = {};
-        try {
-          errorData = await response.json();
-        } catch {
-          errorData = { message: "Internal server error" };
-        }
         setErrorState({
           status: response.status,
-          message: `HTTP ${response.status}: ${response.statusText || "Server Error"}`,
-          detail: errorData,
+          errorType: responseData.type || "ServerError",
+          message: responseData.message || responseData.detail || "Unhandled Server Exception",
+          detail: responseData,
+          traceback: responseData.traceback_tail || [],
         });
       } else {
-        const data = await response.json();
-        setOrderResult(data);
+        setOrderResult(responseData);
         fetchOrders();
       }
     } catch (err: any) {
       setErrorState({
         status: 0,
-        message: err.message || "Failed to connect to backend server",
-        detail: "Is FastAPI running on " + apiBase + "?",
+        errorType: "ConnectionError",
+        message: err.message || "Failed to communicate with FastAPI backend",
+        detail: {
+          hint: "Ensure FastAPI backend is running on " + apiBase,
+        },
       });
     } finally {
       setLoading(false);
@@ -160,24 +166,27 @@ export default function CheckoutPage() {
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
               SentinelOps Checkout Service
             </h1>
-            <span className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
-              Full-Stack Demo
+            <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700 ring-1 ring-inset ring-red-600/10">
+              Incident Demo Target
             </span>
           </div>
           <p className="text-sm text-slate-500 mt-1">
-            FastAPI Backend &bull; Supabase Database &bull; Next.js 14 Frontend
+            FastAPI &bull; Supabase &bull; Next.js &bull; Live Regression Demo
           </p>
         </div>
 
         {/* Status Indicators */}
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <button
+            onClick={checkHealth}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+          >
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Backend: {backendHealth ? "Online (8000)" : "Connecting..."}
-          </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+            Backend: {backendHealth ? "Online (8000)" : "Offline"}
+          </button>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
             <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-            Supabase: {backendHealth?.database === "connected" ? "Connected" : "Active"}
+            Database: {backendHealth?.database === "connected" ? "Supabase Connected" : "Local Store Active"}
           </div>
         </div>
       </div>
@@ -266,12 +275,12 @@ export default function CheckoutPage() {
               onSubmit={handleCheckout}
               className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6"
             >
-              <h2 className="text-lg font-bold text-slate-900">Payment & Identity Settings</h2>
+              <h2 className="text-lg font-bold text-slate-900">Checkout Settings</h2>
 
               {/* Currency Selector */}
               <div>
                 <label htmlFor="currency" className="block text-sm font-medium text-slate-700 mb-1.5">
-                  Select Billing Currency
+                  Select Currency
                 </label>
                 <select
                   id="currency"
@@ -279,9 +288,9 @@ export default function CheckoutPage() {
                   onChange={(e) => setCurrency(e.target.value)}
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 >
-                  <option value="USD">USD ($) - US Dollar (Rate: 1.0)</option>
-                  <option value="EUR">EUR (€) - Euro (Rate: 0.92)</option>
-                  <option value="GBP">GBP (£) - British Pound (Rate: 0.79)</option>
+                  <option value="USD">USD ($) - US Dollar</option>
+                  <option value="EUR">EUR (€) - Euro (0.92x)</option>
+                  <option value="GBP">GBP (£) - British Pound (0.79x)</option>
                 </select>
               </div>
 
@@ -301,7 +310,7 @@ export default function CheckoutPage() {
                     }`}
                   >
                     <div className="font-bold text-sm">Registered User</div>
-                    <div className="text-xs opacity-75 mt-0.5">Loads saved profile & rates</div>
+                    <div className="text-xs opacity-75 mt-0.5">&bull; Loads profile &rarr; 200 OK</div>
                   </button>
 
                   <button
@@ -309,12 +318,14 @@ export default function CheckoutPage() {
                     onClick={() => setIsGuest(true)}
                     className={`p-4 text-left rounded-xl border transition-all ${
                       isGuest
-                        ? "bg-indigo-600 text-white border-indigo-600 shadow-md"
+                        ? "bg-red-600 text-white border-red-600 shadow-md"
                         : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                     }`}
                   >
-                    <div className="font-bold text-sm">Guest Checkout</div>
-                    <div className="text-xs opacity-75 mt-0.5">Anonymous instant checkout</div>
+                    <div className="font-bold text-sm flex items-center gap-1.5">
+                      Guest Checkout <span className="text-[10px] bg-red-800 px-1.5 py-0.5 rounded font-mono">TARGET BUG</span>
+                    </div>
+                    <div className="text-xs opacity-75 mt-0.5">&bull; Triggers TypeError 500</div>
                   </button>
                 </div>
               </div>
@@ -323,28 +334,38 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={loading || cartItems.length === 0}
-                className="w-full py-3.5 px-4 rounded-xl font-bold text-white shadow-md bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`w-full py-3.5 px-4 rounded-xl font-bold text-white shadow-md transition-all ${
+                  loading
+                    ? "bg-slate-400 cursor-not-allowed"
+                    : isGuest
+                    ? "bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200"
+                    : "bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200"
+                }`}
               >
-                {loading ? "Processing Order..." : `Place Order (${currency} ${CURRENCY_SYMBOLS[currency] || ""})`}
+                {loading
+                  ? "Processing Order..."
+                  : isGuest
+                  ? `Trigger Guest Checkout (${currency} ${CURRENCY_SYMBOLS[currency] || ""})`
+                  : `Place Order as Registered User (${currency} ${CURRENCY_SYMBOLS[currency] || ""})`}
               </button>
             </form>
           </div>
 
-          {/* Right Column: Real-Time Confirmation / Errors */}
+          {/* Right Column: Real-Time Confirmation / Incident Details */}
           <div className="space-y-5">
-            {/* Live Order Confirmation */}
+            {/* Live Order Confirmation (200 OK) */}
             {orderResult && (
               <div className="bg-emerald-50 border-2 border-emerald-400 rounded-2xl p-6 shadow-md text-emerald-950 animate-fadeIn">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">
                     ✓
                   </div>
-                  <h3 className="font-bold text-lg text-emerald-900">Order Successful!</h3>
+                  <h3 className="font-bold text-base text-emerald-900">Order Confirmed (200 OK)</h3>
                 </div>
                 <p className="text-xs text-emerald-800 mb-4">
-                  Your order has been recorded into the Supabase database.
+                  Registered user checkout succeeded without error.
                 </p>
-                <div className="bg-white p-4 rounded-xl border border-emerald-200 space-y-2 text-xs font-mono text-slate-800">
+                <div className="bg-white p-3.5 rounded-xl border border-emerald-200 space-y-1.5 text-xs font-mono text-slate-800">
                   <div className="flex justify-between">
                     <span className="text-slate-500">Order ID:</span>
                     <span className="font-bold">{orderResult.order_id.slice(0, 13)}...</span>
@@ -358,42 +379,55 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">Status:</span>
-                    <span className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
                       {orderResult.status.toUpperCase()}
                     </span>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("orders")}
-                  className="mt-4 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg shadow transition-all"
-                >
-                  View All Orders &rarr;
-                </button>
               </div>
             )}
 
-            {/* Error Display */}
+            {/* Incident / Bug Display (500 Error) */}
             {errorState && (
-              <div className="bg-red-50 border-2 border-red-400 rounded-2xl p-6 shadow-md text-red-950">
-                <h3 className="font-bold text-base text-red-800 mb-1">Checkout Failed</h3>
-                <p className="text-xs text-red-700 mb-3">{errorState.message}</p>
-                <pre className="bg-slate-900 text-red-400 p-3 rounded-lg text-xs font-mono overflow-x-auto">
-                  {JSON.stringify(errorState.detail, null, 2)}
-                </pre>
+              <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-6 shadow-lg text-red-950 animate-fadeIn">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm">
+                    !
+                  </div>
+                  <h3 className="font-bold text-base text-red-900">
+                    Incident Detected: HTTP {errorState.status || 500}
+                  </h3>
+                </div>
+
+                <div className="mt-3 p-3 bg-red-100 border border-red-300 rounded-xl space-y-1">
+                  <p className="text-xs font-bold text-red-900">
+                    Exception: <span className="font-mono">{errorState.errorType}: {errorState.message}</span>
+                  </p>
+                  <p className="text-[11px] text-red-700">
+                    <strong>File:</strong> <code>backend/app/payment_processor.py:32</code> in <code>_resolve_currency_symbol</code>
+                  </p>
+                </div>
+
+                {/* Server Response Payload */}
+                <div className="mt-3">
+                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    Live Server Error Payload:
+                  </div>
+                  <pre className="bg-slate-900 text-red-400 p-3 rounded-xl text-[11px] font-mono overflow-x-auto">
+                    {JSON.stringify(errorState.detail, null, 2)}
+                  </pre>
+                </div>
               </div>
             )}
 
             {/* Architecture Card */}
             <div className="bg-slate-100 p-5 rounded-2xl border border-slate-200 space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                Architecture Spec
+                Incident Information
               </h4>
               <ul className="text-xs text-slate-600 space-y-1.5">
-                <li>&bull; <strong>Backend:</strong> FastAPI on port 8000</li>
-                <li>&bull; <strong>Database:</strong> Supabase PostgreSQL (tables: <code>orders</code>, <code>order_items</code>, <code>users</code>)</li>
-                <li>&bull; <strong>Frontend:</strong> Next.js 14 App Router + Tailwind</li>
-                <li>&bull; <strong>Mode:</strong> {isGuest ? "Guest Checkout" : "Logged-In User"}</li>
+                <li>&bull; <strong>Registered User:</strong> Profile is loaded &rarr; succeeds (200 OK).</li>
+                <li>&bull; <strong>Guest Checkout:</strong> Profile is <code>None</code> &rarr; accesses <code>currency_info["symbol"]</code> and throws <code>TypeError</code> (500 Error).</li>
               </ul>
             </div>
           </div>

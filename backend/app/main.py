@@ -1,7 +1,9 @@
 import uuid
+import traceback
 from typing import Dict, Any, List
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.models import CheckoutRequest, CheckoutResponse, OrderResponse, OrderItemResponse
 from app.database import get_supabase_client
@@ -21,6 +23,29 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """
+    Ensure unhandled 500 exceptions always return proper CORS headers and full error details to the frontend.
+    """
+    tb = traceback.format_exc()
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={
+            "error": "Internal Server Error",
+            "type": type(exc).__name__,
+            "message": str(exc),
+            "traceback_tail": tb.splitlines()[-4:] if tb else [],
+        },
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        },
+    )
+
 
 # In-memory store fallback and cache
 _in_memory_orders: Dict[str, Dict[str, Any]] = {}
@@ -54,7 +79,7 @@ async def checkout(request: CheckoutRequest):
         user_id = request.user_id or "usr_demo_12345"
         currency_info = get_user_currency_preferences(user_id, request.currency)
 
-    # Calculate total safely
+    # Calculate total (triggers seeded regression if is_guest=True)
     total = calculate_total(request.cart_items, currency_info, currency=request.currency)
     order_id = str(uuid.uuid4())
 
@@ -96,8 +121,7 @@ async def checkout(request: CheckoutRequest):
                 for item in request.cart_items
             ]
             client.table("order_items").insert(items_data).execute()
-        except Exception as e:
-            # Table may not be created yet in Supabase SQL editor; cached locally
+        except Exception:
             pass
 
     return CheckoutResponse(
