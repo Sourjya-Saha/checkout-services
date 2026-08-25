@@ -183,7 +183,7 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Previous "My Harness Agent" Text Styling */}
-        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+        <p className="text-sm sm:text-base font-epic font-medium tracking-wider text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           My Harness Agent
         </p>
 
