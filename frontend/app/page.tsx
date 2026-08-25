@@ -109,7 +109,7 @@ export default function DeepRed404CombinedLanding() {
       </svg>
 
       {/* ========================================================================= */}
-      {/* 4. TOP METADATA & INTERACTIVE HOVER REDIRECTS */}
+      {/* 4. TOP CORNER EDITORIAL TEXT WITH INTERACTIVE HOVER REDIRECTS */}
       {/* ========================================================================= */}
       <div className="relative z-50 flex justify-between items-start font-mono text-xs sm:text-sm text-zinc-200 leading-tight">
         {/* Top Left: On hover -> "kill your bug in real-time" -> Redirects to /sentinelops */}
@@ -131,12 +131,6 @@ export default function DeepRed404CombinedLanding() {
             </div>
           )}
         </Link>
-
-        {/* Top Center: Exact "404 ERROR PAGE" */}
-        <div className="text-center font-mono text-[10px] sm:text-xs uppercase tracking-widest text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-          <p className="font-bold">404</p>
-          <p className="text-zinc-400">ERROR PAGE</p>
-        </div>
 
         {/* Top Right: On hover -> "face the actual service page" -> Redirects to /checkout */}
         <Link
@@ -160,7 +154,7 @@ export default function DeepRed404CombinedLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" */}
+      {/* 5. CENTER HERO: "My Harness Agent" + "SENTINEL OPS" */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Eyebrow Label */}
@@ -180,28 +174,12 @@ export default function DeepRed404CombinedLanding() {
             SENTINEL OPS
           </h1>
         </div>
-
-        {/* 404 Overlay Details */}
-        <div className="mt-3 space-y-1 max-w-md mx-auto">
-          <p className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-            SORRY, WE DETECTED AN ANOMALY IN THIS SERVICE
-          </p>
-
-          <div className="relative inline-block pt-1">
-            <Link
-              href="/sentinelops"
-              className="text-xs sm:text-sm font-bold font-mono tracking-widest text-white hover:text-red-400 uppercase transition-colors underline underline-offset-4 decoration-red-500"
-            >
-              AUTONOMOUS REMEDIATION &rarr;
-            </Link>
-          </div>
-        </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 6. BOTTOM METADATA CALLOUTS & EXACT "CREATE BY SOURJYA SAHA" */}
+      {/* 6. BOTTOM CORNER EDITORIAL TEXT */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex flex-col sm:flex-row justify-between items-center sm:items-end font-mono text-xs sm:text-sm text-zinc-300 leading-tight gap-4">
+      <div className="relative z-50 flex justify-between items-end font-mono text-xs sm:text-sm text-zinc-200 leading-tight">
         {/* Bottom Left */}
         <Link
           href="/incidents"
@@ -221,11 +199,6 @@ export default function DeepRed404CombinedLanding() {
             </div>
           )}
         </Link>
-
-        {/* Center Bottom Subtitle from Reference */}
-        <div className="text-center text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-400 max-w-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-          THE PAGE YOU ARE LOOKING FOR DOESN&apos;T EXIST OR AN OTHER ERROR OCCURRED.
-        </div>
 
         {/* Bottom Right: "Create by Sourjya Saha" */}
         <div className="text-right space-y-0.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
