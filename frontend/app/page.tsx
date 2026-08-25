@@ -9,12 +9,12 @@ export default function Exact404SentinelOpsLanding() {
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
 
   return (
-    <main className="relative w-screen h-screen min-h-screen bg-[#060a0a] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
+    <main className="relative w-screen h-screen min-h-screen bg-[#070b0b] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
       {/* ========================================================================= */}
       {/* 1. ANALOGUE FILM GRAIN NOISE OVERLAY */}
       {/* ========================================================================= */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-45 mix-blend-overlay z-40"
+        className="absolute inset-0 pointer-events-none opacity-40 mix-blend-overlay z-40"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.85'/%3E%3C/svg%3E")`,
         }}
@@ -47,22 +47,22 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. PROMINENT & BRIGHT WISPY WAVY SMOKE / SILK COBWEB TEXTURES */}
+      {/* 3. DENSE SILK / SMOKE / COBWEB FILAMENT WAVY TEXTURES (AS IN IMAGE) */}
       {/* ========================================================================= */}
       <svg
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-80"
+        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen"
         viewBox="0 0 1440 900"
         preserveAspectRatio="none"
       >
         <defs>
-          <filter id="wispyWarp" x="-30%" y="-30%" width="160%" height="160%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" result="warp" />
-            <feDisplacementMap in="SourceGraphic" in2="warp" scale="40" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="silkFlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="5" result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale="65" xChannelSelector="R" yChannelSelector="G" />
           </filter>
-          <filter id="fineSilk" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="warp2" />
-            <feDisplacementMap in="SourceGraphic" in2="warp2" scale="25" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="cobwebMicro" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="4" result="microWarp" />
+            <feDisplacementMap in="SourceGraphic" in2="microWarp" scale="35" xChannelSelector="R" yChannelSelector="G" />
           </filter>
           <filter id="pencilChalk" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
@@ -70,54 +70,31 @@ export default function Exact404SentinelOpsLanding() {
           </filter>
         </defs>
 
-        {/* Prominent bright wavy silk veil across top and behind left 4 */}
-        <path
-          d="M -100 240 C 200 60, 450 380, 800 160 C 1120 20, 1320 320, 1600 180"
-          stroke="white"
-          strokeWidth="2.5"
-          fill="none"
-          filter="url(#wispyWarp)"
-          className="opacity-75"
-        />
+        {/* Dense Waving Filament Ribbons Across Top Left & Top Right */}
+        <g filter="url(#silkFlow)" className="opacity-70">
+          <path d="M -100 180 C 250 40, 550 360, 950 140 C 1200 20, 1400 300, 1600 120" stroke="white" strokeWidth="1.8" fill="none" />
+          <path d="M -100 200 C 260 60, 560 380, 960 160 C 1210 40, 1410 320, 1600 140" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
+          <path d="M -100 220 C 270 80, 570 400, 970 180 C 1220 60, 1420 340, 1600 160" stroke="white" strokeWidth="1.1" fill="none" opacity="0.6" />
+          <path d="M -100 240 C 280 100, 580 420, 980 200 C 1230 80, 1430 360, 1600 180" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
+          <path d="M -100 260 C 290 120, 590 440, 990 220 C 1240 100, 1440 380, 1600 200" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+        </g>
 
-        {/* Secondary bright wispy wave flowing through center and corners */}
-        <path
-          d="M -80 580 C 300 420, 580 750, 950 480 C 1200 320, 1380 660, 1620 500"
-          stroke="white"
-          strokeWidth="2.2"
-          fill="none"
-          filter="url(#wispyWarp)"
-          className="opacity-65"
-        />
+        {/* Dense Waving Filament Ribbons Across Center & Bottom */}
+        <g filter="url(#silkFlow)" className="opacity-75">
+          <path d="M -80 620 C 320 440, 620 780, 1020 460 C 1250 300, 1420 680, 1620 480" stroke="white" strokeWidth="2.0" fill="none" />
+          <path d="M -80 640 C 330 460, 630 800, 1030 480 C 1260 320, 1430 700, 1620 500" stroke="white" strokeWidth="1.5" fill="none" opacity="0.8" />
+          <path d="M -80 660 C 340 480, 640 820, 1040 500 C 1270 340, 1440 720, 1620 520" stroke="white" strokeWidth="1.2" fill="none" opacity="0.6" />
+          <path d="M -80 680 C 350 500, 650 840, 1050 520 C 1280 360, 1450 740, 1620 540" stroke="white" strokeWidth="0.8" fill="none" opacity="0.5" />
+          <path d="M -80 700 C 360 520, 660 860, 1060 540 C 1290 380, 1460 760, 1620 560" stroke="white" strokeWidth="0.6" fill="none" opacity="0.4" />
+        </g>
 
-        {/* Fine cobweb wavy filaments across the background */}
-        <path
-          d="M 50 120 C 350 480, 700 180, 1100 520 S 1400 200, 1550 420"
-          stroke="white"
-          strokeWidth="1.5"
-          fill="none"
-          filter="url(#fineSilk)"
-          className="opacity-55"
-        />
-
-        <path
-          d="M 120 780 C 450 620, 800 820, 1200 640 S 1450 780, 1600 700"
-          stroke="white"
-          strokeWidth="1.8"
-          fill="none"
-          filter="url(#fineSilk)"
-          className="opacity-50"
-        />
-
-        {/* Swirling delicate smoke arc around center */}
-        <path
-          d="M 200 350 Q 720 180, 1250 400"
-          stroke="white"
-          strokeWidth="2"
-          fill="none"
-          filter="url(#wispyWarp)"
-          className="opacity-60"
-        />
+        {/* Swirling Cobweb Filaments Draping Around 4 Corners and Center */}
+        <g filter="url(#cobwebMicro)" className="opacity-60">
+          <path d="M 0 100 Q 300 400, 720 220 T 1440 280" stroke="white" strokeWidth="1.2" fill="none" />
+          <path d="M 0 350 Q 500 150, 920 480 T 1440 400" stroke="white" strokeWidth="1.0" fill="none" opacity="0.7" />
+          <path d="M 0 750 Q 400 500, 850 720 T 1440 680" stroke="white" strokeWidth="1.4" fill="none" opacity="0.8" />
+          <path d="M 100 850 C 400 680, 750 880, 1150 700 S 1400 840, 1550 760" stroke="white" strokeWidth="0.9" fill="none" opacity="0.6" />
+        </g>
       </svg>
 
       {/* ========================================================================= */}
@@ -143,7 +120,7 @@ export default function Exact404SentinelOpsLanding() {
               stroke="white"
               strokeWidth="1.2"
               filter="url(#pencilChalk)"
-              className="opacity-75 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
@@ -181,7 +158,7 @@ export default function Exact404SentinelOpsLanding() {
               stroke="white"
               strokeWidth="1.2"
               filter="url(#pencilChalk)"
-              className="opacity-75 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
@@ -202,7 +179,7 @@ export default function Exact404SentinelOpsLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. CENTER HERO: PREVIOUS "My Harness Agent" + WHITE "SENTINEL OPS" */}
+      {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Previous "My Harness Agent" Text Styling */}
@@ -247,7 +224,7 @@ export default function Exact404SentinelOpsLanding() {
               stroke="white"
               strokeWidth="1.2"
               filter="url(#pencilChalk)"
-              className="opacity-75 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
+              className="opacity-80 group-hover:opacity-100 group-hover:stroke-red-400 transition-colors"
             />
           </svg>
 
@@ -280,7 +257,7 @@ export default function Exact404SentinelOpsLanding() {
               stroke="white"
               strokeWidth="1.2"
               filter="url(#pencilChalk)"
-              className="opacity-75"
+              className="opacity-80"
             />
           </svg>
 
