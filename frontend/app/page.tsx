@@ -9,7 +9,7 @@ export default function DeepRed404CombinedLanding() {
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
 
   return (
-    <main className="relative w-screen h-screen min-h-screen bg-[#070d0d] text-white selection:bg-red-600 selection:text-white font-anton antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
+    <main className="relative w-screen h-screen min-h-screen bg-[#070d0d] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
       {/* ========================================================================= */}
       {/* 1. ANALOGUE FILM GRAIN NOISE TEXTURE */}
       {/* ========================================================================= */}
@@ -21,44 +21,106 @@ export default function DeepRed404CombinedLanding() {
       />
 
       {/* ========================================================================= */}
-      {/* 2. EXACT GIANT 404 BACKGROUND (GOOGLE ANTON FONT): BLURRED LEFT/RIGHT + SHARP CENTER */}
+      {/* 2. EXACT GIANT 404 BACKGROUND: BLURRED LEFT & RIGHT EDGES + SHARP CENTER */}
       {/* ========================================================================= */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
         {/* LEFT 4 */}
-        <div className="absolute top-[64%] left-0 -translate-y-1/2 -translate-x-[19%] whitespace-nowrap">
-          <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+        <div className="absolute top-[55%] left-0 -translate-y-1/2 -translate-x-[2%] whitespace-nowrap">
+          <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
             4
           </span>
         </div>
 
         {/* CENTER 0 */}
-        <div className="absolute top-[64%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
-          <span className="font-anton font-normal text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
+        <div className="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
+          <span className="font-anton text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
             0
           </span>
         </div>
 
         {/* RIGHT 4 */}
-        <div className="absolute top-[64%] right-0 translate-x-[1%] -translate-y-1/2 whitespace-nowrap">
-          <span className="font-anton font-normal text-red-600/90 text-[140vh] leading-[0.72] tracking-[-0.08em] blur-[14px] sm:blur-[10px] opacity-95">
+        <div className="absolute top-[55%] right-0 -translate-y-1/2 translate-x-[2%] whitespace-nowrap">
+          <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
             4
           </span>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. TOP METADATA & INTERACTIVE HOVER REDIRECTS (ANTON FONT) */}
+      {/* 3. WHITE GRAINY CRAYON WAVING BACKGROUND (BEHIND THE 4 AND CENTER TEXT) */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex justify-between items-start font-anton tracking-wider text-xs sm:text-base text-zinc-200 uppercase leading-snug">
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-70"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <filter id="crayonGrainFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+
+        {/* Long flowing crayon wavy ribbon spanning across from left 4 to right 4 */}
+        <path
+          d="M -50 470 C 200 420, 380 540, 680 460 C 950 390, 1150 510, 1500 450"
+          stroke="white"
+          strokeWidth="6.5"
+          fill="none"
+          strokeLinecap="round"
+          filter="url(#crayonGrainFilter)"
+          className="opacity-75"
+        />
+
+        {/* Secondary organic textured crayon wave behind left 4 */}
+        <path
+          d="M 50 380 Q 220 310, 420 440 T 780 430"
+          stroke="white"
+          strokeWidth="4"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray="12 4 8 4"
+          filter="url(#crayonGrainFilter)"
+          className="opacity-60"
+        />
+
+        {/* Center chalk/crayon looping scribble underline under main hero */}
+        <path
+          d="M 460 520 C 580 480, 620 540, 740 500 S 920 530, 1020 480"
+          stroke="white"
+          strokeWidth="3.5"
+          fill="none"
+          strokeLinecap="round"
+          filter="url(#crayonGrainFilter)"
+          className="opacity-80"
+        />
+
+        {/* Wavy crayon accent tail behind right 4 */}
+        <path
+          d="M 980 460 Q 1180 390, 1380 500 T 1550 440"
+          stroke="white"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+          filter="url(#crayonGrainFilter)"
+          className="opacity-65"
+        />
+      </svg>
+
+      {/* ========================================================================= */}
+      {/* 4. TOP METADATA & INTERACTIVE HOVER REDIRECTS */}
+      {/* ========================================================================= */}
+      <div className="relative z-50 flex justify-between items-start font-mono text-xs sm:text-sm text-zinc-200 leading-tight">
         {/* Top Left: On hover -> "kill your bug in real-time" -> Redirects to /sentinelops */}
         <Link
           href="/sentinelops"
           onMouseEnter={() => setHoverTopLeft(true)}
           onMouseLeave={() => setHoverTopLeft(false)}
-          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
+          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
         >
           {hoverTopLeft ? (
-            <div className="text-red-400 animate-fadeIn">
+            <div className="text-red-400 font-bold animate-fadeIn">
               <p>kill your</p>
               <p>bug in real-time ↗</p>
             </div>
@@ -70,15 +132,21 @@ export default function DeepRed404CombinedLanding() {
           )}
         </Link>
 
+        {/* Top Center: Exact "404 ERROR PAGE" */}
+        <div className="text-center font-mono text-[10px] sm:text-xs uppercase tracking-widest text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+          <p className="font-bold">404</p>
+          <p className="text-zinc-400">ERROR PAGE</p>
+        </div>
+
         {/* Top Right: On hover -> "face the actual service page" -> Redirects to /checkout */}
         <Link
           href="/checkout"
           onMouseEnter={() => setHoverTopRight(true)}
           onMouseLeave={() => setHoverTopRight(false)}
-          className="group block text-right cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
+          className="group block text-right cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
         >
           {hoverTopRight ? (
-            <div className="text-red-400 animate-fadeIn">
+            <div className="text-red-400 font-bold animate-fadeIn">
               <p>face the actual</p>
               <p>service page ↗</p>
             </div>
@@ -92,11 +160,11 @@ export default function DeepRed404CombinedLanding() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 4. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" */}
+      {/* 5. CENTER HERO FOCUS: "My Harness Agent" + "SENTINEL OPS" */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Eyebrow Label */}
-        <p className="text-sm sm:text-base font-anton font-normal tracking-[0.25em] text-zinc-300 uppercase mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]">
+        <p className="text-xs sm:text-sm font-epic font-medium tracking-[0.2em] text-zinc-300 uppercase mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           My Harness Agent
         </p>
 
@@ -112,21 +180,37 @@ export default function DeepRed404CombinedLanding() {
             SENTINEL OPS
           </h1>
         </div>
+
+        {/* 404 Overlay Details */}
+        <div className="mt-3 space-y-1 max-w-md mx-auto">
+          <p className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+            SORRY, WE DETECTED AN ANOMALY IN THIS SERVICE
+          </p>
+
+          <div className="relative inline-block pt-1">
+            <Link
+              href="/sentinelops"
+              className="text-xs sm:text-sm font-bold font-mono tracking-widest text-white hover:text-red-400 uppercase transition-colors underline underline-offset-4 decoration-red-500"
+            >
+              AUTONOMOUS REMEDIATION &rarr;
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. BOTTOM METADATA CALLOUTS (ANTON FONT) */}
+      {/* 6. BOTTOM METADATA CALLOUTS & EXACT "CREATE BY SOURJYA SAHA" */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex flex-col sm:flex-row justify-between items-center sm:items-end font-anton tracking-wider text-xs sm:text-base text-zinc-200 uppercase leading-snug gap-4">
-        {/* Bottom Left: Links to /incidents */}
+      <div className="relative z-50 flex flex-col sm:flex-row justify-between items-center sm:items-end font-mono text-xs sm:text-sm text-zinc-300 leading-tight gap-4">
+        {/* Bottom Left */}
         <Link
           href="/incidents"
           onMouseEnter={() => setHoverBottomLeft(true)}
           onMouseLeave={() => setHoverBottomLeft(false)}
-          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
+          className="group block cursor-pointer transition-all duration-300 hover:text-red-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
         >
           {hoverBottomLeft ? (
-            <div className="text-red-400 animate-fadeIn">
+            <div className="text-red-400 font-bold animate-fadeIn">
               <p>Explore</p>
               <p>Postmortem Audit ↗</p>
             </div>
@@ -138,10 +222,15 @@ export default function DeepRed404CombinedLanding() {
           )}
         </Link>
 
+        {/* Center Bottom Subtitle from Reference */}
+        <div className="text-center text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-400 max-w-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+          THE PAGE YOU ARE LOOKING FOR DOESN&apos;T EXIST OR AN OTHER ERROR OCCURRED.
+        </div>
+
         {/* Bottom Right: "Create by Sourjya Saha" */}
-        <div className="text-right space-y-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-          <p className="text-zinc-400 text-xs sm:text-sm">Create by</p>
-          <p className="text-white tracking-widest text-sm sm:text-lg">Sourjya Saha</p>
+        <div className="text-right space-y-0.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+          <p className="text-zinc-400 text-xs">Create by</p>
+          <p className="text-white font-bold font-epic tracking-wide text-sm sm:text-base">Sourjya Saha</p>
         </div>
       </div>
     </main>
