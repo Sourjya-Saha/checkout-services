@@ -56,6 +56,7 @@ export default function CustomerOrdersPage() {
   const [authLoading, setAuthLoading] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const apiBase = process.env.NEXT_PUBLIC_CHECKOUT_API_URL || "http://127.0.0.1:8000";
 
@@ -194,20 +195,76 @@ export default function CustomerOrdersPage() {
           </div>
         </div>
 
-        {/* User Account Controls */}
-        <div className="flex items-center gap-3">
+        {/* User Account Controls with DP & Hover Dropdown */}
+        <div className="flex items-center gap-4">
           {user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-[#777169] hidden sm:inline font-medium">
-                {user.name} ({user.email})
-              </span>
+            <div
+              className="relative"
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
+              {/* User Avatar DP Pill */}
               <button
                 type="button"
-                onClick={handleLogout}
-                className="px-3.5 py-1 rounded-full bg-[#ffffff] border border-[#d6d3d1] hover:bg-[#f0efed] text-xs text-[#0c0a09] font-medium transition-all"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs"
               >
-                Sign Out
+                <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold">
+                  {user.name
+                    ? user.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2)
+                    : "U"}
+                </div>
+                <span className="text-xs font-medium text-[#0c0a09] hidden sm:inline">
+                  {user.name}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`w-3 h-3 text-[#777169] transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
+
+              {/* Hover Dropdown Popup */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-56 bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-3 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-2">
+                  <div className="p-2 border-b border-[#f0efed] space-y-0.5">
+                    <p className="text-xs font-semibold text-[#0c0a09]">{user.name}</p>
+                    <p className="text-[11px] text-[#777169] truncate">{user.email}</p>
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-[#a7e5d3]/40 text-[#16a34a] text-[10px] font-semibold uppercase">
+                      Verified Member
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 text-xs">
+                    <Link
+                      href="/checkout"
+                      className="w-full text-left px-2.5 py-1.5 rounded-lg text-[#0c0a09] hover:bg-[#f0efed] transition-colors block"
+                    >
+                      Store & Checkout →
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleLogout();
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 rounded-lg text-[#dc2626] hover:bg-[#dc2626]/10 transition-colors block font-medium"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <button

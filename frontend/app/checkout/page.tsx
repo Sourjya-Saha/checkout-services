@@ -51,18 +51,18 @@ const INITIAL_CART: CartItem[] = [
   },
 ];
 
-const CURRENCY_CONFIG: Record<string, { symbol: string; rate: number }> = {
-  USD: { symbol: "$", rate: 1.0 },
-  EUR: { symbol: "€", rate: 0.92 },
-  GBP: { symbol: "£", rate: 0.79 },
+const CURRENCY_CONFIG: Record<string, { symbol: string; rate: number; label: string }> = {
+  USD: { symbol: "$", rate: 1.0, label: "USD ($)" },
+  EUR: { symbol: "€", rate: 0.92, label: "EUR (€)" },
+  GBP: { symbol: "£", rate: 0.79, label: "GBP (£)" },
 };
 
 const TAX_RATES: Record<string, { rate: number; label: string }> = {
-  US_CA: { rate: 0.0825, label: "California State & Local Tax (8.25%)" },
-  US_NY: { rate: 0.08875, label: "New York State & City Sales Tax (8.875%)" },
-  EU_DE: { rate: 0.19, label: "German MwSt. / VAT (19.0%)" },
-  EU_FR: { rate: 0.20, label: "French TVA (20.0%)" },
-  STANDARD: { rate: 0.05, label: "Standard Regional Tax (5.0%)" },
+  US_CA: { rate: 0.0825, label: "California (8.25%)" },
+  US_NY: { rate: 0.08875, label: "New York (8.875%)" },
+  EU_DE: { rate: 0.19, label: "Germany MwSt. (19.0%)" },
+  EU_FR: { rate: 0.20, label: "France TVA (20.0%)" },
+  STANDARD: { rate: 0.05, label: "International (5.0%)" },
 };
 
 const SHIPPING_TIERS = [
@@ -103,6 +103,7 @@ export default function ProfessionalCheckoutPage() {
   const [authLoading, setAuthLoading] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   // Cart & Commerce State
   const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART);
@@ -120,8 +121,8 @@ export default function ProfessionalCheckoutPage() {
   const [taxRegion, setTaxRegion] = useState<string>("US_CA");
 
   // Customer & Shipping Form State
-  const [customerEmail, setCustomerEmail] = useState<string>("customer@sentinelops.io");
-  const [customerName, setCustomerName] = useState<string>("Guest Customer");
+  const [customerEmail, setCustomerEmail] = useState<string>("");
+  const [customerName, setCustomerName] = useState<string>("");
   const [streetAddress, setStreetAddress] = useState<string>("500 Howard Street, Suite 400");
   const [city, setCity] = useState<string>("San Francisco");
   const [postalCode, setPostalCode] = useState<string>("94105");
@@ -140,7 +141,7 @@ export default function ProfessionalCheckoutPage() {
   const [reportingIncident, setReportingIncident] = useState<boolean>(false);
 
   const apiBase = process.env.NEXT_PUBLIC_CHECKOUT_API_URL || "http://127.0.0.1:8000";
-  const currencyConfig = CURRENCY_CONFIG[currency] || { symbol: "$", rate: 1.0 };
+  const currencyConfig = CURRENCY_CONFIG[currency] || { symbol: "$", rate: 1.0, label: "USD ($)" };
 
   // Load user profile on mount
   useEffect(() => {
@@ -151,6 +152,10 @@ export default function ProfessionalCheckoutPage() {
       setCustomerEmail(user.email);
       setCustomerName(user.name);
       if (user.address) setStreetAddress(user.address);
+    } else {
+      setIsGuest(true);
+      setCustomerName("");
+      setCustomerEmail("");
     }
   }, []);
 
@@ -197,8 +202,9 @@ export default function ProfessionalCheckoutPage() {
     clearAuthSession();
     setCurrentUser(null);
     setIsGuest(true);
-    setCustomerName("Guest Customer");
-    setCustomerEmail("guest.customer@sentinelops.io");
+    setCustomerName("");
+    setCustomerEmail("");
+    setIsDropdownOpen(false);
   };
 
   // Cart Quantities
@@ -373,6 +379,17 @@ export default function ProfessionalCheckoutPage() {
     }
   };
 
+  // User Initials for Profile Avatar DP
+  const userInitials = useMemo(() => {
+    if (!currentUser?.name) return "U";
+    return currentUser.name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  }, [currentUser]);
+
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-[#292524] font-['Inter',sans-serif] relative overflow-hidden antialiased selection:bg-[#292524] selection:text-white">
       {/* ========================================================================= */}
@@ -384,7 +401,7 @@ export default function ProfessionalCheckoutPage() {
       <div className="absolute bottom-[-150px] right-[25%] w-[440px] h-[440px] rounded-full bg-[#a8c8e8]/25 blur-[130px] pointer-events-none -z-10" />
 
       {/* ========================================================================= */}
-      {/* TOP NAVIGATION (Design.md: top-nav 64px, pure e-commerce layout) */}
+      {/* TOP NAVIGATION */}
       {/* ========================================================================= */}
       <nav className="sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-8">
@@ -403,37 +420,66 @@ export default function ProfessionalCheckoutPage() {
           </div>
         </div>
 
-        {/* Currency Selector & User Account */}
+        {/* User Account Controls with DP & Hover Dropdown */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center bg-[#ffffff] border border-[#e7e5e4] rounded-full p-0.5 shadow-xs">
-            {["USD", "EUR", "GBP"].map((curr) => (
-              <button
-                key={curr}
-                type="button"
-                onClick={() => setCurrency(curr)}
-                className={`px-3 py-1 rounded-full text-[13px] font-medium transition-all ${
-                  currency === curr
-                    ? "bg-[#292524] text-white shadow-xs"
-                    : "text-[#777169] hover:text-[#0c0a09]"
-                }`}
-              >
-                {curr} ({CURRENCY_CONFIG[curr].symbol})
-              </button>
-            ))}
-          </div>
-
           {currentUser ? (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-[#777169] hidden sm:inline font-medium">
-                {currentUser.name}
-              </span>
+            <div
+              className="relative"
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
+              {/* User Avatar DP Pill */}
               <button
                 type="button"
-                onClick={handleLogout}
-                className="px-3.5 py-1 rounded-full bg-[#ffffff] border border-[#d6d3d1] hover:bg-[#f0efed] text-xs text-[#0c0a09] font-medium transition-all"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs"
               >
-                Sign Out
+                <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold">
+                  {userInitials}
+                </div>
+                <span className="text-xs font-medium text-[#0c0a09] hidden sm:inline">
+                  {currentUser.name}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`w-3 h-3 text-[#777169] transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
+
+              {/* Hover Dropdown Popup */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-56 bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-3 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-2">
+                  <div className="p-2 border-b border-[#f0efed] space-y-0.5">
+                    <p className="text-xs font-semibold text-[#0c0a09]">{currentUser.name}</p>
+                    <p className="text-[11px] text-[#777169] truncate">{currentUser.email}</p>
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-[#a7e5d3]/40 text-[#16a34a] text-[10px] font-semibold uppercase">
+                      Member
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 text-xs">
+                    <Link
+                      href="/orders"
+                      className="w-full text-left px-2.5 py-1.5 rounded-lg text-[#0c0a09] hover:bg-[#f0efed] transition-colors block"
+                    >
+                      View Order History →
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="w-full text-left px-2.5 py-1.5 rounded-lg text-[#dc2626] hover:bg-[#dc2626]/10 transition-colors block font-medium"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <button
@@ -456,7 +502,10 @@ export default function ProfessionalCheckoutPage() {
       <main className="max-w-[1240px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
         {/* Editorial Header */}
         <header className="mb-12 text-center max-w-2xl mx-auto space-y-3">
-          
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
+            Secure Order Fulfillment
+          </div>
           <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09] leading-[1.1]">
             Review & Complete Your Order
           </h1>
@@ -530,49 +579,50 @@ export default function ProfessionalCheckoutPage() {
           /* ========================================================================= */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* ========================================================================= */}
-            {/* LEFT COLUMN: Customer Details -> Shipping & Speed -> Packaging & Offset */}
+            {/* LEFT COLUMN: Customer Account -> Shipping & Logistics -> Packaging */}
             {/* ========================================================================= */}
             <div className="lg:col-span-6 space-y-6">
-              {/* Card 1: Customer Information & Account Mode */}
+              {/* Card 1: Customer Account Details */}
               <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e7e5e4] pb-4">
                   <div>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
-                      01 / Account Mode
+                      01 / Account
                     </span>
                     <h2 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-                      Customer Details
+                      {currentUser ? "Customer Profile" : "Checkout Mode"}
                     </h2>
                   </div>
 
-                  {/* Guest vs Member Pill Toggle */}
-                  <div className="inline-flex rounded-full bg-[#f0efed] p-1 border border-[#e7e5e4]">
-                    <button
-                      type="button"
-                      onClick={() => setIsGuest(true)}
-                      className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all ${
-                        isGuest ? "bg-[#292524] text-white shadow-xs" : "text-[#777169] hover:text-[#0c0a09]"
-                      }`}
-                    >
-                      Guest Checkout
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (!currentUser) {
+                  {/* Authenticated vs Guest Presentation */}
+                  {currentUser ? (
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#a7e5d3]/30 text-[#16a34a] text-xs font-medium border border-[#a7e5d3]">
+                      <span className="w-2 h-2 rounded-full bg-[#16a34a]" />
+                      <span>Member: {currentUser.name}</span>
+                    </div>
+                  ) : (
+                    <div className="inline-flex rounded-full bg-[#f0efed] p-1 border border-[#e7e5e4]">
+                      <button
+                        type="button"
+                        onClick={() => setIsGuest(true)}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+                          isGuest ? "bg-[#292524] text-white shadow-xs" : "text-[#777169] hover:text-[#0c0a09]"
+                        }`}
+                      >
+                        Guest Checkout
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
                           setAuthMode("login");
                           setShowAuthModal(true);
-                        } else {
-                          setIsGuest(false);
-                        }
-                      }}
-                      className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all ${
-                        !isGuest ? "bg-[#292524] text-white shadow-xs" : "text-[#777169] hover:text-[#0c0a09]"
-                      }`}
-                    >
-                      Member Account
-                    </button>
-                  </div>
+                        }}
+                        className="px-3.5 py-1.5 rounded-full text-xs font-medium text-[#777169] hover:text-[#0c0a09] transition-all"
+                      >
+                        Sign In / Register
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -585,7 +635,7 @@ export default function ProfessionalCheckoutPage() {
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       className="w-full px-4 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] placeholder-[#a8a29e] focus:outline-none focus:border-[#0c0a09] transition-all"
-                      placeholder="Jane Doe"
+                      placeholder="e.g. Jane Doe"
                     />
                   </div>
 
@@ -598,28 +648,58 @@ export default function ProfessionalCheckoutPage() {
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       className="w-full px-4 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] placeholder-[#a8a29e] focus:outline-none focus:border-[#0c0a09] transition-all"
-                      placeholder="jane@company.com"
+                      placeholder="e.g. jane@company.com"
                     />
                   </div>
                 </div>
+
+                {!currentUser && (
+                  <p className="text-[11px] text-[#777169]">
+                    Checking out as guest. If you already have an account,{" "}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAuthMode("login");
+                        setShowAuthModal(true);
+                      }}
+                      className="text-[#0c0a09] font-medium underline"
+                    >
+                      sign in here
+                    </button>{" "}
+                    to save to your order history.
+                  </p>
+                )}
               </section>
 
-              {/* Card 2: Shipping Destination & Delivery Speed */}
+              {/* Card 2: Shipping Destination & Delivery Speed WITH Currency Selector */}
               <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
-                <div className="border-b border-[#e7e5e4] pb-4 flex items-center justify-between">
+                <div className="border-b border-[#e7e5e4] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
-                      02 / Destination & Speed
+                      02 / Shipping & Currency
                     </span>
                     <h2 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-                      Shipping & Logistics
+                      Logistics & Currency
                     </h2>
                   </div>
-                  {discountedSubtotalUSD >= 150.0 && (
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#a7e5d3]/40 text-[#16a34a] text-[11px] font-semibold tracking-wider uppercase">
-                      Free Standard Shipping
-                    </span>
-                  )}
+
+                  {/* Currency Selector moved cleanly inside Shipment & Logistics Card */}
+                  <div className="flex items-center bg-[#f0efed] border border-[#e7e5e4] rounded-full p-0.5 shadow-xs self-start sm:self-auto">
+                    {["USD", "EUR", "GBP"].map((curr) => (
+                      <button
+                        key={curr}
+                        type="button"
+                        onClick={() => setCurrency(curr)}
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                          currency === curr
+                            ? "bg-[#292524] text-white shadow-xs"
+                            : "text-[#777169] hover:text-[#0c0a09]"
+                        }`}
+                      >
+                        {CURRENCY_CONFIG[curr].label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -679,11 +759,18 @@ export default function ProfessionalCheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Shipping Tiers */}
+                  {/* Shipping Speeds */}
                   <div className="space-y-2 pt-1">
-                    <label className="block text-[13px] font-medium text-[#4e4e4e]">
-                      Fulfillment Speed
-                    </label>
+                    <div className="flex justify-between items-center">
+                      <label className="block text-[13px] font-medium text-[#4e4e4e]">
+                        Fulfillment Speed
+                      </label>
+                      {discountedSubtotalUSD >= 150.0 && (
+                        <span className="text-[11px] font-semibold text-[#16a34a] uppercase">
+                          Free Standard Shipping Qualified
+                        </span>
+                      )}
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {SHIPPING_TIERS.map((tier) => {
                         const isFree = tier.id === "STANDARD" && discountedSubtotalUSD >= 150.0;
@@ -803,7 +890,7 @@ export default function ProfessionalCheckoutPage() {
             {/* RIGHT COLUMN: Cart Summary & Breakdown -> Payment Method & Complete CTA */}
             {/* ========================================================================= */}
             <div className="lg:col-span-6 space-y-6">
-              {/* Card 4: Order Cart & Cost Breakdown (FULL WIDTH in right column) */}
+              {/* Card 4: Order Cart & Cost Breakdown */}
               <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
                 <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-4">
                   <div>
@@ -996,7 +1083,7 @@ export default function ProfessionalCheckoutPage() {
                 </div>
               </div>
 
-              {/* Card 5: Payment Authorization & Complete Order (FULL WIDTH below cart card) */}
+              {/* Card 5: Payment Authorization & Complete Order */}
               <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
                 <div className="border-b border-[#e7e5e4] pb-4">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
@@ -1083,7 +1170,7 @@ export default function ProfessionalCheckoutPage() {
                     </div>
                   )}
 
-                  {/* Primary Complete Order CTA (Design.md: button-primary near-black ink pill) */}
+                  {/* Primary Complete Order CTA */}
                   <button
                     type="button"
                     onClick={handleCheckout}
