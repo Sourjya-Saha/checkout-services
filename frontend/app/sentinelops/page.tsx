@@ -299,25 +299,25 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           </filter>
           <filter id="comic-title-wobble" x="-8%" y="-8%" width="116%" height="116%">
             <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5.5" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>
 
-      <div className="min-h-screen text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white pb-20">
+      <div className="min-h-screen text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white pb-24">
         {/* ========================================================================= */}
         {/* TOP NAVIGATION BAR (SINGLE REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
         {/* ========================================================================= */}
         <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
-            {/* Distorted White Background Patch for SENTINEL OPS */}
+            {/* Distorted White Background Patch for SENTINEL OPS (TIGHTER & DISTORTED) */}
             <Link href="/" className="group flex items-center gap-3">
-              <div className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform">
-                <div
-                  className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-title-wobble)" }}
-                />
-                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-wider uppercase block">
+              <div
+                className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
+                style={{ filter: "url(#comic-title-wobble)" }}
+              >
+                <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]" />
+                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-tighter uppercase block">
                   SENTINEL OPS
                 </span>
               </div>
@@ -348,22 +348,22 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </header>
 
         {/* ========================================================================= */}
-        {/* MAIN HUD CONTAINER */}
+        {/* MAIN HUD CONTAINER (PUSHED MORE DOWNWARDS WITH pt-14 sm:pt-20) */}
         {/* ========================================================================= */}
-        <main className="max-w-7xl mx-auto px-6 sm:px-12 py-10 space-y-10">
+        <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 space-y-12">
           {/* ========================================================================= */}
-          {/* 1. HERO BANNER: DISTORTED BLACK CONTAINER BOX + DISTORTED WHITE TITLE */}
+          {/* 1. HERO BANNER: DISTORTED BLACK CONTAINER BOX + TIGHT DISTORTED TITLE */}
           {/* ========================================================================= */}
-          <div className="relative p-7 sm:p-10 rotate-[-0.3deg]">
+          <div className="relative p-8 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
             <div
               className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
               style={{ filter: "url(#comic-box-wobble)" }}
             />
 
-            {/* Crisp Undistorted Content */}
-            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-4">
+            {/* Content inside Hero Banner */}
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+              <div className="space-y-5">
                 {/* Subtitle Badge */}
                 <div className="relative inline-block rotate-[0.5deg]">
                   <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
@@ -372,28 +372,28 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </span>
                 </div>
 
-                {/* Big Title in Distorted White Drawing Patch */}
+                {/* Big Title: SENTINELOPS INCIDENT HUD (TIGHTER & DISTORTED) */}
                 <div>
-                  <div className="relative inline-block mt-1">
-                    <div
-                      className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[6px_6px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-title-wobble)" }}
-                    />
-                    <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-normal uppercase px-4 py-1.5 leading-none block">
+                  <div
+                    className="relative inline-block mt-1"
+                    style={{ filter: "url(#comic-title-wobble)" }}
+                  >
+                    <div className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[6px_6px_0px_#dc2626]" />
+                    <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-tighter uppercase px-4 py-1.5 leading-none block">
                       SENTINELOPS INCIDENT HUD
                     </h1>
                   </div>
                 </div>
 
-                {/* Specs Ribbon */}
+                {/* Specs Ribbon (EXPANDED LETTER SPACING) */}
                 <div className="relative inline-block pt-2">
-                  <div className="absolute -inset-1 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
-                  <p className="relative z-10 text-xs sm:text-sm font-bold text-zinc-100 px-3.5 py-1 flex items-center gap-2 flex-wrap">
-                    <span className="text-red-500 font-anton tracking-wide text-sm">TRUEFORGE AGENT RUNTIME</span>
-                    <span>&bull;</span>
-                    <span className="text-white font-anton tracking-wide text-sm">DAYTONA LINUX SANDBOX</span>
-                    <span>&bull;</span>
-                    <span className="text-red-500 font-anton tracking-wide text-sm">TWO-STAGE HITL APPROVAL</span>
+                  <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
+                  <p className="relative z-10 text-xs sm:text-[13px] font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-[0.18em] uppercase">
+                    <span className="text-red-500">TRUEFORGE AGENT RUNTIME</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-white">DAYTONA LINUX SANDBOX</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-red-500">TWO-STAGE HITL APPROVAL</span>
                   </p>
                 </div>
               </div>
@@ -665,7 +665,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                       style={{ filter: "url(#comic-box-wobble)" }}
                     />
 
-                    {/* Crisp Undistorted Content */}
+                    {/* Content inside Subagent Card */}
                     <div className="relative z-10 space-y-3">
                       <div className="flex items-center justify-between pb-2 border-b-[2px] border-white/20">
                         {/* Subagent Name in Clean White Patch */}
@@ -722,7 +722,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
 
-              {/* Crisp Undistorted Logs */}
+              {/* Terminal Content */}
               <div className="relative z-10 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-2">
                   <div className="relative inline-block">
@@ -765,7 +765,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </main>
 
         {/* Comic Footer */}
-        <footer className="mt-16 border-t-[3.5px] border-black bg-black/90 py-8 px-6 sm:px-12 text-zinc-400 font-mono text-xs">
+        <footer className="mt-20 border-t-[3.5px] border-black bg-black/90 py-8 px-6 sm:px-12 text-zinc-400 font-mono text-xs">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="font-anton text-sm text-white uppercase">SENTINEL OPS</span> &bull; Autonomous Microservice Resilience Platform
