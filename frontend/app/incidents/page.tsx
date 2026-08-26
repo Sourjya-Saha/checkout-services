@@ -135,7 +135,7 @@ export default function DistortedIncidentsAudit() {
           <div className="flex items-center gap-4">
             <button
               onClick={fetchIncidents}
-              className="px-4 py-1.5 bg-zinc-900 border-[2px] border-white/40 text-white font-anton text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors"
+              className="px-4 py-1.5 bg-zinc-900 hover:bg-white text-white hover:text-black font-anton text-sm uppercase tracking-wider border-[2px] border-white/40 hover:border-black shadow-[3px_3px_0px_#dc2626] hover:shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
             >
               SYNC DB →
             </button>
@@ -377,7 +377,7 @@ export default function DistortedIncidentsAudit() {
                                 href={inc.pr_link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="px-6 py-2.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] transition-all inline-block"
+                                className="px-6 py-2.5 bg-white hover:bg-red-600 text-black hover:text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:shadow-[7px_7px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all inline-block"
                               >
                                 VIEW GITHUB PR →
                               </a>
@@ -389,7 +389,7 @@ export default function DistortedIncidentsAudit() {
 
                           <button
                             onClick={() => setSelectedIncident(inc)}
-                            className="font-anton text-sm text-zinc-300 hover:text-white uppercase underline transition-colors"
+                            className="px-5 py-2 bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black font-anton text-sm uppercase border-[2px] border-white/30 hover:border-black shadow-[3px_3px_0px_#dc2626] hover:shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
                           >
                             INSPECT SUPABASE JSON SCHEMA →
                           </button>
@@ -435,7 +435,7 @@ export default function DistortedIncidentsAudit() {
                 <div className="text-right pt-2">
                   <button
                     onClick={() => setSelectedIncident(null)}
-                    className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-anton text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]"
+                    className="px-6 py-2.5 bg-white hover:bg-red-600 text-black hover:text-white font-anton text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] hover:shadow-[6px_6px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
                   >
                     DISMISS
                   </button>
