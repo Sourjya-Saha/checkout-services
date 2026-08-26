@@ -353,7 +353,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
               {/* Clean Comic SWARM HUD Tag */}
               <div className="relative inline-block rotate-[2deg]">
                 <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#000000]" />
-                <span className="relative z-10 font-anton text-xs text-white px-3 py-0.5 uppercase tracking-wider block">
+                <span className="relative z-10 font-anton text-sm text-white px-3 py-0.5 uppercase tracking-wider block">
                   SWARM HUD
                 </span>
               </div>
@@ -398,7 +398,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                 {/* Subtitle Badge */}
                 <div className="relative inline-block rotate-[0.5deg]">
                   <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
-                  <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                  <span className="relative z-10 font-anton text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
                     01 // AUTONOMOUS INCIDENT INGESTION &amp; LIVE STREAM
                   </span>
                 </div>
@@ -420,7 +420,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                 <div className="pt-4">
                   <div className="relative inline-block rotate-[-1.5deg]">
                     <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
-                    <p className="relative z-10 text-xs sm:text-sm font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
+                    <p className="relative z-10 text-sm sm:text-base font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
                       <span className="text-red-500">TRUEFORGE AGENT RUNTIME</span>
                       <span className="text-zinc-500">•</span>
                       <span className="text-white">DAYTONA LINUX SANDBOX</span>
@@ -456,7 +456,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                 {incidentState?.status && (
                   <div className="relative rotate-[-1deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-black shadow-[3px_3px_0px_#dc2626]" />
-                    <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block">
+                    <span className="relative z-10 font-anton text-sm text-black px-3 py-1 uppercase block">
                       STATUS: {incidentState.status}
                     </span>
                   </div>
@@ -528,7 +528,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </div>
                   <div className="relative rotate-[1.5deg]">
                     <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]" />
-                    <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block tracking-wider">
+                    <span className="relative z-10 font-anton text-sm text-white px-3 py-1 uppercase block tracking-wider">
                       HITL GATE 1 OF 2
                     </span>
                   </div>
@@ -597,7 +597,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </div>
                   <div className="relative rotate-[-1.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-black shadow-[2px_2px_0px_#dc2626]" />
-                    <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block tracking-wider">
+                    <span className="relative z-10 font-anton text-sm text-black px-3 py-1 uppercase block tracking-wider">
                       HITL GATE 2 OF 2
                     </span>
                   </div>
@@ -657,7 +657,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                       INCIDENT REMEDIATED &amp; RESOLVED
                     </h3>
                   </div>
-                  <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-xs uppercase border-[2px] border-black tracking-wider">
+                  <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-sm uppercase border-[2px] border-black tracking-wider">
                     STATUS: RESOLVED [OK]
                   </span>
                 </div>
@@ -717,7 +717,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                         </div>
 
                         <span
-                          className={`text-[11px] font-anton uppercase px-3 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] tracking-wider ${
+                          className={`text-sm font-anton uppercase px-3 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] tracking-wider ${
                             sub.status === "completed"
                               ? "bg-white text-black"
                               : sub.status === "running"
@@ -768,7 +768,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   {/* STREAM In White Box with Red Border */}
                   <div className="relative inline-block rotate-[-0.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
+                    <span className="relative z-10 text-black font-anton text-sm px-3 py-1 block tracking-wide">
                       STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
                     </span>
                   </div>
@@ -776,8 +776,8 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   {/* SAVED AGENT: sentinelops In White Box with Red Border */}
                   <div className="relative inline-block rotate-[0.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
-                      SAVED AGENT: sentinelops
+                    <span className="relative z-10 text-black font-anton text-sm px-3 py-1 uppercase block tracking-wide">
+                      AGENT: sentinelops
                     </span>
                   </div>
                 </div>
@@ -826,9 +826,6 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </span>
                 </div>
               </Link>
-              <span className="text-zinc-400 font-mono text-xs font-bold hidden md:inline-block">
-                // Autonomous Microservice Resilience Platform
-              </span>
             </div>
 
             {/* Footer POSTMORTEM REPORTS Button */}
@@ -841,7 +838,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
                   style={{ filter: "url(#comic-title-wobble)" }}
                 />
-                <span className="relative z-10 font-anton text-xs sm:text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                <span className="relative z-10 font-anton text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
                   <span>POSTMORTEM REPORTS LEDGER</span>
                   <span>→</span>
                 </span>

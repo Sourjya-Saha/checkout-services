@@ -124,7 +124,7 @@ export default function DistortedIncidentsAudit() {
               {/* Clean Comic AUDIT LEDGER Tag */}
               <div className="relative inline-block rotate-[2deg]">
                 <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#000000]" />
-                <span className="relative z-10 font-anton text-xs text-white px-3 py-0.5 uppercase tracking-wider block">
+                <span className="relative z-10 font-anton text-sm text-white px-3 py-0.5 uppercase tracking-wider block">
                   POSTMORTEM LEDGER
                 </span>
               </div>
@@ -135,7 +135,7 @@ export default function DistortedIncidentsAudit() {
           <div className="flex items-center gap-4">
             <button
               onClick={fetchIncidents}
-              className="px-4 py-1.5 bg-zinc-900 border-[2px] border-white/40 text-white font-anton text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-colors"
+              className="px-4 py-1.5 bg-zinc-900 border-[2px] border-white/40 text-white font-anton text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors"
             >
               SYNC DB →
             </button>
@@ -174,7 +174,7 @@ export default function DistortedIncidentsAudit() {
               {/* Subtitle Badge */}
               <div className="relative inline-block rotate-[0.5deg]">
                 <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
-                <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                <span className="relative z-10 font-anton text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
                   02 // POSTGRESQL PERSISTENT MEMORY MATRIX
                 </span>
               </div>
@@ -196,7 +196,7 @@ export default function DistortedIncidentsAudit() {
               <div className="pt-4">
                 <div className="relative inline-block rotate-[-1.5deg]">
                   <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
-                  <p className="relative z-10 text-xs sm:text-sm font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
+                  <p className="relative z-10 text-sm sm:text-base font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
                     <span className="text-red-500">SUPABASE PERSISTENCE</span>
                     <span className="text-zinc-500">•</span>
                     <span className="text-white">DAYTONA SANDBOX VERIFICATION</span>
@@ -218,7 +218,7 @@ export default function DistortedIncidentsAudit() {
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
               <div className="relative z-10 space-y-2">
-                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">TOTAL EVENTS</p>
+                <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">TOTAL EVENTS</p>
                 <p className="text-4xl sm:text-5xl font-anton text-white tracking-tight">{incidents.length}</p>
                 <p className="text-xs font-mono font-bold text-red-400">
                   {incidents.length === 0 ? "Zero recorded events" : `${resolvedCount} Resolved Events`}
@@ -232,7 +232,7 @@ export default function DistortedIncidentsAudit() {
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
               <div className="relative z-10 space-y-2">
-                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">AGENT HARNESS</p>
+                <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">AGENT HARNESS</p>
                 <p className="text-3xl sm:text-4xl font-anton text-white tracking-tight">TRUEFORGE</p>
                 <p className="text-xs font-mono text-zinc-300">Multi-agent runtime</p>
               </div>
@@ -244,7 +244,7 @@ export default function DistortedIncidentsAudit() {
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
               <div className="relative z-10 space-y-2">
-                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">CODE QUALITY</p>
+                <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">CODE QUALITY</p>
                 <p className="text-3xl sm:text-4xl font-anton text-red-500 tracking-tight">QODO AI</p>
                 <p className="text-xs font-mono text-zinc-300">Automated PR review</p>
               </div>
@@ -256,7 +256,7 @@ export default function DistortedIncidentsAudit() {
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
               <div className="relative z-10 space-y-2">
-                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">PERSISTENT DB</p>
+                <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">PERSISTENT DB</p>
                 <p className="text-3xl sm:text-4xl font-anton text-white tracking-tight">SUPABASE</p>
                 <p className="text-xs font-mono text-zinc-300">incidents table</p>
               </div>
@@ -336,7 +336,7 @@ export default function DistortedIncidentsAudit() {
 
                           <div className="relative inline-block">
                             <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]" />
-                            <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block">
+                            <span className="relative z-10 font-anton text-sm text-white px-3 py-1 uppercase block">
                               STATUS: {inc.resolution_status} [OK]
                             </span>
                           </div>
@@ -345,14 +345,14 @@ export default function DistortedIncidentsAudit() {
                         {/* Root Cause & Daytona Subgrids */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-mono">
                           <div className="p-5 bg-zinc-950 border-[2px] border-red-600/60 space-y-2">
-                            <p className="font-anton text-xs text-red-500 uppercase tracking-wider">
+                            <p className="font-anton text-sm text-red-500 uppercase tracking-wider">
                               ROOT CAUSE ANALYSIS
                             </p>
                             <p className="text-zinc-200 leading-relaxed">{inc.root_cause}</p>
                           </div>
 
                           <div className="p-5 bg-zinc-950 border-[2px] border-white/30 space-y-2">
-                            <p className="font-anton text-xs text-white uppercase tracking-wider">
+                            <p className="font-anton text-sm text-white uppercase tracking-wider">
                               DAYTONA SANDBOX VERIFICATION
                             </p>
                             <p className="text-zinc-200 leading-relaxed">{inc.verification_result}</p>
@@ -362,7 +362,7 @@ export default function DistortedIncidentsAudit() {
                         {/* Evidence & Approval Details */}
                         <div className="p-4 bg-zinc-950 border-[1.5px] border-white/20 font-mono text-xs text-zinc-300 space-y-2">
                           <p>
-                            <strong className="text-white font-anton text-sm tracking-wider">SUBAGENT EVIDENCE :</strong> {inc.evidence_summary}
+                            <strong className="text-white font-anton text-sm tracking-wider">SUBAGENT EVIDENCE:</strong> {inc.evidence_summary}
                           </p>
                           <p>
                             <strong className="text-red-400 font-anton text-sm tracking-wider">HUMAN APPROVAL:</strong> {inc.approval_record}
@@ -377,19 +377,19 @@ export default function DistortedIncidentsAudit() {
                                 href={inc.pr_link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="px-6 py-2.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-xs uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] transition-all inline-block"
+                                className="px-6 py-2.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] transition-all inline-block"
                               >
                                 VIEW GITHUB PR →
                               </a>
                             )}
-                            <span className="px-3.5 py-2 bg-zinc-900 border-[2px] border-white/30 text-xs font-anton uppercase text-zinc-300">
+                            <span className="px-3.5 py-2 bg-zinc-900 border-[2px] border-white/30 text-sm font-anton uppercase text-zinc-300">
                               QODO REVIEW: APPROVED (0 HIGHS)
                             </span>
                           </div>
 
                           <button
                             onClick={() => setSelectedIncident(inc)}
-                            className="font-anton text-xs text-zinc-300 hover:text-white uppercase underline transition-colors"
+                            className="font-anton text-sm text-zinc-300 hover:text-white uppercase underline transition-colors"
                           >
                             INSPECT SUPABASE JSON SCHEMA →
                           </button>
@@ -435,7 +435,7 @@ export default function DistortedIncidentsAudit() {
                 <div className="text-right pt-2">
                   <button
                     onClick={() => setSelectedIncident(null)}
-                    className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-anton text-xs uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]"
+                    className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-anton text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]"
                   >
                     DISMISS
                   </button>
@@ -461,7 +461,6 @@ export default function DistortedIncidentsAudit() {
                   </span>
                 </div>
               </Link>
-             
             </div>
 
             {/* Footer SENTINELOPS COMMAND HUD Button */}
@@ -474,7 +473,7 @@ export default function DistortedIncidentsAudit() {
                   className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
                   style={{ filter: "url(#comic-title-wobble)" }}
                 />
-                <span className="relative z-10 font-anton text-xs sm:text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                <span className="relative z-10 font-anton text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
                   <span>SENTINELOPS COMMAND HUD</span>
                   <span>→</span>
                 </span>
