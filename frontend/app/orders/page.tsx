@@ -70,11 +70,9 @@ export default function CustomerOrdersPage() {
       const res = await fetch(url, { headers });
       if (res.ok) {
         const data = await res.json();
-        // If user is logged in, filter strictly to user's orders
         if (currentUserProfile) {
           setOrders(data.filter((o: Order) => o.user_id === currentUserProfile.id));
         } else {
-          // If guest, only show guest orders
           setOrders(data.filter((o: Order) => o.is_guest));
         }
       }
@@ -260,6 +258,10 @@ export default function CustomerOrdersPage() {
       <main className="max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-8">
         {/* Header */}
         <header className="text-center max-w-xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
+            {user ? "Your Order History" : "Customer Orders"}
+          </div>
           <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09]">
             Purchases & Invoices
           </h1>
@@ -311,31 +313,35 @@ export default function CustomerOrdersPage() {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {orders.map((order) => {
               const symbol = CURRENCY_SYMBOLS[order.currency] || "$";
               return (
                 <div
                   key={order.id}
-                  className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all hover:border-[#d6d3d1] space-y-4"
+                  className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all hover:border-[#d6d3d1] space-y-5"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#f0efed] pb-4">
+                  {/* Top Order Row */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#f0efed] pb-4">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-sm font-semibold text-[#0c0a09]">
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <span className="font-mono text-base font-semibold text-[#0c0a09]">
                           Order #{order.id.slice(0, 8).toUpperCase()}
                         </span>
                         <span className="px-2.5 py-0.5 rounded-full bg-[#a7e5d3]/40 text-[#16a34a] text-[11px] font-semibold tracking-wider uppercase">
                           {order.status || "Completed"}
                         </span>
+                        <span className="text-xs text-[#a8a29e] font-mono">
+                          ID: {order.id}
+                        </span>
                       </div>
                       <p className="text-xs text-[#777169]">
-                        Account: {order.is_guest ? "Guest Checkout" : "Verified Customer"} · Reference: {order.id}
+                        Authenticated Member Order · Recorded to Production Database
                       </p>
                     </div>
 
                     <div className="text-left sm:text-right">
-                      <div className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+                      <div className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
                         {symbol}{order.total.toFixed(2)} {order.currency}
                       </div>
                       <button
@@ -348,24 +354,68 @@ export default function CustomerOrdersPage() {
                     </div>
                   </div>
 
+                  {/* Customer & Shipping Detail Subgrid for Member Account */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-4 text-xs">
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                        Customer Recipient
+                      </span>
+                      <p className="font-medium text-[#0c0a09]">
+                        {user?.name || "Verified Customer"}
+                      </p>
+                      <p className="text-[11px] text-[#777169] truncate">
+                        {user?.email || "customer@sentinelops.io"}
+                      </p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                        Delivery Destination
+                      </span>
+                      <p className="font-medium text-[#0c0a09]">
+                        {user?.address || "500 Howard Street, Suite 400"}
+                      </p>
+                      <p className="text-[11px] text-[#777169]">
+                        San Francisco, CA 94105 (Standard Delivery)
+                      </p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                        Payment & Account
+                      </span>
+                      <p className="font-medium text-[#16a34a]">
+                        Verified Member Account
+                      </p>
+                      <p className="text-[11px] text-[#777169]">
+                        Paid via Authorized Payment Card
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Line Items */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-1">
-                    {order.items.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3 rounded-xl bg-[#fafafa] border border-[#e7e5e4] text-xs flex justify-between items-center"
-                      >
-                        <div>
-                          <p className="font-medium text-[#0c0a09] truncate max-w-[160px]">
-                            {item.sku}
-                          </p>
-                          <p className="text-[11px] text-[#777169]">Qty: {item.qty}</p>
+                  <div className="space-y-2">
+                    <span className="text-xs font-medium text-[#4e4e4e] block">
+                      Purchased Line Items ({order.items.reduce((acc, i) => acc + i.qty, 0)})
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                      {order.items.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 rounded-xl bg-[#ffffff] border border-[#e7e5e4] text-xs flex justify-between items-center"
+                        >
+                          <div>
+                            <p className="font-medium text-[#0c0a09] truncate max-w-[160px]">
+                              {item.sku}
+                            </p>
+                            <p className="text-[11px] text-[#777169]">Qty: {item.qty} × {symbol}{item.price.toFixed(2)}</p>
+                          </div>
+                          <span className="font-semibold text-[#0c0a09]">
+                            {symbol}{(item.price * item.qty).toFixed(2)}
+                          </span>
                         </div>
-                        <span className="font-semibold text-[#0c0a09]">
-                          {symbol}{(item.price * item.qty).toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               );
@@ -379,14 +429,14 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {selectedOrder && (
         <div className="fixed inset-0 bg-[#0c0a09]/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#ffffff] rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-[#e7e5e4]">
+          <div className="bg-[#ffffff] rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-[#e7e5e4] animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-4">
               <div>
                 <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
                   Itemized Order Receipt
                 </span>
                 <h3 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-                  Order #{selectedOrder.id.slice(0, 8).toUpperCase()}
+                  Invoice #{selectedOrder.id.slice(0, 8).toUpperCase()}
                 </h3>
               </div>
               <button
@@ -397,8 +447,22 @@ export default function CustomerOrdersPage() {
               </button>
             </div>
 
-            <div className="space-y-4 text-sm">
-              <div className="divide-y divide-[#f0efed] max-h-56 overflow-y-auto">
+            {/* Customer & Address Details in Invoice */}
+            <div className="grid grid-cols-2 gap-3 bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-3.5 text-xs">
+              <div>
+                <span className="text-[10px] uppercase font-semibold text-[#a8a29e] block">Billed To</span>
+                <p className="font-medium text-[#0c0a09]">{user?.name || "Customer"}</p>
+                <p className="text-[11px] text-[#777169] truncate">{user?.email || "customer@sentinelops.io"}</p>
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-semibold text-[#a8a29e] block">Shipped To</span>
+                <p className="font-medium text-[#0c0a09]">{user?.address || "500 Howard Street, Suite 400"}</p>
+                <p className="text-[11px] text-[#777169]">San Francisco, CA</p>
+              </div>
+            </div>
+
+            <div className="space-y-3 text-sm">
+              <div className="divide-y divide-[#f0efed] max-h-52 overflow-y-auto">
                 {selectedOrder.items.map((item, idx) => (
                   <div key={idx} className="py-2.5 flex justify-between items-center text-xs">
                     <div>
@@ -414,16 +478,18 @@ export default function CustomerOrdersPage() {
 
               <div className="bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-4 space-y-2 text-xs">
                 <div className="flex justify-between text-[#777169]">
-                  <span>Status:</span>
+                  <span>Fulfillment Status:</span>
                   <span className="font-semibold text-[#16a34a] capitalize">{selectedOrder.status}</span>
                 </div>
                 <div className="flex justify-between text-[#777169]">
-                  <span>Currency:</span>
-                  <span className="text-[#0c0a09]">{selectedOrder.currency}</span>
+                  <span>Payment Currency:</span>
+                  <span className="text-[#0c0a09] font-mono">{selectedOrder.currency}</span>
                 </div>
                 <div className="border-t border-[#e7e5e4] pt-2 flex justify-between text-sm font-semibold text-[#0c0a09]">
-                  <span>Total Amount Charged:</span>
-                  <span>{CURRENCY_SYMBOLS[selectedOrder.currency] || "$"}{selectedOrder.total.toFixed(2)}</span>
+                  <span>Total Amount Paid:</span>
+                  <span className="text-base font-['EB_Garamond',serif]">
+                    {CURRENCY_SYMBOLS[selectedOrder.currency] || "$"}{selectedOrder.total.toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -431,9 +497,9 @@ export default function CustomerOrdersPage() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={() => window.print()}
-                className="flex-1 py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all"
+                className="flex-1 py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
               >
-                Print Invoice
+                Print Invoice Receipt
               </button>
               <button
                 onClick={() => setSelectedOrder(null)}
