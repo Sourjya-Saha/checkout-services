@@ -281,37 +281,72 @@ export default function CustomerOrdersPage() {
             <p className="text-sm text-[#777169]">Retrieving order ledger...</p>
           </div>
         ) : orders.length === 0 ? (
-          <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-12 text-center max-w-lg mx-auto shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-4">
-            <div className="w-12 h-12 rounded-full bg-[#f0efed] flex items-center justify-center text-sm font-semibold mx-auto text-[#777169]">
-              0
-            </div>
-            <h2 className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-              {user ? "No Orders Found For Your Account" : "No Orders to Display"}
-            </h2>
-            <p className="text-sm text-[#777169]">
-              {user
-                ? "You haven't placed any orders with this account yet. Complete a checkout to view itemized receipts here."
-                : "Sign in with your email and password to load your personal orders, or complete a new purchase."}
-            </p>
-            <div className="pt-2 flex justify-center gap-3">
-              <Link
-                href="/checkout"
-                className="px-6 py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
-              >
-                Go to Store & Checkout →
-              </Link>
-              {!user && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthMode("login");
-                    setShowAuthModal(true);
-                  }}
-                  className="px-5 py-2.5 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all"
+          <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-8 sm:p-14 text-center max-w-2xl mx-auto shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-6 relative overflow-hidden">
+            {/* Architectural Grid Watermark */}
+            <div className="absolute inset-0 bg-[radial-gradient(#e7e5e4_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
+
+            <div className="relative space-y-5">
+              {/* Minimalist Editorial Tag */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[11px] font-semibold tracking-[0.96px] uppercase text-[#777169]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
+                Archive / Invoices
+              </div>
+
+              {/* Serif Headline */}
+              <div className="space-y-2 max-w-md mx-auto">
+                <h2 className="text-3xl sm:text-4xl font-['EB_Garamond',serif] font-light text-[#0c0a09] tracking-[-0.02em] leading-tight">
+                  {user ? "No Recorded Purchases" : "Account Ledger Empty"}
+                </h2>
+                <p className="text-xs sm:text-[13px] text-[#777169] leading-relaxed font-normal">
+                  {user
+                    ? `No active transactions or order receipts are associated with ${user.email}. Complete an order in the checkout store to generate itemized invoices.`
+                    : "Sign in with your verified credentials to view your order history, or visit our catalog to complete a new purchase."}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href="/checkout"
+                  className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs text-center"
                 >
-                  Sign In
-                </button>
-              )}
+                  Explore Store Catalog →
+                </Link>
+                {!user && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode("login");
+                      setShowAuthModal(true);
+                    }}
+                    className="w-full sm:w-auto px-6 py-3 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all"
+                  >
+                    Sign In to Account
+                  </button>
+                )}
+              </div>
+
+              {/* Trust & Guarantee Specs */}
+              <div className="border-t border-[#f0efed] pt-6 grid grid-cols-3 gap-3 text-left">
+                <div className="space-y-0.5">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                    Ledger
+                  </span>
+                  <p className="text-[11px] font-medium text-[#0c0a09]">Immutable Audit</p>
+                </div>
+                <div className="space-y-0.5">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                    Invoicing
+                  </span>
+                  <p className="text-[11px] font-medium text-[#0c0a09]">PDF & Print Ready</p>
+                </div>
+                <div className="space-y-0.5">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                    Telemetry
+                  </span>
+                  <p className="text-[11px] font-medium text-[#0c0a09]">Real-time Status</p>
+                </div>
+              </div>
             </div>
           </div>
         ) : (
