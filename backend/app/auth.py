@@ -4,7 +4,7 @@ import hashlib
 import secrets
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 import jwt
 
 # Configuration
@@ -19,14 +19,14 @@ _in_memory_users_by_email: Dict[str, str] = {}  # email -> user_id
 
 # Schemas
 class UserSignup(BaseModel):
-    email: EmailStr
+    email: str = Field(..., description="Customer email address")
     password: str = Field(..., min_length=6, description="Password must be at least 6 characters")
     name: Optional[str] = "Customer"
     address: Optional[str] = None
 
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str = Field(..., description="Customer email address")
     password: str
 
 
