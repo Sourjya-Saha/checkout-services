@@ -331,8 +331,8 @@ async def checkout(request: CheckoutRequest):
 
 @app.get("/orders", response_model=List[OrderResponse], tags=["Orders"])
 async def list_orders(
+    request: Request,
     user_id: Optional[str] = None,
-    request: Optional[Request] = None,
 ):
     """
     List orders for a specific user (via user_id query param or JWT Bearer token),
