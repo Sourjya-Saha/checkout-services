@@ -141,19 +141,22 @@ export default function VenturaSentinelOpsCommander() {
           if (text) {
             setTerminalLogs((prev) => [...prev, `[Agent] ${text.slice(0, 180)}...`]);
 
-            // Dynamically detect created Pull Request
-            const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);
-            if (prMatch && prMatch[0]) {
-              setIncidentState((prev) => ({
-                ...prev!,
-                status: "resolved",
-                pr_url: prMatch[0],
-              }));
-              setCurrentStep(6);
-              setTerminalLogs((prev) => [
-                ...prev,
-                `[✓] [PR CREATED] Successfully opened Pull Request: ${prMatch[0]}`,
-              ]);
+            // Dynamically detect created Pull Request ONLY on the final concluding response
+            const isConcluding = text.includes("Done — I drafted") || text.includes("### PR:") || text.includes("opened a PR");
+            if (isConcluding) {
+              const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);
+              if (prMatch && prMatch[0]) {
+                setIncidentState((prev) => ({
+                  ...prev!,
+                  status: "resolved",
+                  pr_url: prMatch[0],
+                }));
+                setCurrentStep(6);
+                setTerminalLogs((prev) => [
+                  ...prev,
+                  `[✓] [PR CREATED] Successfully opened Pull Request: ${prMatch[0]}`,
+                ]);
+              }
             }
           }
           if (data.tool_calls && data.tool_calls.length > 0) {
@@ -167,15 +170,18 @@ export default function VenturaSentinelOpsCommander() {
         }
 
         if (data.type === "tool.response") {
+          const toolName = data.tool_name || "";
           const text = JSON.stringify(data);
-          const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);
-          if (prMatch && prMatch[0]) {
-            setIncidentState((prev) => ({
-              ...prev!,
-              status: "resolved",
-              pr_url: prMatch[0],
-            }));
-            setCurrentStep(6);
+          if (toolName.includes("create_pull_request") || text.includes("pull_request")) {
+            const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);
+            if (prMatch && prMatch[0]) {
+              setIncidentState((prev) => ({
+                ...prev!,
+                status: "resolved",
+                pr_url: prMatch[0],
+              }));
+              setCurrentStep(6);
+            }
           }
           setTerminalLogs((prev) => [
             ...prev,

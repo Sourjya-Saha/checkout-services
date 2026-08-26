@@ -161,26 +161,37 @@ export async function GET(
                 });
               }
 
-              const prMatch = text.match(
-                /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
-              );
-              if (prMatch && prMatch[0]) {
-                await updateIncident(incidentId, {
-                  pr_url: prMatch[0],
-                });
+              // Only match PR URL if this is the final concluding response or after Checkpoint B
+              const isConcluding = text.includes("Done — I drafted") || text.includes("### PR:") || text.includes("opened a PR");
+              if (isConcluding) {
+                const prMatch = text.match(
+                  /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
+                );
+                if (prMatch && prMatch[0]) {
+                  await updateIncident(incidentId, {
+                    pr_url: prMatch[0],
+                    status: "resolved",
+                    resolved_at: new Date().toISOString(),
+                  });
+                }
               }
             }
 
-            // 3. Check for Tool Responses with PR link
+            // 3. Check for Tool Responses specifically from create_pull_request
             if (event.type === "tool.response") {
+              const toolName = event.tool_name || "";
               const text = JSON.stringify(event);
-              const prMatch = text.match(
-                /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
-              );
-              if (prMatch && prMatch[0]) {
-                await updateIncident(incidentId, {
-                  pr_url: prMatch[0],
-                });
+              if (toolName.includes("create_pull_request") || text.includes("pull_request")) {
+                const prMatch = text.match(
+                  /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
+                );
+                if (prMatch && prMatch[0]) {
+                  await updateIncident(incidentId, {
+                    pr_url: prMatch[0],
+                    status: "resolved",
+                    resolved_at: new Date().toISOString(),
+                  });
+                }
               }
             }
 
@@ -192,7 +203,7 @@ export async function GET(
 
               if (isTerminal) {
                 const currentInc = await getIncident(incidentId);
-                if (currentInc?.pr_url || currentInc?.status === "investigating") {
+                if (currentInc?.pr_url) {
                   await updateIncident(incidentId, {
                     status: "resolved",
                     resolved_at: new Date().toISOString(),
