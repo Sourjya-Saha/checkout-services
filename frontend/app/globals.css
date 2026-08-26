@@ -108,6 +108,67 @@ body {
 }
 
 /* ========================================================================= */
+/* DOTTED CIRCULAR MOVING LOOP (MARCHING ANTS) & SILK WAVE FLOW */
+/* ========================================================================= */
+
+@keyframes marchingDottedAnts {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -96;
+  }
+}
+
+@keyframes waveUndulateMotion {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.015);
+  }
+}
+
+@keyframes waveDriftSlow {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(10px) translateY(-6px) rotate(0.4deg);
+  }
+}
+
+.animate-dotted-border {
+  stroke-dasharray: 5 6;
+  animation: marchingDottedAnts 3.5s linear infinite;
+}
+
+.animate-silk-undulate {
+  animation: waveUndulateMotion 7s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-silk-drift {
+  animation: waveDriftSlow 11s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* ========================================================================= */
 /* HIGH-END SMOOTH PAGE LANDING & STAGGER TRANSITIONS */
 /* ========================================================================= */
 
@@ -153,54 +214,22 @@ body {
 }
 
 /* ========================================================================= */
-/* HYPNOTIC SLOW DOTTED MARCHING LOOP & SILK UNDULATION */
-/* ========================================================================= */
-
-@keyframes marchingDottedAnts {
-  from {
-    stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: -96;
-  }
-}
-
-.animate-ants-slow {
-  animation: marchingDottedAnts 14s linear infinite;
-}
-
-.animate-ants-fast {
-  animation: marchingDottedAnts 8s linear infinite;
-}
-
-@keyframes pulseRedGlow {
-  0%, 100% {
-    opacity: 0.25;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.55;
-    transform: scale(1.08);
-  }
-}
-
-.animate-red-glow {
-  animation: pulseRedGlow 4s ease-in-out infinite;
-}
-
-/* ========================================================================= */
 /* ULTRA-LUXURY SMOOTH ENTRANCE KEYFRAMES FOR POSTER LANDING */
 /* ========================================================================= */
 
 @keyframes entranceCenterTitle {
   0% {
     opacity: 0;
-    transform: scale(0.92) translateY(24px);
-    filter: blur(8px);
+    transform: translateY(36px) scale(0.92);
+    filter: blur(18px);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(4px);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0px) scale(1);
     filter: blur(0px);
   }
 }
@@ -208,11 +237,15 @@ body {
 @keyframes entranceEyebrow {
   0% {
     opacity: 0;
-    transform: translateY(-16px);
+    transform: translateY(-20px);
+    letter-spacing: 0.3em;
+    filter: blur(6px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0px);
+    letter-spacing: 0.05em;
+    filter: blur(0px);
   }
 }
 
@@ -220,10 +253,12 @@ body {
   0% {
     opacity: 0;
     transform: scale(0.9) translateX(-40px);
+    filter: blur(12px);
   }
   100% {
     opacity: 0.9;
     transform: scale(1) translateX(0);
+    filter: blur(0px);
   }
 }
 
@@ -231,10 +266,12 @@ body {
   0% {
     opacity: 0;
     transform: scale(0.9) translateX(40px);
+    filter: blur(12px);
   }
   100% {
     opacity: 0.9;
     transform: scale(1) translateX(0);
+    filter: blur(0px);
   }
 }
 
