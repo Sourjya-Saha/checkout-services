@@ -168,10 +168,15 @@ export async function GET(
                   /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
                 );
                 if (prMatch && prMatch[0]) {
-                  await updateIncident(incidentId, {
+                  const resolvedIncident = await updateIncident(incidentId, {
                     pr_url: prMatch[0],
                     status: "resolved",
                     resolved_at: new Date().toISOString(),
+                  });
+                  sendEvent({
+                    type: "incident.resolved",
+                    incident: resolvedIncident,
+                    pr_url: prMatch[0],
                   });
                 }
               }
@@ -186,10 +191,15 @@ export async function GET(
                   /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/
                 );
                 if (prMatch && prMatch[0]) {
-                  await updateIncident(incidentId, {
+                  const resolvedIncident = await updateIncident(incidentId, {
                     pr_url: prMatch[0],
                     status: "resolved",
                     resolved_at: new Date().toISOString(),
+                  });
+                  sendEvent({
+                    type: "incident.resolved",
+                    incident: resolvedIncident,
+                    pr_url: prMatch[0],
                   });
                 }
               }
@@ -204,9 +214,14 @@ export async function GET(
               if (isTerminal) {
                 const currentInc = await getIncident(incidentId);
                 if (currentInc?.pr_url) {
-                  await updateIncident(incidentId, {
+                  const finalized = await updateIncident(incidentId, {
                     status: "resolved",
-                    resolved_at: new Date().toISOString(),
+                    resolved_at: currentInc.resolved_at || new Date().toISOString(),
+                  });
+                  sendEvent({
+                    type: "incident.resolved",
+                    incident: finalized,
+                    pr_url: currentInc.pr_url,
                   });
                 }
               }

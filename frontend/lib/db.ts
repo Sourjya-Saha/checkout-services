@@ -79,9 +79,9 @@ export async function updateIncident(
   const supabase = getSupabase();
   if (supabase) {
     try {
-      await supabase.from("incidents").update(patch).eq("id", id);
+      await supabase.from("incidents").upsert(updated);
     } catch (err) {
-      console.warn("Supabase update warning:", err);
+      console.warn("Supabase upsert warning:", err);
     }
   }
   return updated;
