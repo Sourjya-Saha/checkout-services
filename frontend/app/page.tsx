@@ -186,8 +186,14 @@ export default function Exact404SentinelOpsLanding() {
       {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" */}
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
-        {/* Previous "My Harness Agent" Text Styling with Staggered Fade Down */}
-        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-entrance-eyebrow cursor-default">
+        {/* "My Harness Agent" (TEXT + SHADOW 100% UNIFIED ATOMICALLY) */}
+        <p
+          className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 animate-entrance-eyebrow cursor-default"
+          style={{
+            textShadow:
+              "0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.95)",
+          }}
+        >
           My Harness Agent
         </p>
 
