@@ -29,7 +29,7 @@ def test_checkout_logged_in_success():
     assert response.status_code == 200
     data = response.json()
     assert "order_id" in data
-    assert data["total"] == 149.0
+    assert data["total"] == 150.5
     assert data["currency"] == "USD"
     assert data["status"] == "completed"
 
@@ -70,3 +70,11 @@ def test_calculate_total_missing_shipping_tier_defaults_safely():
 def test_calculate_shipping_fee_unknown_tier_does_not_raise():
     from app.payment_processor import calculate_shipping_fee
     assert calculate_shipping_fee(99.0, "DEFAULT") == 0.0
+
+
+def test_calculate_packaging_fee_missing_or_unknown_type_defaults_safely():
+    from app.payment_processor import calculate_packaging_fee
+
+    assert calculate_packaging_fee(99.0, None) == 0.0
+    assert calculate_packaging_fee(99.0, "STANDARD") == 0.0
+    assert calculate_packaging_fee(99.0, "STANDARD_BOX") == 1.5

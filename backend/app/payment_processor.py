@@ -112,10 +112,14 @@ def calculate_packaging_fee(subtotal: float, packaging_type: Optional[str] = Non
     Calculate fee for special order packaging and gift wrapping.
     """
     if not packaging_type:
-        packaging_type = "STANDARD"
+        return 0.0
 
-    # Regression: Unchecked dictionary lookup throws KeyError: 'STANDARD' (expected key is 'STANDARD_BOX')
-    return PACKAGING_OPTION_FEES[packaging_type]
+    normalized = packaging_type.upper()
+    if normalized == "STANDARD":
+        return 0.0
+
+    # Fall back safely for unmapped packaging selections instead of crashing checkout.
+    return PACKAGING_OPTION_FEES.get(normalized, 0.0)
 
 
 def calculate_total(
@@ -137,7 +141,7 @@ def calculate_total(
     discount = apply_promo_discount(subtotal, promo_code)
     discounted_subtotal = max(0.0, subtotal - discount)
 
-    # Calculate packaging fee (triggers KeyError: 'STANDARD' on default checkouts)
+    # Calculate packaging fee safely for guest/default checkouts.
     packaging_fee = calculate_packaging_fee(discounted_subtotal, packaging_type)
 
     # Calculate shipping fee
