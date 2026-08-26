@@ -16,14 +16,15 @@
 ## Table of Contents
 1. [System Architecture Diagram](#1-system-architecture-diagram)
 2. [Visual Walkthrough & UI Showcase](#2-visual-walkthrough--ui-showcase)
-3. [Core Feature Matrix](#3-core-feature-matrix)
-4. [Live Incident Orchestration Workflow](#4-live-incident-orchestration-workflow)
-5. [Two-Stage HITL Human Approval Gates](#5-two-stage-hitl-human-approval-gates)
+3. [Case Study: Production Regression & Autonomous Resolution](#3-case-study-production-regression--autonomous-resolution)
+4. [Two-Stage HITL Human Approval Gates](#4-two-stage-hitl-human-approval-gates)
+5. [Daytona Sandbox Reproduction & Fix Verification](#5-daytona-sandbox-reproduction--fix-verification)
 6. [Qodo AI Code Review Audit Trail](#6-qodo-ai-code-review-audit-trail)
-7. [Target Microservice: checkout-service](#7-target-microservice-checkout-service)
-8. [Quickstart & Local Setup](#8-quickstart--local-setup)
-9. [Automated Verification & Testing](#9-automated-verification--testing)
-10. [Environment Variables Reference](#10-environment-variables-reference)
+7. [Target Microservice Architecture](#7-target-microservice-architecture)
+8. [TrueForge Agent Configuration (agent.yaml & manifest.json)](#8-trueforge-agent-configuration-agentyaml--manifestjson)
+9. [Quickstart & Local Setup](#9-quickstart--local-setup)
+10. [Automated Verification & Testing](#10-automated-verification--testing)
+11. [Environment Variables Reference](#11-environment-variables-reference)
 
 ---
 
@@ -32,12 +33,12 @@
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["1. CLIENT & E-COMMERCE STOREFRONT"]
-        User["Customer / QA Client"] -->|Triggers Guest Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
+        User["Customer / QA Client"] -->|Triggers Tax-Aware Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
         WebStore -->|HTTP POST /checkout| APIGateway["FastAPI Microservice (:8000)"]
     end
 
     subgraph FailureIngestion ["2. INCIDENT DETECTION & INGESTION"]
-        APIGateway -->|Unhandled Exception 500 Spike| ExceptionLogger["payment_processor.py<br/>TypeError: 'NoneType'"]
+        APIGateway -->|Unhandled Exception 500 Spike| ExceptionLogger["payment_processor.py<br/>TypeError: 'float' and 'dict'"]
         ExceptionLogger -->|Automated Incident Dispatch| IncidentStore["Next.js SSE Dispatcher<br/>/api/incidents/report"]
     end
 
@@ -48,7 +49,7 @@ flowchart TD
         TFCommander -->|Launch Parallel Subagents| SubB["Subagent Bravo<br/>Exception Traceback Decoder<br/>(FastAPI Log Streams)"]
         TFCommander -->|Launch Parallel Subagents| SubC["Subagent Charlie<br/>Database Telemetry Correlator<br/>(Supabase MCP)"]
         
-        SubA -->|Correlates Evidence| Hypothesis["Root-Cause Hypothesis:<br/>Missing dictionary fallback in price formatting"]
+        SubA -->|Correlates Evidence| Hypothesis["Root-Cause Hypothesis:<br/>Tax lookup returns dictionary, calculation expects float"]
         SubB -->|Correlates Evidence| Hypothesis
         SubC -->|Correlates Evidence| Hypothesis
     end
@@ -57,13 +58,13 @@ flowchart TD
         Hypothesis --> GateA{"CHECKPOINT A<br/>Human Approval to Reproduce & Fix"}
         
         GateA -->|Approved by SRE Commander| DaytonaBox["Daytona Linux MicroVM Sandbox<br/>(Clean Working Copy / Isolated Env)"]
-        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce TypeError in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (8/8 OK)"]
+        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce TypeError in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (9/9 OK)"]
         
         SandboxProof --> GateB{"CHECKPOINT B<br/>Human Approval to Open GitHub PR"}
     end
 
     subgraph RemediationAndAudit ["5. REMEDIATION, QODO REVIEW & POSTMORTEM MEMORY"]
-        GateB -->|Approved by SRE Commander| GitHubPR["GitHub MCP Connector<br/>Open Pull Request #2"]
+        GateB -->|Approved by SRE Commander| GitHubPR["GitHub MCP Connector<br/>Open Pull Request via GitHub MCP"]
         GitHubPR -->|Automated PR Analysis| Qodo["Qodo AI Code Review<br/>0 High Severity / Approved"]
         Qodo --> DBCommit[("Supabase PostgreSQL<br/>Table: incidents (Persistent Memory)")]
         DBCommit --> AuditLedger["Postmortem Audit Ledger UI<br/>(/incidents)"]
@@ -83,108 +84,172 @@ flowchart TD
 ## 2. Visual Walkthrough & UI Showcase
 
 ### 1. Interactive Landing Experience
-The entry poster features typography, fluid wave simulations, and direct navigation triggers to all sub-applications.
+The entry poster features cinematic typography, fluid wave simulations, and direct entry triggers into all services.
 ![SentinelOps Landing Experience](docs/landingpage.png)
 
 ---
 
-### 2. E-Commerce Storefront & Checkout Gateway
-Full-featured e-commerce checkout supporting multi-currency (`USD`, `EUR`, `GBP`), regional tax calculation, promotional discount codes, member authentication, and guest checkout paths.
-![Checkout Storefront Overview](docs/checkout_service_patient_site.png)
-
----
-
-### 3. Authentication Modal & Guest Mode
-Customers can authenticate or toggle Guest Mode. Guest checkout intentionally triggers realistic microservice regressions to test autonomous SRE response loops.
-![Authentication & Order Configuration](docs/checkout_service_patient_site_1.png)
-
----
-
-### 4. Autonomous SRE Command Center (HUD)
+### 2. Autonomous SRE Command Center (HUD)
 Live multi-agent swarm telemetry displays parallel investigation state across Subagent Alpha, Subagent Bravo, and Subagent Charlie.
 ![SentinelOps Swarm Command HUD](docs/sentinleops_hub.png)
 
 ---
 
-### 5. Two-Stage Human Approval Gates & Live SSE Stream
+### 3. Two-Stage Human Approval Gates & Live SSE Stream
 Interactive Checkpoint approval cards with high-contrast monospace metadata (`[TARGET REPO]`, `[TARGET ERROR]`, `[ACTION]`) and real-time TrueForge event accumulation.
 ![Two-Stage Approval Gates & Live Terminal](docs/sentinleops_hub_2.png)
 
 ---
 
-### 6. Postmortem Incident Audit Ledger
+### 4. Interactive Human-in-the-Loop Approval in TrueForge
+The agent pauses execution at Checkpoint A and Checkpoint B to request explicit human confirmation before executing sandbox compute or opening GitHub PRs.
+![Human-in-the-Loop Approval](docs/HITL.png)
+
+---
+
+### 5. Automated Pull Request Creation via GitHub MCP
+Once verified inside the Daytona Sandbox, the agent creates a Pull Request with complete root-cause diffs and sandbox execution proofs.
+![Pull Request Creation](docs/pr_req1.png)
+
+---
+
+### 6. Qodo AI Automated Code Review & Analysis
+Candidate pull requests undergo automated security and code quality reviews by Qodo AI before being approved and merged.
+![Qodo AI Code Review](docs/pr_req2.png)
+
+---
+
+### 7. Postmortem Incident Audit Ledger
 Persistent PostgreSQL memory records root-cause analyses, Daytona sandbox verification logs, human approval audit trails, and GitHub PR links.
 ![Postmortem Audit Ledger](docs/sentinleops_incident.png)
 
 ---
 
-### 7. Supabase Persistent Memory Schema Inspector
+### 8. Supabase Persistent Memory Schema Inspector
 Interactive modal inspector providing raw JSON schema payloads stored inside the Supabase cluster for compliance and auditing.
 ![Supabase Memory Record Inspector](docs/sentinleops_incident_2.png)
 
 ---
 
-### 8. TrueForge Multi-Agent Runtime & Daytona Sandbox
+### 9. E-Commerce Storefront & Checkout Gateway
+Full-featured e-commerce checkout supporting multi-currency (`USD`, `EUR`, `GBP`), regional tax calculation, promotional discount codes, member authentication, and guest checkout paths.
+![Checkout Storefront Overview](docs/checkout_service_patient_site.png)
+![Authentication & Order Configuration](docs/checkout_service_patient_site_1.png)
+
+---
+
+### 10. TrueForge Multi-Agent Runtime & Daytona Sandbox
 TrueForge runtime management interface showing registered tools, sandbox compute instances, and execution thread logs.
 ![TrueForge Runtime Interface](docs/trueforge_1.png)
 ![TrueForge Sandbox Compute](docs/trueforge_2.png)
 
 ---
 
-## 3. Core Feature Matrix
+## 3. Case Study: Production Regression & Autonomous Resolution
 
-| Feature Component | Implementation Details | Engineering Benefit |
-| :--- | :--- | :--- |
-| **Multi-Agent Swarm** | TrueForge Parallel Subagents (Alpha: Git Diffs, Bravo: Log Traces, Charlie: Database Correlator) | Reduces Mean Time to Detect (MTTD) and Triangulate (MTTT) from hours to under 30 seconds. |
-| **Daytona Bug Reproduction & Sandbox** | Ephemeral isolated Linux container compute | Actively reproduces the bug in isolation first, preventing false positives and unverified patches from reaching production. |
-| **Two-Stage HITL Gate** | **Checkpoint A** (Fix Approval) + **Checkpoint B** (PR Approval) | Guarantees human oversight and zero unauthorized code deployment. |
-| **Qodo AI Review** | Automated PR code quality & security review | Verifies zero high-severity regressions before human merging. |
-| **Supabase Persistence** | PostgreSQL `incidents` schema with full evidence payload | Permanent organizational memory prevents identical future regressions. |
-| **Live SSE Streaming** | Next.js EventSource bridge to FastAPI & TrueForge runtime | Real-time SRE terminal visualization with smooth auto-scrolling. |
+### Incident ID: `INC-20260826-checkout-500`
+
+#### The Problem:
+A recent commit refactored the regional tax rates table to include jurisdiction compliance metadata:
+```python
+# backend/app/payment_processor.py
+REGIONAL_TAX_RATES = {
+    "US_CA": {"rate": 0.0825, "jurisdiction": "California Department of Tax and Fee Administration", "exempt": False},
+    "US_NY": {"rate": 0.08875, "jurisdiction": "New York State Department of Taxation and Finance", "exempt": False},
+    "EU_DE": {"rate": 0.19, "jurisdiction": "Federal Central Tax Office (BZSt)", "exempt": False},
+    "EU_FR": {"rate": 0.20, "jurisdiction": "Direction Générale des Finances Publiques", "exempt": False},
+}
+```
+
+However, `calculate_regional_tax()` was left multiplying the raw dictionary:
+```python
+# Unhandled dictionary multiplier (Line 94)
+tax_rate = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
+return round(subtotal * tax_rate, 2)  # Crashes with TypeError: unsupported operand type(s) for *: 'float' and 'dict'
+```
+
+#### Why it was subtle:
+* Orders without a specified tax region defaulted to `0.0` (float) and passed silently.
+* Any checkout with a valid tax region (e.g. California `US_CA` or New York `US_NY`) immediately failed with HTTP 500.
+
+#### Autonomous Triangulation & Fix:
+1. **Subagent Alpha (Git)**: Identified commit `416e972` modifying `REGIONAL_TAX_RATES`.
+2. **Subagent Bravo (Logs)**: Caught `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` on line 94.
+3. **Subagent Charlie (Database)**: Confirmed that failing transactions all contained `tax_region` values.
+4. **Checkpoint A Approved**: SRE approved sandbox reproduction and fix.
+5. **Daytona Sandbox Run**:
+   - Actively reproduced the failure: `pytest backend/tests/test_checkout.py -k tax` (FAILED with 500).
+   - Applied safe extraction fix:
+     ```python
+     region_data = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
+     if isinstance(region_data, dict):
+         tax_rate = region_data.get("rate", 0.0)
+     else:
+         tax_rate = float(region_data) if region_data else 0.0
+     return round(subtotal * tax_rate, 2)
+     ```
+   - Re-verified full test suite: **9/9 tests passed (100% OK)**.
+6. **Checkpoint B Approved**: SRE approved opening GitHub PR.
+7. **GitHub PR Created & Qodo Reviewed**: Branch `fix-regional-tax-rate-dict` opened via GitHub MCP and verified by Qodo AI.
 
 ---
 
-## 4. Live Incident Orchestration Workflow
+## 4. Two-Stage HITL Human Approval Gates
+
+SentinelOps enforces strict security boundaries between the sandbox and external systems:
 
 ```text
-[1. PRODUCTION ERROR] 
-   └── Guest Checkout triggers TypeError in backend/app/payment_processor.py:83
-[2. SWARM INGESTION]
-   └── Exception dispatched to SentinelOps via SSE (/api/incidents/report)
-[3. PARALLEL TRIANGULATION]
-   ├── Subagent Alpha: Inspects commit diffs on Sourjya-Saha/checkout-services@main
-   ├── Subagent Bravo: Parses FastAPI 500 stack trace
-   └── Subagent Charlie: Queries PostgreSQL orders database (is_guest=true)
-[4. CHECKPOINT A // HUMAN APPROVAL GATE 1]
-   └── SRE Commander reviews hypothesis -> APPROVES sandbox reproduction and fix drafting
-[5. DAYTONA ISOLATED SANDBOX RUN (REPRODUCE -> FIX -> VERIFY)]
-   ├── Clones working copy -> installs requirements.txt
-   ├── Actively reproduces failure: pytest backend/tests/test_checkout.py -k guest (fails with TypeError)
-   ├── Applies candidate patch in payment_processor.py
-   └── Runs full Pytest verification suite -> 8/8 tests pass (100% OK)
-[6. CHECKPOINT B // HUMAN APPROVAL GATE 2]
-   └── SRE Commander reviews sandbox proof -> APPROVES opening GitHub PR
-[7. GITHUB PULL REQUEST & QODO REVIEW]
-   ├── TrueForge GitHub MCP opens PR #2 with complete postmortem diff
-   ├── Qodo AI automatically reviews PR -> 0 Highs / Approved
-   └── Postmortem record committed to Supabase incidents ledger
+                                  INCIDENT DETECTED
+                                          │
+                                          ▼
+                             [Parallel Subagent Swarm]
+                                          │
+                         ┌────────────────┴────────────────┐
+                         ▼                                 ▼
+               [Hypothesis Formed]                [Target Isolated]
+                         │
+                         ▼
+        ╔══════════════════════════════════════════════════════════╗
+        ║  CHECKPOINT A // APPROVAL TO REPRODUCE & FIX IN SANDBOX  ║
+        ║  (Presents: [TARGET REPO], [TARGET ERROR], [ACTION])     ║
+        ╚══════════════════════════════════════════════════════════╝
+                         │
+                         ├─────────────────────────────┐
+                         │ [DENY]                      │ [APPROVE]
+                         ▼                             ▼
+                  [Abort Runbook]            [Daytona Linux Sandbox]
+                                             1. pip install deps
+                                             2. Actively reproduce bug
+                                             3. Apply candidate fix
+                                             4. Run pytest suite (9/9 pass)
+                                                       │
+                                                       ▼
+        ╔══════════════════════════════════════════════════════════╗
+        ║  CHECKPOINT B // APPROVAL TO OPEN GITHUB PULL REQUEST    ║
+        ║  (Presents: 100% Passed Sandbox Test Execution Logs)     ║
+        ╚══════════════════════════════════════════════════════════╝
+                         │
+                         ├─────────────────────────────┐
+                         │ [DENY]                      │ [APPROVE]
+                         ▼                             ▼
+                  [Abort Runbook]            [GitHub MCP PR Creation]
+                                                       │
+                                                       ▼
+                                             [Qodo AI Code Review]
+                                                       │
+                                                       ▼
+                                            [Supabase Postmortem DB]
 ```
 
 ---
 
-## 5. Two-Stage HITL Human Approval Gates
+## 5. Daytona Sandbox Reproduction & Fix Verification
 
-SentinelOps enforces strict security boundaries between the sandbox and external systems:
-
-### Checkpoint A // Approval to Reproduce & Fix in Sandbox
-* **Trigger:** Multi-agent swarm completes evidence gathering and isolates root cause.
-* **Payload Presented:** `[TARGET REPO]`, `[TARGET ERROR]`, and proposed sandbox action.
-* **Security Guarantee:** No sandbox compute is executed without explicit human consent.
-
-### Checkpoint B // Approval to Open GitHub Pull Request
-* **Trigger:** 100% of automated test suites pass inside the isolated Daytona Linux sandbox after reproducing and fixing the bug.
-* **Payload Presented:** Daytona test execution logs and candidate file diff.
-* **Security Guarantee:** No code is written or committed to GitHub without human authorization.
+SentinelOps does not guess fixes or apply untested code:
+1. **Isolated MicroVM**: Clean clone created at `/tmp/checkout-services` inside an ephemeral container.
+2. **Deterministic Reproduction**: Executes `pytest` against the unpatched sandbox copy to actively observe the defect before attempting remediation.
+3. **Automated Verification**: Re-runs the full test suite after patch application to prove zero regressions.
+4. **Credential Isolation**: The Daytona Sandbox has **no GitHub write credentials**. All git writes happen exclusively via the authenticated GitHub MCP connector.
 
 ---
 
@@ -195,22 +260,21 @@ SentinelOps enforces strict security boundaries between the sandbox and external
 | PR Reference | Target Branch | Qodo Findings | Verification Status | Action Taken |
 | :--- | :--- | :--- | :--- | :--- |
 | **PR #1 (Initial Fallback)** | `main` | 0 High Findings, 1 Medium (type fallback) | Sandbox Tested | Improved type fallback safety in candidate patch |
-| **PR #2 (Autonomous Forward-Fix)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
+| **PR #2 (Autonomous Tax Dict Fix)** | `main` | **0 High Findings, Approved** | **Daytona Verified (9/9 Passed)** | Approved by Human SRE Commander & Merged |
 
 ---
 
-## 7. Target Microservice: `checkout-service`
-
-The target microservice is an e-commerce platform structured as follows:
+## 7. Target Microservice Architecture
 
 ```
 checkout-service/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py               # FastAPI application entrypoint & incident routing
-│   │   ├── payment_processor.py  # Regional tax calculation & payment logic (seeded regression)
+│   │   ├── payment_processor.py  # Regional tax calculation & payment logic
 │   │   ├── database.py           # Supabase PostgreSQL client & session pool
-│   │   └── models.py             # SQLAlchemy schemas for orders, users, and incidents
+│   │   ├── auth.py               # JWT customer authentication
+│   │   └── models.py             # SQLAlchemy & Pydantic schemas
 │   ├── tests/
 │   │   └── test_checkout.py      # Pytest validation suite
 │   ├── requirements.txt          # Python backend dependencies
@@ -236,7 +300,58 @@ checkout-service/
 
 ---
 
-## 8. Quickstart & Local Setup
+## 8. TrueForge Agent Configuration (`agent.yaml` & `manifest.json`)
+
+### `agent.yaml`
+```yaml
+name: sentinelops
+display_name: SentinelOps Autonomous Incident Commander
+version: "1.0.0"
+model: gpt-4o
+
+system_prompt: |
+  You are SentinelOps, the Autonomous Incident Commander for production microservices.
+  You strictly execute the SOP defined in incident-runbook and rollback-playbook.
+  Never bypass Checkpoint A or Checkpoint B.
+
+runtime:
+  type: trueforge
+  sandbox:
+    provider: daytona
+    image: python:3.11-slim
+    shell: /bin/sh
+    default_shell: sh
+    working_directory: /tmp
+    timeout_seconds: 300
+    env:
+      PATH: "/usr/local/bin:/usr/bin:/bin"
+      PYTHONUNBUFFERED: "1"
+
+skills:
+  - name: incident-runbook
+    path: ./skills/incident-runbook/SKILL.md
+  - name: rollback-playbook
+    path: ./skills/rollback-playbook/SKILL.md
+
+mcp_servers:
+  - name: github
+    transport: stdio
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-github"]
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_TOKEN}"
+
+  - name: postgres
+    transport: stdio
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-postgres"]
+    env:
+      POSTGRES_CONNECTION_STRING: "${DATABASE_URL}"
+```
+
+---
+
+## 9. Quickstart & Local Setup
 
 ### Prerequisites
 * **Node.js**: `v18.17+` or `v20+`
@@ -303,7 +418,7 @@ npm run dev
 
 ---
 
-## 9. Automated Verification & Testing
+## 10. Automated Verification & Testing
 
 Run the full automated test suite across backend and frontend:
 
@@ -313,15 +428,16 @@ cd checkout-service/backend
 pytest -v
 
 # Expected Output:
-# tests/test_checkout.py::test_calculate_tax_us PASSED
-# tests/test_checkout.py::test_calculate_tax_uk PASSED
-# tests/test_checkout.py::test_calculate_tax_eu PASSED
-# tests/test_checkout.py::test_shipping_fees PASSED
-# tests/test_checkout.py::test_order_total_calculation PASSED
-# tests/test_checkout.py::test_guest_checkout_success PASSED
-# tests/test_checkout.py::test_user_checkout_success PASSED
-# tests/test_checkout.py::test_invalid_currency PASSED
-# ======================== 8 passed in 0.42s ========================
+# tests/test_checkout.py::test_health_check PASSED
+# tests/test_checkout.py::test_checkout_logged_in_success PASSED
+# tests/test_checkout.py::test_checkout_guest_success PASSED
+# tests/test_checkout.py::test_checkout_with_tax_region PASSED
+# tests/test_checkout.py::test_calculate_total_missing_shipping_tier_defaults_safely PASSED
+# tests/test_checkout.py::test_calculate_shipping_fee_unknown_tier_does_not_raise PASSED
+# tests/test_checkout.py::test_calculate_packaging_fee_missing_or_unknown_type_defaults_safely PASSED
+# tests/test_checkout.py::test_order_lookup_and_list_endpoints PASSED
+# tests/test_checkout.py::test_auth_signup_login_and_me PASSED
+# ======================== 9 passed in 0.45s ========================
 
 # 2. Run TypeScript Typecheck (Next.js / TypeScript)
 cd checkout-service/frontend
@@ -332,7 +448,7 @@ npx tsc --noEmit
 
 ---
 
-## 10. Environment Variables Reference
+## 11. Environment Variables Reference
 
 ### Backend (`checkout-service/backend/.env`)
 ```env
