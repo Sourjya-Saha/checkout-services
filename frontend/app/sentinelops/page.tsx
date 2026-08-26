@@ -336,7 +336,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         {/* ========================================================================= */}
         {/* TOP NAVIGATION BAR (SINGLE REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
         {/* ========================================================================= */}
-        <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
+        <header className="animate-landing px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted White Background Patch for SENTINEL OPS */}
             <Link href="/" className="group flex items-center gap-3">
@@ -385,7 +385,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
-          <div className="relative p-8 sm:p-12 rotate-[-0.3deg]">
+          <div className="animate-landing-stagger-1 relative p-8 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
             <div
               className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
@@ -681,7 +681,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           {/* ========================================================================= */}
           {/* 2. PARALLEL MULTI-AGENT SWARM (WIDE TRACKING) */}
           {/* ========================================================================= */}
-          <div className="space-y-5">
+          <div className="animate-landing-stagger-2 space-y-5">
             {/* Section Tag */}
             <div className="relative inline-block rotate-[-0.8deg]">
               <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
@@ -745,7 +745,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           {/* ========================================================================= */}
           {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (FULL HISTORY & THIN BLACK SCROLLBAR) */}
           {/* ========================================================================= */}
-          <div className="space-y-5">
+          <div className="animate-landing-stagger-3 space-y-5">
             {/* Section Tag */}
             <div className="relative inline-block rotate-[0.8deg]">
               <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
@@ -811,7 +811,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </main>
 
         {/* Comic Footer */}
-        <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {/* Footer SENTINEL OPS Distorted Badge */}

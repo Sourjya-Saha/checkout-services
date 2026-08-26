@@ -107,7 +107,7 @@ export default function DistortedIncidentsAudit() {
         {/* ========================================================================= */}
         {/* TOP NAVIGATION BAR */}
         {/* ========================================================================= */}
-        <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
+        <header className="animate-landing px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted White Background Patch for SENTINEL OPS */}
             <Link href="/" className="group flex items-center gap-3">
@@ -162,7 +162,7 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
-          <div className="relative p-8 sm:p-12 rotate-[-0.3deg]">
+          <div className="animate-landing-stagger-1 relative p-8 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
             <div
               className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
@@ -211,7 +211,7 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 2. METRICS GRID (4 DISTORTED BLACK PANELS) */}
           {/* ========================================================================= */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="animate-landing-stagger-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="relative p-6 rotate-[-0.5deg]">
               <div
                 className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
@@ -266,7 +266,7 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 3. AUDIT LOG STREAM (DISTORTED PANELS) */}
           {/* ========================================================================= */}
-          <div className="space-y-6">
+          <div className="animate-landing-stagger-3 space-y-6">
             {loading ? (
               <div className="relative p-12 text-center rotate-[0.2deg]">
                 <div
@@ -446,7 +446,7 @@ export default function DistortedIncidentsAudit() {
         )}
 
         {/* Comic Footer (PINNED ABSOLUTELY TO BOTTOM) */}
-        <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {/* Footer SENTINEL OPS Distorted Badge */}

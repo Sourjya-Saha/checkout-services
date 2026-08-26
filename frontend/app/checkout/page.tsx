@@ -403,7 +403,7 @@ export default function ProfessionalCheckoutPage() {
       {/* ========================================================================= */}
       {/* TOP NAVIGATION */}
       {/* ========================================================================= */}
-      <nav className="sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
+      <nav className="animate-landing sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Link
             href="/"
@@ -499,7 +499,7 @@ export default function ProfessionalCheckoutPage() {
       {/* ========================================================================= */}
       {/* MAIN CHECKOUT BODY */}
       {/* ========================================================================= */}
-      <main className="max-w-[1240px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
+      <main className="animate-landing-stagger-1 max-w-[1240px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
         {/* Editorial Header */}
         <header className="mb-12 text-center max-w-2xl mx-auto space-y-3">
         

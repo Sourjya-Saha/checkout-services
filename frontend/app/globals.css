@@ -89,6 +89,70 @@ body {
 }
 
 /* ========================================================================= */
+/* SUPER THIN ALL-BLACK SCROLLBAR */
+/* ========================================================================= */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+
+/* ========================================================================= */
+/* HIGH-END SMOOTH PAGE LANDING & STAGGER TRANSITIONS */
+/* ========================================================================= */
+
+@keyframes pageSmoothLanding {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.992);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-landing {
+  animation: pageSmoothLanding 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity, transform;
+}
+
+.animate-landing-stagger-1 {
+  animation: pageSmoothLanding 650ms cubic-bezier(0.16, 1, 0.3, 1) 70ms both;
+  will-change: opacity, transform;
+}
+
+.animate-landing-stagger-2 {
+  animation: pageSmoothLanding 650ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both;
+  will-change: opacity, transform;
+}
+
+.animate-landing-stagger-3 {
+  animation: pageSmoothLanding 650ms cubic-bezier(0.16, 1, 0.3, 1) 210ms both;
+  will-change: opacity, transform;
+}
+
+.animate-landing-stagger-4 {
+  animation: pageSmoothLanding 650ms cubic-bezier(0.16, 1, 0.3, 1) 280ms both;
+  will-change: opacity, transform;
+}
+
+.animate-landing-stagger-5 {
+  animation: pageSmoothLanding 650ms cubic-bezier(0.16, 1, 0.3, 1) 350ms both;
+  will-change: opacity, transform;
+}
+
+/* ========================================================================= */
 /* HYPNOTIC SLOW DOTTED MARCHING LOOP & SILK UNDULATION */
 /* ========================================================================= */
 
@@ -101,82 +165,42 @@ body {
   }
 }
 
-@keyframes waveUndulateMotion {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-8px) scale(1.015);
-  }
+.animate-ants-slow {
+  animation: marchingDottedAnts 14s linear infinite;
 }
 
-@keyframes waveDriftSlow {
-  0%, 100% {
-    transform: translateX(0px) translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(8px) translateY(-5px) rotate(0.3deg);
-  }
-}
-
-.animate-dotted-border {
-  stroke-dasharray: 5 6;
+.animate-ants-fast {
   animation: marchingDottedAnts 8s linear infinite;
 }
 
-.animate-silk-undulate {
-  animation: waveUndulateMotion 8s ease-in-out infinite;
-  transform-origin: center;
+@keyframes pulseRedGlow {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
 }
 
-.animate-silk-drift {
-  animation: waveDriftSlow 12s ease-in-out infinite;
-  transform-origin: center;
+.animate-red-glow {
+  animation: pulseRedGlow 4s ease-in-out infinite;
 }
 
 /* ========================================================================= */
-/* SILKY SMOOTH ENTRANCE ANIMATIONS (ONE FROM LEFT, ONE FROM RIGHT) */
+/* ULTRA-LUXURY SMOOTH ENTRANCE KEYFRAMES FOR POSTER LANDING */
 /* ========================================================================= */
-
-@keyframes entranceWaveLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-140px) scale(0.94);
-    filter: blur(12px);
-  }
-  100% {
-    opacity: 0.8;
-    transform: translateX(0px) scale(1);
-    filter: blur(0px);
-  }
-}
-
-@keyframes entranceWaveRight {
-  0% {
-    opacity: 0;
-    transform: translateX(140px) scale(0.94);
-    filter: blur(12px);
-  }
-  100% {
-    opacity: 0.85;
-    transform: translateX(0px) scale(1);
-    filter: blur(0px);
-  }
-}
 
 @keyframes entranceCenterTitle {
   0% {
     opacity: 0;
-    transform: translateY(36px) scale(0.92);
-    filter: blur(18px);
-  }
-  50% {
-    opacity: 0.7;
-    filter: blur(4px);
+    transform: scale(0.92) translateY(24px);
+    filter: blur(8px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0px) scale(1);
+    transform: scale(1) translateY(0);
     filter: blur(0px);
   }
 }
@@ -184,15 +208,33 @@ body {
 @keyframes entranceEyebrow {
   0% {
     opacity: 0;
-    transform: translateY(-20px);
-    letter-spacing: 0.3em;
-    filter: blur(6px);
+    transform: translateY(-16px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0px);
-    letter-spacing: 0.05em;
-    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+@keyframes entranceWaveLeft {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateX(-40px);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes entranceWaveRight {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateX(40px);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scale(1) translateX(0);
   }
 }
 

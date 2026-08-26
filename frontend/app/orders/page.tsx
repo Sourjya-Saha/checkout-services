@@ -149,7 +149,7 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {/* TOP NAVIGATION */}
       {/* ========================================================================= */}
-      <nav className="sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
+      <nav className="animate-landing sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Link
             href="/checkout"
@@ -255,7 +255,7 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {/* MAIN ORDERS CONTENT */}
       {/* ========================================================================= */}
-      <main className="max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-8">
+      <main className="animate-landing-stagger-1 max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-8">
         {/* Header */}
         <header className="text-center max-w-xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
