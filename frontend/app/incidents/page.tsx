@@ -33,12 +33,32 @@ export default function VenturaIncidentsAudit() {
       const res = await fetch(`${apiBase}/incidents`);
       if (res.ok) {
         const data = await res.json();
-        setIncidents(data || []);
+        if (Array.isArray(data) && data.length > 0) {
+          setIncidents(data);
+          setLoading(false);
+          return;
+        }
+      }
+      // Resilient fallback to internal Next.js incident store
+      const localRes = await fetch("/api/incidents");
+      if (localRes.ok) {
+        const localData = await localRes.json();
+        setIncidents(localData || []);
       } else {
         setIncidents([]);
       }
     } catch {
-      setIncidents([]);
+      try {
+        const localRes = await fetch("/api/incidents");
+        if (localRes.ok) {
+          const localData = await localRes.json();
+          setIncidents(localData || []);
+        } else {
+          setIncidents([]);
+        }
+      } catch {
+        setIncidents([]);
+      }
     } finally {
       setLoading(false);
     }

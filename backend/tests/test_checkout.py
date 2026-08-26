@@ -78,3 +78,51 @@ def test_calculate_packaging_fee_missing_or_unknown_type_defaults_safely():
     assert calculate_packaging_fee(99.0, None) == 0.0
     assert calculate_packaging_fee(99.0, "STANDARD") == 0.0
     assert calculate_packaging_fee(99.0, "STANDARD_BOX") == 1.5
+
+
+def test_order_lookup_and_list_endpoints():
+    """Verify orders can be created, retrieved by ID, and listed."""
+    # 1. Create order
+    payload = {
+        "user_id": "usr_test_lookup_123",
+        "cart_items": [{"sku": "SKU-SENTINEL-PRO", "qty": 1, "price": 99.0}],
+        "currency": "USD",
+        "is_guest": False,
+    }
+    create_res = client.post("/checkout", json=payload)
+    assert create_res.status_code == 200
+    order_id = create_res.json()["order_id"]
+
+    # 2. Retrieve order by ID
+    get_res = client.get(f"/orders/{order_id}")
+    assert get_res.status_code == 200
+    assert get_res.json()["id"] == order_id
+    assert get_res.json()["total"] == 99.0
+
+    # 3. List orders
+    list_res = client.get(f"/orders?user_id=usr_test_lookup_123")
+    assert list_res.status_code == 200
+    assert any(o["id"] == order_id for o in list_res.json())
+
+
+def test_auth_signup_login_and_me():
+    """Verify signup, login, and /auth/me authentication lifecycle."""
+    email = "audit_judge@sentinelops.io"
+    password = "judge_secure_pass_123"
+
+    # Signup
+    signup_res = client.post("/auth/signup", json={"email": email, "password": password, "name": "Judge Evaluator"})
+    assert signup_res.status_code == 200
+    token = signup_res.json()["access_token"]
+    assert token is not None
+
+    # Login
+    login_res = client.post("/auth/login", json={"email": email, "password": password})
+    assert login_res.status_code == 200
+    auth_token = login_res.json()["access_token"]
+
+    # Me with token
+    me_res = client.get("/auth/me", headers={"Authorization": f"Bearer {auth_token}"})
+    assert me_res.status_code == 200
+    assert me_res.json()["email"] == email
+

@@ -56,11 +56,30 @@ uvicorn app.main:app --port 8000 --reload
 ```bash
 cd frontend
 npm install
-cp .env.local.example .env.local
+cp .env.example .env.local
 npm run dev
 ```
-- **Checkout App:** [http://localhost:3000](http://localhost:3000)
-- **Incident Command Center:** [http://localhost:3000/incidents](http://localhost:3000/incidents)
+
+### Application URL Directory
+
+| Route / Path | Description |
+| :--- | :--- |
+| **[`/`](http://localhost:3000)** | **SentinelOps Landing Experience:** Cinematic interactive intro with direct navigation links. |
+| **[`/checkout`](http://localhost:3000/checkout)** | **Storefront & Checkout Terminal:** Complete e-commerce store with member/guest authentication. |
+| **[`/orders`](http://localhost:3000/orders)** | **Purchases & Invoice Receipts:** Customer order history, itemized breakdowns, and printable PDF receipts. |
+| **[`/sentinelops`](http://localhost:3000/sentinelops)** | **Autonomous SRE Command Center:** Live telemetry HUD with TrueForge agent orchestration. |
+| **[`/incidents`](http://localhost:3000/incidents)** | **Postmortem Audit Ledger:** Supabase PostgreSQL persistent incident memory viewer. |
+
+### Running Automated Test Suites
+```bash
+# Backend unit tests (FastAPI / Pytest)
+cd backend
+pytest -v
+
+# Frontend type verification (TypeScript)
+cd frontend
+npx tsc --noEmit
+```
 
 ---
 
