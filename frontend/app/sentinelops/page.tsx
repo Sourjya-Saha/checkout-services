@@ -141,6 +141,43 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           if (text) {
             setTerminalLogs((prev) => [...prev, `[Agent] ${text.slice(0, 180)}...`]);
 
+            const textLower = text.toLowerCase();
+            if (
+              textLower.includes("checkpoint a") ||
+              textLower.includes("approval required before i draft") ||
+              textLower.includes("approval to: draft and test") ||
+              textLower.includes("approval to draft and test") ||
+              textLower.includes("approval required before drafting") ||
+              textLower.includes("draft and test any fix in the sandbox")
+            ) {
+              setIncidentState((prev) => ({
+                ...prev!,
+                status: "awaiting_fix_approval",
+                pending_call_type: "fix",
+              }));
+              setTerminalLogs((prev) => [
+                ...prev,
+                `[!] [CHECKPOINT A] Human Approval required before drafting/testing fix in sandbox.`,
+              ]);
+            } else if (
+              textLower.includes("checkpoint b") ||
+              textLower.includes("approval required before i open") ||
+              textLower.includes("approval to: open a pull request") ||
+              textLower.includes("approval to open a pull request") ||
+              textLower.includes("approval required before opening pull request") ||
+              textLower.includes("open a pull request with the verified fix")
+            ) {
+              setIncidentState((prev) => ({
+                ...prev!,
+                status: "awaiting_pr_approval",
+                pending_call_type: "pull_request",
+              }));
+              setTerminalLogs((prev) => [
+                ...prev,
+                `[!] [CHECKPOINT B] Human Approval required before opening GitHub Pull Request.`,
+              ]);
+            }
+
             const isConcluding = text.includes("Done — I drafted") || text.includes("### PR:") || text.includes("opened a PR");
             if (isConcluding) {
               const prMatch = text.match(/https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+/);

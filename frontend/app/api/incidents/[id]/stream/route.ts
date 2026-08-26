@@ -134,8 +134,15 @@ export async function GET(
                 typeof event.content === "string"
                   ? event.content
                   : JSON.stringify(event.content || "");
-
-              if (text.includes("approval to: draft and test a fix") || text.includes("approval to draft and test")) {
+              const textLower = text.toLowerCase();
+              if (
+                textLower.includes("checkpoint a") ||
+                textLower.includes("approval required before i draft") ||
+                textLower.includes("approval to: draft and test") ||
+                textLower.includes("approval to draft and test") ||
+                textLower.includes("approval required before drafting") ||
+                textLower.includes("draft and test any fix in the sandbox")
+              ) {
                 await updateIncident(incidentId, {
                   status: "awaiting_fix_approval",
                   pending_call_type: "fix",
@@ -147,7 +154,14 @@ export async function GET(
                   message: text,
                   turn_id: turnId,
                 });
-              } else if (text.includes("approval to: open a pull request") || text.includes("approval to open a pull request")) {
+              } else if (
+                textLower.includes("checkpoint b") ||
+                textLower.includes("approval required before i open") ||
+                textLower.includes("approval to: open a pull request") ||
+                textLower.includes("approval to open a pull request") ||
+                textLower.includes("approval required before opening pull request") ||
+                textLower.includes("open a pull request with the verified fix")
+              ) {
                 await updateIncident(incidentId, {
                   status: "awaiting_pr_approval",
                   pending_call_type: "pull_request",
