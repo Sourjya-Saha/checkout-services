@@ -336,7 +336,7 @@ export default function CustomerOrdersPage() {
                         </span>
                       </div>
                       <p className="text-xs text-[#777169]">
-                        Authenticated Member Order · Recorded to Production Database
+                        {order.is_guest ? "Guest Checkout Order" : "Authenticated Member Order"}
                       </p>
                     </div>
 
@@ -354,44 +354,46 @@ export default function CustomerOrdersPage() {
                     </div>
                   </div>
 
-                  {/* Customer & Shipping Detail Subgrid for Member Account */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-4 text-xs">
-                    <div className="space-y-1">
-                      <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
-                        Customer Recipient
-                      </span>
-                      <p className="font-medium text-[#0c0a09]">
-                        {user?.name || "Verified Customer"}
-                      </p>
-                      <p className="text-[11px] text-[#777169] truncate">
-                        {user?.email || "customer@sentinelops.io"}
-                      </p>
-                    </div>
+                  {/* Customer & Shipping Detail Subgrid ONLY for Member Account */}
+                  {!order.is_guest && user && (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-4 text-xs">
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                          Customer Recipient
+                        </span>
+                        <p className="font-medium text-[#0c0a09]">
+                          {user.name || "Verified Customer"}
+                        </p>
+                        <p className="text-[11px] text-[#777169] truncate">
+                          {user.email}
+                        </p>
+                      </div>
 
-                    <div className="space-y-1">
-                      <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
-                        Delivery Destination
-                      </span>
-                      <p className="font-medium text-[#0c0a09]">
-                        {user?.address || "500 Howard Street, Suite 400"}
-                      </p>
-                      <p className="text-[11px] text-[#777169]">
-                        San Francisco, CA 94105 (Standard Delivery)
-                      </p>
-                    </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                          Delivery Destination
+                        </span>
+                        <p className="font-medium text-[#0c0a09]">
+                          {user.address || "500 Howard Street, Suite 400"}
+                        </p>
+                        <p className="text-[11px] text-[#777169]">
+                          Standard Delivery
+                        </p>
+                      </div>
 
-                    <div className="space-y-1">
-                      <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
-                        Payment & Account
-                      </span>
-                      <p className="font-medium text-[#16a34a]">
-                        Verified Member Account
-                      </p>
-                      <p className="text-[11px] text-[#777169]">
-                        Paid via Authorized Payment Card
-                      </p>
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
+                          Payment & Account
+                        </span>
+                        <p className="font-medium text-[#16a34a]">
+                          Verified Member Account
+                        </p>
+                        <p className="text-[11px] text-[#777169]">
+                          Paid via Authorized Payment Card
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Line Items */}
                   <div className="space-y-2">
@@ -448,18 +450,25 @@ export default function CustomerOrdersPage() {
             </div>
 
             {/* Customer & Address Details in Invoice */}
-            <div className="grid grid-cols-2 gap-3 bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-3.5 text-xs">
-              <div>
-                <span className="text-[10px] uppercase font-semibold text-[#a8a29e] block">Billed To</span>
-                <p className="font-medium text-[#0c0a09]">{user?.name || "Customer"}</p>
-                <p className="text-[11px] text-[#777169] truncate">{user?.email || "customer@sentinelops.io"}</p>
+            {!selectedOrder.is_guest && user ? (
+              <div className="grid grid-cols-2 gap-3 bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-3.5 text-xs">
+                <div>
+                  <span className="text-[10px] uppercase font-semibold text-[#a8a29e] block">Billed To</span>
+                  <p className="font-medium text-[#0c0a09]">{user.name || "Customer"}</p>
+                  <p className="text-[11px] text-[#777169] truncate">{user.email}</p>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-semibold text-[#a8a29e] block">Shipped To</span>
+                  <p className="font-medium text-[#0c0a09]">{user.address || "500 Howard Street, Suite 400"}</p>
+                  <p className="text-[11px] text-[#777169]">Standard Delivery</p>
+                </div>
               </div>
-              <div>
-                <span className="text-[10px] uppercase font-semibold text-[#a8a29e] block">Shipped To</span>
-                <p className="font-medium text-[#0c0a09]">{user?.address || "500 Howard Street, Suite 400"}</p>
-                <p className="text-[11px] text-[#777169]">San Francisco, CA</p>
+            ) : (
+              <div className="bg-[#fafafa] rounded-xl border border-[#e7e5e4] p-3 text-xs text-[#777169] flex justify-between items-center">
+                <span className="text-[11px] font-medium text-[#0c0a09]">Guest Order Receipt</span>
+                <span className="text-[10px] font-mono text-[#a8a29e]">Ref: {selectedOrder.id.slice(0, 8).toUpperCase()}</span>
               </div>
-            </div>
+            )}
 
             <div className="space-y-3 text-sm">
               <div className="divide-y divide-[#f0efed] max-h-52 overflow-y-auto">
