@@ -1,3 +1,4 @@
+import uuid
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
@@ -106,12 +107,13 @@ def test_order_lookup_and_list_endpoints():
 
 
 def test_auth_signup_login_and_me():
-    """Verify signup, login, and /auth/me authentication lifecycle."""
-    email = "audit_judge@sentinelops.io"
+    """Verify signup, login, and /auth/me authentication lifecycle (idempotent across runs)."""
+    unique_suffix = uuid.uuid4().hex[:8]
+    email = f"judge_{unique_suffix}@sentinelops.io"
     password = "judge_secure_pass_123"
 
     # Signup
-    signup_res = client.post("/auth/signup", json={"email": email, "password": password, "name": "Judge Evaluator"})
+    signup_res = client.post("/auth/signup", json={"email": email, "password": password, "name": f"Judge {unique_suffix}"})
     assert signup_res.status_code == 200
     token = signup_res.json()["access_token"]
     assert token is not None
