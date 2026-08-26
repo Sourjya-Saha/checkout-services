@@ -17,7 +17,7 @@ interface Incident {
   created_at?: string;
 }
 
-export default function VenturaIncidentsAudit() {
+export default function DistortedIncidentsAudit() {
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
@@ -68,210 +68,406 @@ export default function VenturaIncidentsAudit() {
 
   return (
     <Blurred404Background blurIntensity="heavy">
-      <div className="min-h-screen font-epic antialiased selection:bg-white selection:text-black">
-        {/* Top Header */}
-        <header className="px-6 sm:px-12 py-6 border-b border-white/10 bg-black/40 backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Google Fonts */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&display=swap');
+      `}</style>
+
+      {/* SVG Distorted Drawing Filters */}
+      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        <defs>
+          <filter id="comic-box-wobble" x="-4%" y="-4%" width="108%" height="108%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="comic-title-wobble" x="-4%" y="-4%" width="108%" height="108%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+      </svg>
+
+      <div className="min-h-screen flex flex-col justify-between text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white">
+        {/* ========================================================================= */}
+        {/* TOP NAVIGATION BAR */}
+        {/* ========================================================================= */}
+        <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-black font-black text-xs">
-              🗄
-            </div>
-            <div>
-              <h1 className="text-sm font-mono uppercase tracking-widest text-white font-bold">
-                Supabase Incident Postmortem Audit
-              </h1>
-              <span className="text-[10px] font-mono text-zinc-400">
-                Persistent Memory &bull; Daytona Verifications &bull; Qodo Reviews
-              </span>
-            </div>
+            {/* Distorted White Background Patch for SENTINEL OPS */}
+            <Link href="/" className="group flex items-center gap-3">
+              <div
+                className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
+                style={{ filter: "url(#comic-title-wobble)" }}
+              >
+                <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]" />
+                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-tight uppercase block">
+                  SENTINEL OPS
+                </span>
+              </div>
+
+              {/* Clean Comic AUDIT LEDGER Tag */}
+              <div className="relative inline-block rotate-[2deg]">
+                <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#000000]" />
+                <span className="relative z-10 font-anton text-xs text-white px-3 py-0.5 uppercase tracking-wider block">
+                  POSTMORTEM LEDGER
+                </span>
+              </div>
+            </Link>
           </div>
 
-          <div className="flex items-center gap-4 font-mono text-xs">
-            <Link href="/" className="text-zinc-400 hover:text-white transition-colors">
-              &larr; Poster App
-            </Link>
-            <Link href="/checkout" className="text-zinc-400 hover:text-white transition-colors">
-              Checkout &rarr;
-            </Link>
-            <Link href="/sentinelops" className="text-zinc-400 hover:text-white transition-colors">
-              SentinelOps HUD &rarr;
-            </Link>
+          {/* Navigation Actions */}
+          <div className="flex items-center gap-4">
             <button
               onClick={fetchIncidents}
-              className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all backdrop-blur-md"
+              className="px-4 py-1.5 bg-zinc-900 border-[2px] border-white/40 text-white font-anton text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-colors"
             >
-              Sync DB
+              SYNC DB →
             </button>
+            <Link
+              href="/sentinelops"
+              className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform"
+            >
+              <div
+                className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                style={{ filter: "url(#comic-title-wobble)" }}
+              />
+              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-1.5 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                <span>SENTINELOPS HUD</span>
+                <span>→</span>
+              </span>
+            </Link>
           </div>
         </header>
 
-        {/* Main Container */}
-        <main className="max-w-7xl mx-auto px-6 sm:px-12 py-12 space-y-12">
-          {/* Title Headline */}
-          <div className="p-8 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 space-y-3 shadow-2xl">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-red-400">
-              02 // PostgreSQL Persistent Memory Matrix
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white uppercase">
-              Incident Audit Records
-            </h2>
-            <div className="w-full h-1.5 bg-gradient-to-r from-red-600 via-orange-500 via-amber-400 to-blue-600 rounded-full" />
+        {/* ========================================================================= */}
+        {/* MAIN AUDIT CONTAINER */}
+        {/* ========================================================================= */}
+        <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 pb-16 space-y-12 flex-1 w-full">
+          {/* ========================================================================= */}
+          {/* 1. HERO BANNER */}
+          {/* ========================================================================= */}
+          <div className="relative p-8 sm:p-12 rotate-[-0.3deg]">
+            {/* Distorted Black Box Background Layer */}
+            <div
+              className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
+              style={{ filter: "url(#comic-box-wobble)" }}
+            />
+
+            {/* Content inside Hero Banner */}
+            <div className="relative z-10 space-y-6">
+              {/* Subtitle Badge */}
+              <div className="relative inline-block rotate-[0.5deg]">
+                <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                  02 // POSTGRESQL PERSISTENT MEMORY MATRIX
+                </span>
+              </div>
+
+              {/* Big Title: INCIDENT AUDIT RECORDS */}
+              <div>
+                <div
+                  className="relative inline-block mt-1"
+                  style={{ filter: "url(#comic-title-wobble)" }}
+                >
+                  <div className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[6px_6px_0px_#dc2626]" />
+                  <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-tight uppercase px-4 py-1.5 leading-none block">
+                    INCIDENT AUDIT RECORDS
+                  </h1>
+                </div>
+              </div>
+
+              {/* Slanted Specs Ribbon */}
+              <div className="pt-4">
+                <div className="relative inline-block rotate-[-1.5deg]">
+                  <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
+                  <p className="relative z-10 text-xs sm:text-sm font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
+                    <span className="text-red-500">SUPABASE PERSISTENCE</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-white">DAYTONA SANDBOX VERIFICATION</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-red-500">QODO AI CODE REVIEWS</span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Metrics Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
-            <div className="p-6 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 space-y-1 font-mono shadow-2xl">
-              <p className="text-[10px] uppercase tracking-widest text-zinc-400">Total Records</p>
-              <p className="text-4xl font-black text-white">{incidents.length}</p>
-              <span className="text-xs text-zinc-300">
-                {incidents.length === 0 ? "Zero recorded events" : `${resolvedCount} Resolved Events`}
-              </span>
+          {/* ========================================================================= */}
+          {/* 2. METRICS GRID (4 DISTORTED BLACK PANELS) */}
+          {/* ========================================================================= */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="relative p-6 rotate-[-0.5deg]">
+              <div
+                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
+                style={{ filter: "url(#comic-box-wobble)" }}
+              />
+              <div className="relative z-10 space-y-2">
+                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">TOTAL EVENTS</p>
+                <p className="text-4xl sm:text-5xl font-anton text-white tracking-tight">{incidents.length}</p>
+                <p className="text-xs font-mono font-bold text-red-400">
+                  {incidents.length === 0 ? "Zero recorded events" : `${resolvedCount} Resolved Events`}
+                </p>
+              </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 space-y-1 font-mono shadow-2xl">
-              <p className="text-[10px] uppercase tracking-widest text-zinc-400">Agent Harness</p>
-              <p className="text-4xl font-black text-white">TrueForge</p>
-              <span className="text-xs text-zinc-300">Multi-agent runtime</span>
+            <div className="relative p-6 rotate-[0.5deg]">
+              <div
+                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
+                style={{ filter: "url(#comic-box-wobble)" }}
+              />
+              <div className="relative z-10 space-y-2">
+                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">AGENT HARNESS</p>
+                <p className="text-3xl sm:text-4xl font-anton text-white tracking-tight">TRUEFORGE</p>
+                <p className="text-xs font-mono text-zinc-300">Multi-agent runtime</p>
+              </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 space-y-1 font-mono shadow-2xl">
-              <p className="text-[10px] uppercase tracking-widest text-zinc-400">Code Quality</p>
-              <p className="text-4xl font-black text-purple-400">Qodo AI</p>
-              <span className="text-xs text-zinc-300">Automated PR review</span>
+            <div className="relative p-6 rotate-[-0.3deg]">
+              <div
+                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
+                style={{ filter: "url(#comic-box-wobble)" }}
+              />
+              <div className="relative z-10 space-y-2">
+                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">CODE QUALITY</p>
+                <p className="text-3xl sm:text-4xl font-anton text-red-500 tracking-tight">QODO AI</p>
+                <p className="text-xs font-mono text-zinc-300">Automated PR review</p>
+              </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 space-y-1 font-mono shadow-2xl">
-              <p className="text-[10px] uppercase tracking-widest text-zinc-400">Persistent DB</p>
-              <p className="text-4xl font-black text-emerald-400">Supabase</p>
-              <span className="text-xs text-zinc-300">incidents table</span>
+            <div className="relative p-6 rotate-[0.4deg]">
+              <div
+                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
+                style={{ filter: "url(#comic-box-wobble)" }}
+              />
+              <div className="relative z-10 space-y-2">
+                <p className="text-xs font-anton text-zinc-400 uppercase tracking-wide">PERSISTENT DB</p>
+                <p className="text-3xl sm:text-4xl font-anton text-white tracking-tight">SUPABASE</p>
+                <p className="text-xs font-mono text-zinc-300">incidents table</p>
+              </div>
             </div>
           </div>
 
-          {/* Audit Log Stream */}
+          {/* ========================================================================= */}
+          {/* 3. AUDIT LOG STREAM (DISTORTED PANELS) */}
+          {/* ========================================================================= */}
           <div className="space-y-6">
             {loading ? (
-              <div className="py-16 text-center text-zinc-400 font-mono text-xs p-8 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/10">
-                Querying Supabase persistent memory cluster...
+              <div className="relative p-12 text-center rotate-[0.2deg]">
+                <div
+                  className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
+                  style={{ filter: "url(#comic-box-wobble)" }}
+                />
+                <p className="relative z-10 text-zinc-300 font-mono text-xs">
+                  Querying Supabase persistent memory cluster...
+                </p>
               </div>
             ) : incidents.length === 0 ? (
-              <div className="p-12 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 text-center space-y-4 font-mono shadow-2xl">
-                <div className="w-12 h-12 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-700/60 flex items-center justify-center font-bold text-lg mx-auto shadow-lg">
-                  ✓
+              <div className="relative p-10 sm:p-14 text-center space-y-6 rotate-[0.3deg]">
+                <div
+                  className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
+                  style={{ filter: "url(#comic-box-wobble)" }}
+                />
+                <div className="relative z-10 space-y-6">
+                  <div className="relative inline-block">
+                    <div className="absolute -inset-2 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
+                    <h2 className="relative z-10 font-anton text-2xl sm:text-4xl text-black px-5 py-2 uppercase">
+                      NO INCIDENTS RECORDED IN MEMORY
+                    </h2>
+                  </div>
+
+                  <p className="text-xs sm:text-sm font-bold text-zinc-300 max-w-xl mx-auto leading-relaxed">
+                    SentinelOps is actively monitoring checkout-service. When an incident is investigated and remediated, the postmortem record will be committed to Supabase and appear here in real-time.
+                  </p>
+
+                  <div>
+                    <Link
+                      href="/sentinelops"
+                      className="px-7 py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all inline-block"
+                    >
+                      LAUNCH SENTINELOPS HUD →
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-base font-bold text-white uppercase">No Incidents Recorded In Memory</h3>
-                <p className="text-xs text-zinc-300 max-w-md mx-auto leading-relaxed">
-                  SentinelOps is actively monitoring checkout-service. When an incident is investigated and remediated, the postmortem record will be committed to Supabase and appear here in real-time.
-                </p>
-                <Link
-                  href="/sentinelops"
-                  className="inline-block mt-2 px-6 py-3 bg-white hover:bg-zinc-200 text-black text-xs font-bold uppercase tracking-widest rounded-2xl transition-colors shadow-lg"
-                >
-                  Launch SentinelOps Swarm &rarr;
-                </Link>
               </div>
             ) : (
-              <div className="space-y-6">
-                {incidents.map((inc) => (
-                  <div
-                    key={inc.id}
-                    className="p-8 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/10 space-y-6 shadow-2xl hover:border-white/20 transition-colors"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs font-black px-3 py-1 rounded-xl bg-black/80 text-cyan-400 border border-white/10">
-                          {inc.id}
-                        </span>
-                        <h3 className="font-bold text-base text-white">{inc.title}</h3>
-                      </div>
-                      <span className="px-3.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 backdrop-blur-md">
-                        {inc.resolution_status}
-                      </span>
-                    </div>
+              <div className="space-y-8">
+                {incidents.map((inc, idx) => {
+                  const rot = idx % 2 === 0 ? "rotate-[-0.3deg]" : "rotate-[0.3deg]";
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-mono">
-                      <div className="p-5 rounded-2xl bg-red-950/40 border border-red-900/50 space-y-2 backdrop-blur-md">
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-red-400">
-                          Root Cause Analysis
-                        </p>
-                        <p className="text-red-200 leading-relaxed">{inc.root_cause}</p>
-                      </div>
+                  return (
+                    <div key={inc.id} className={`relative p-8 space-y-6 ${rot}`}>
+                      {/* Distorted Black Box Background */}
+                      <div
+                        className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
+                        style={{ filter: "url(#comic-box-wobble)" }}
+                      />
 
-                      <div className="p-5 rounded-2xl bg-emerald-950/40 border border-emerald-900/50 space-y-2 backdrop-blur-md">
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-emerald-400">
-                          Daytona Sandbox Verification
-                        </p>
-                        <p className="text-emerald-200 leading-relaxed">{inc.verification_result}</p>
-                      </div>
-                    </div>
+                      {/* Content */}
+                      <div className="relative z-10 space-y-6">
+                        {/* Header of Incident Card */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-[2px] border-white/20">
+                          <div className="flex items-center gap-3">
+                            <div className="relative inline-block">
+                              <div className="absolute -inset-1 bg-white border-[2px] border-black" />
+                              <span className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 uppercase block">
+                                {inc.id}
+                              </span>
+                            </div>
+                            <h3 className="font-anton text-xl sm:text-2xl text-white uppercase tracking-wide">
+                              {inc.title}
+                            </h3>
+                          </div>
 
-                    <div className="p-4 rounded-2xl bg-black/70 border border-white/10 text-xs font-mono space-y-1.5 text-zinc-200">
-                      <p>
-                        <strong className="text-white">Subagent Evidence:</strong> {inc.evidence_summary}
-                      </p>
-                      <p>
-                        <strong className="text-amber-400">Human Approval:</strong> {inc.approval_record}
-                      </p>
-                    </div>
+                          <div className="relative inline-block">
+                            <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]" />
+                            <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block">
+                              STATUS: {inc.resolution_status} [OK]
+                            </span>
+                          </div>
+                        </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                      <div className="flex items-center gap-3">
-                        {inc.pr_link && (
-                          <a
-                            href={inc.pr_link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-2xl text-xs font-mono font-bold uppercase tracking-widest bg-white hover:bg-zinc-200 text-black transition-colors shadow-lg"
+                        {/* Root Cause & Daytona Subgrids */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-mono">
+                          <div className="p-5 bg-zinc-950 border-[2px] border-red-600/60 space-y-2">
+                            <p className="font-anton text-xs text-red-500 uppercase tracking-wider">
+                              ROOT CAUSE ANALYSIS
+                            </p>
+                            <p className="text-zinc-200 leading-relaxed">{inc.root_cause}</p>
+                          </div>
+
+                          <div className="p-5 bg-zinc-950 border-[2px] border-white/30 space-y-2">
+                            <p className="font-anton text-xs text-white uppercase tracking-wider">
+                              DAYTONA SANDBOX VERIFICATION
+                            </p>
+                            <p className="text-zinc-200 leading-relaxed">{inc.verification_result}</p>
+                          </div>
+                        </div>
+
+                        {/* Evidence & Approval Details */}
+                        <div className="p-4 bg-zinc-950 border-[1.5px] border-white/20 font-mono text-xs text-zinc-300 space-y-2">
+                          <p>
+                            <strong className="text-white font-anton text-xs">SUBAGENT EVIDENCE:</strong> {inc.evidence_summary}
+                          </p>
+                          <p>
+                            <strong className="text-red-400 font-anton text-xs">HUMAN APPROVAL:</strong> {inc.approval_record}
+                          </p>
+                        </div>
+
+                        {/* Bottom Actions */}
+                        <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                          <div className="flex items-center gap-4">
+                            {inc.pr_link && (
+                              <a
+                                href={inc.pr_link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-6 py-2.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-xs uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] transition-all inline-block"
+                              >
+                                VIEW GITHUB PR →
+                              </a>
+                            )}
+                            <span className="px-3.5 py-2 bg-zinc-900 border-[2px] border-white/30 text-xs font-anton uppercase text-zinc-300">
+                              QODO REVIEW: APPROVED (0 HIGHS)
+                            </span>
+                          </div>
+
+                          <button
+                            onClick={() => setSelectedIncident(inc)}
+                            className="font-anton text-xs text-zinc-300 hover:text-white uppercase underline transition-colors"
                           >
-                            View GitHub PR &rarr;
-                          </a>
-                        )}
-                        <span className="px-3.5 py-2 rounded-2xl text-xs font-mono font-bold bg-purple-950/80 text-purple-300 border border-purple-800/60 backdrop-blur-md">
-                          Qodo Review: Approved (0 Highs)
-                        </span>
+                            INSPECT SUPABASE JSON SCHEMA →
+                          </button>
+                        </div>
                       </div>
-
-                      <button
-                        onClick={() => setSelectedIncident(inc)}
-                        className="text-xs font-mono text-zinc-300 hover:text-white underline transition-colors"
-                      >
-                        Inspect Supabase JSON Schema &rarr;
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
         </main>
 
-        {/* JSON Modal */}
+        {/* JSON Schema Modal */}
         {selectedIncident && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div className="bg-black/90 rounded-3xl max-w-2xl w-full p-6 space-y-4 shadow-2xl border border-white/15 backdrop-blur-2xl">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h3 className="font-bold text-sm text-white font-mono">
-                  Supabase Persistent Memory Record ({selectedIncident.id})
-                </h3>
-                <button
-                  onClick={() => setSelectedIncident(null)}
-                  className="text-zinc-400 hover:text-white font-bold text-sm"
-                >
-                  ✕
-                </button>
-              </div>
-              <pre className="bg-black/90 text-emerald-400 p-4 rounded-2xl text-xs font-mono overflow-x-auto max-h-96 border border-white/10">
-                {JSON.stringify(selectedIncident, null, 2)}
-              </pre>
-              <div className="text-right">
-                <button
-                  onClick={() => setSelectedIncident(null)}
-                  className="px-5 py-2.5 bg-white text-black text-xs font-mono font-bold rounded-xl hover:bg-zinc-200"
-                >
-                  Close
-                </button>
+            <div className="relative max-w-2xl w-full p-8 rotate-[-0.5deg]">
+              <div
+                className="absolute inset-0 bg-black border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626]"
+                style={{ filter: "url(#comic-box-wobble)" }}
+              />
+
+              <div className="relative z-10 space-y-4">
+                <div className="flex items-center justify-between border-b-[2px] border-white/20 pb-3">
+                  <div className="relative inline-block">
+                    <div className="absolute -inset-1 bg-white border-[2px] border-black" />
+                    <h3 className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 uppercase">
+                      SUPABASE MEMORY RECORD ({selectedIncident.id})
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setSelectedIncident(null)}
+                    className="text-white hover:text-red-500 font-anton text-sm"
+                  >
+                    ✕ CLOSE
+                  </button>
+                </div>
+
+                <pre className="bg-zinc-950 text-zinc-200 p-4 border-[2px] border-white/20 text-xs font-mono overflow-x-auto max-h-96">
+                  {JSON.stringify(selectedIncident, null, 2)}
+                </pre>
+
+                <div className="text-right pt-2">
+                  <button
+                    onClick={() => setSelectedIncident(null)}
+                    className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-anton text-xs uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]"
+                  >
+                    DISMISS
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         )}
+
+        {/* Comic Footer (PINNED ABSOLUTELY TO BOTTOM) */}
+        <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              {/* Footer SENTINEL OPS Distorted Badge */}
+              <Link href="/" className="group inline-block">
+                <div
+                  className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
+                  style={{ filter: "url(#comic-title-wobble)" }}
+                >
+                  <div className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626]" />
+                  <span className="relative z-10 font-anton text-base sm:text-lg text-black px-2.5 py-0.5 tracking-tight uppercase block">
+                    SENTINEL OPS
+                  </span>
+                </div>
+              </Link>
+              <span className="text-zinc-400 font-mono text-xs font-bold hidden md:inline-block">
+                // Autonomous Microservice Resilience Platform
+              </span>
+            </div>
+
+            {/* Footer SENTINELOPS COMMAND HUD Button */}
+            <div>
+              <Link
+                href="/sentinelops"
+                className="group relative inline-block rotate-[-1deg] hover:rotate-0 transition-transform"
+              >
+                <div
+                  className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                  style={{ filter: "url(#comic-title-wobble)" }}
+                />
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                  <span>SENTINELOPS COMMAND HUD</span>
+                  <span>→</span>
+                </span>
+              </Link>
+            </div>
+          </div>
+        </footer>
       </div>
     </Blurred404Background>
   );
