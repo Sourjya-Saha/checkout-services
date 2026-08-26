@@ -36,7 +36,7 @@ interface IncidentState {
 
 const SENTINELOPS_AGENT_ID = "01m0xgq0c13c5p67k7rtjk0s35";
 
-export default function DarkRedComicSentinelOpsCommander() {
+export default function ComicDistortedSentinelOpsCommander() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const incidentQueryId = searchParams.get("incident");
@@ -293,110 +293,140 @@ export default function DarkRedComicSentinelOpsCommander() {
 
   return (
     <Blurred404Background blurIntensity="heavy">
+      {/* Import Comic Fonts */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&family=Permanent+Marker&family=Bungee&display=swap');
+      `}</style>
+
       {/* SVG Distorted Comic Drawing Filters */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
-          <filter id="comic-wobble-dark" x="-10%" y="-10%" width="120%" height="120%">
+          <filter id="comic-card-wobble" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
           </filter>
-          <filter id="comic-wobble-hero" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="comic-badge-wobble" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="comic-hero-wobble" x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>
 
-      <div className="min-h-screen text-white font-epic antialiased selection:bg-red-600 selection:text-white">
+      <div className="min-h-screen text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white pb-20">
         {/* ========================================================================= */}
-        {/* TOP NEOBRUTALIST NAV BAR */}
+        {/* TOP COMIC NAVIGATION BAR (ONLY 1 REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
         {/* ========================================================================= */}
         <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted Drawing White Patch for Logo Title */}
             <Link href="/" className="group flex items-center gap-3">
-              <div className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform">
+              <div className="relative inline-block rotate-[-2deg] group-hover:rotate-0 transition-transform">
                 <div
-                  className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-wobble-dark)" }}
+                  className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]"
+                  style={{ filter: "url(#comic-badge-wobble)" }}
                 />
-                <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-3 py-0.5 tracking-wider uppercase block">
+                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-wider uppercase block">
                   SENTINEL OPS
                 </span>
               </div>
-              <span className="font-mono text-xs px-2.5 py-1 bg-red-600 text-white font-bold border-[2px] border-black shadow-[2px_2px_0px_#000000] rotate-[2deg] hidden sm:inline-block">
-                SWARM HUD
-              </span>
+
+              {/* Distorted Comic SWARM HUD Tag */}
+              <div className="relative inline-block rotate-[3deg]">
+                <div
+                  className="absolute -inset-1 bg-red-600 border-[2.5px] border-black shadow-[3px_3px_0px_#000000]"
+                  style={{ filter: "url(#comic-badge-wobble)" }}
+                />
+                <span className="relative z-10 font-['Permanent_Marker',cursive] text-xs text-white px-3 py-0.5 uppercase tracking-wider block">
+                  SWARM HUD!
+                </span>
+              </div>
             </Link>
           </div>
 
-          <div className="flex items-center gap-3 font-mono text-xs font-bold">
-            <Link
-              href="/"
-              className="px-3.5 py-1.5 bg-white text-black border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] hover:bg-red-600 hover:text-white hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#ffffff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all"
-            >
-              ← Poster App
-            </Link>
-            <Link
-              href="/checkout"
-              className="px-3.5 py-1.5 bg-red-600 text-white border-[2.5px] border-black shadow-[3px_3px_0px_#ffffff] hover:bg-white hover:text-black hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#dc2626] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all"
-            >
-              Checkout Service →
-            </Link>
-            <Link
-              href="/orders"
-              className="px-3.5 py-1.5 bg-white text-black border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] hover:bg-black hover:text-white hover:border-white hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#ffffff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all"
-            >
-              Orders
-            </Link>
+          {/* ONLY 1 Redirection Button */}
+          <div className="flex items-center">
             <Link
               href="/incidents"
-              className="px-3.5 py-1.5 bg-white text-black border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] hover:bg-red-600 hover:text-white hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#ffffff] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all"
+              className="relative inline-block group rotate-[-1deg] hover:rotate-0 transition-transform"
             >
-              Postmortem DB →
+              <div
+                className="absolute -inset-1 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                style={{ filter: "url(#comic-badge-wobble)" }}
+              />
+              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-2 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                <span>🗄️ POSTMORTEM REPORTS</span>
+                <span>↗</span>
+              </span>
             </Link>
           </div>
         </header>
 
         {/* ========================================================================= */}
-        {/* MAIN HUD CONTAINER */}
+        {/* MAIN COMIC HUD CONTAINER */}
         {/* ========================================================================= */}
-        <main className="max-w-7xl mx-auto px-6 sm:px-12 py-12 space-y-10">
+        <main className="max-w-7xl mx-auto px-6 sm:px-12 py-10 space-y-10">
           {/* ========================================================================= */}
-          {/* HERO BANNER: DISTORTED DRAWING WHITE BG BEHIND BIG TEXT (ANTON FONT) */}
+          {/* 1. HERO BANNER WITH DISTORTED BLACK BG & DISTORTED WHITE TITLE PATCH */}
           {/* ========================================================================= */}
-          <div className="relative p-7 sm:p-9 bg-black/90 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626] backdrop-blur-2xl">
+          <div
+            className="relative p-7 sm:p-10 bg-black/95 border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626] rotate-[-0.5deg]"
+            style={{ filter: "url(#comic-card-wobble)" }}
+          >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-3">
-                <div className="inline-block px-3 py-1 bg-red-600 text-white font-mono text-[11px] font-bold uppercase tracking-widest border-[2px] border-black rotate-[-1deg]">
-                  01 // AUTONOMOUS INCIDENT INGESTION &amp; LIVE STREAM
-                </div>
-
-                {/* Distorted Drawing White Backplate with Anton Font */}
-                <div className="relative inline-block mt-2">
+              <div className="space-y-4">
+                {/* Comic Jagged Distorted Subtitle Badge */}
+                <div className="relative inline-block rotate-[1deg]">
                   <div
-                    className="absolute -inset-2.5 sm:-inset-3.5 bg-white border-[3.5px] border-black shadow-[6px_6px_0px_#dc2626]"
-                    style={{ filter: "url(#comic-wobble-hero)" }}
+                    className="absolute -inset-1.5 bg-red-600 border-[2.5px] border-black shadow-[3px_3px_0px_#ffffff]"
+                    style={{ filter: "url(#comic-badge-wobble)" }}
                   />
-                  <h1 className="relative z-10 font-anton text-4xl sm:text-6xl text-black tracking-normal uppercase px-3.5 py-1 leading-tight">
-                    SENTINELOPS INCIDENT HUD
-                  </h1>
+                  <span className="relative z-10 font-['Permanent_Marker',cursive] text-xs sm:text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                    ⚡ 01 // AUTONOMOUS INCIDENT INGESTION &amp; LIVE STREAM
+                  </span>
                 </div>
 
-                <p className="text-xs sm:text-sm font-mono text-zinc-300 max-w-2xl leading-relaxed pt-1">
-                  TrueForge Multi-Agent Runtime &bull; Daytona Isolated Linux Sandbox &bull; Two-Stage Human Approval Gate
-                </p>
+                {/* Big Title Wrapped in Distorted Hand-Drawn White Patch */}
+                <div>
+                  <div className="relative inline-block mt-1">
+                    <div
+                      className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[7px_7px_0px_#dc2626]"
+                      style={{ filter: "url(#comic-hero-wobble)" }}
+                    />
+                    <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-normal uppercase px-4 py-1.5 leading-none block">
+                      SENTINELOPS INCIDENT HUD
+                    </h1>
+                  </div>
+                </div>
+
+                {/* Comic Specs Ribbon */}
+                <div className="relative inline-block pt-2">
+                  <div
+                    className="absolute -inset-1.5 bg-zinc-900 border-[2.5px] border-white shadow-[3px_3px_0px_#dc2626]"
+                    style={{ filter: "url(#comic-badge-wobble)" }}
+                  />
+                  <p className="relative z-10 text-xs sm:text-[13px] font-bold text-zinc-100 px-3.5 py-1 flex items-center gap-2 flex-wrap">
+                    <span className="text-red-500 font-anton text-sm">⚡ TRUEFORGE AGENT RUNTIME</span>
+                    <span>&bull;</span>
+                    <span className="text-white font-anton text-sm">💥 DAYTONA LINUX SANDBOX</span>
+                    <span>&bull;</span>
+                    <span className="text-red-500 font-anton text-sm">🛡️ TWO-STAGE HITL APPROVAL</span>
+                  </p>
+                </div>
               </div>
 
               {/* Status and Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 {incidentId ? (
-                  <div className="relative rotate-[1.5deg]">
+                  <div className="relative rotate-[2deg]">
                     <div
-                      className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-wobble-dark)" }}
+                      className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
+                      style={{ filter: "url(#comic-badge-wobble)" }}
                     />
-                    <span className="relative z-10 font-mono text-xs font-black text-black px-3 py-1 block">
+                    <span className="relative z-10 font-anton text-sm text-black px-3.5 py-1.5 uppercase block">
                       INCIDENT: {incidentId.slice(0, 16)}...
                     </span>
                   </div>
@@ -404,16 +434,28 @@ export default function DarkRedComicSentinelOpsCommander() {
                   <button
                     onClick={handleLaunchNewIncident}
                     disabled={isSpawning}
-                    className="px-6 py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all disabled:opacity-50"
+                    className="relative group rotate-[-1deg] hover:rotate-0 transition-transform"
                   >
-                    {isSpawning ? "SPAWNING SENTINELOPS..." : "⚡ LAUNCH INCIDENT SWARM ↗"}
+                    <div
+                      className="absolute -inset-1.5 bg-red-600 border-[3.5px] border-black shadow-[5px_5px_0px_#ffffff] group-hover:shadow-[7px_7px_0px_#ffffff]"
+                      style={{ filter: "url(#comic-badge-wobble)" }}
+                    />
+                    <span className="relative z-10 font-anton text-sm text-white px-6 py-3 uppercase tracking-wider block">
+                      {isSpawning ? "SPAWNING SWARM..." : "⚡ LAUNCH INCIDENT SWARM ↗"}
+                    </span>
                   </button>
                 )}
 
                 {incidentState?.status && (
-                  <span className="px-3.5 py-1.5 bg-white text-black font-mono font-black text-xs uppercase border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] rotate-[-1deg]">
-                    {incidentState.status}
-                  </span>
+                  <div className="relative rotate-[-2deg]">
+                    <div
+                      className="absolute -inset-1 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626]"
+                      style={{ filter: "url(#comic-badge-wobble)" }}
+                    />
+                    <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block">
+                      STATUS: {incidentState.status}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
@@ -421,18 +463,21 @@ export default function DarkRedComicSentinelOpsCommander() {
 
           {/* Empty State Banner when no incident is connected */}
           {!incidentId && (
-            <div className="p-8 sm:p-12 bg-black/85 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626] backdrop-blur-2xl text-center space-y-6">
+            <div
+              className="p-8 sm:p-12 bg-black/90 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626] text-center space-y-6 rotate-[0.3deg]"
+              style={{ filter: "url(#comic-card-wobble)" }}
+            >
               <div className="relative inline-block">
                 <div
-                  className="absolute -inset-2 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-wobble-dark)" }}
+                  className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[5px_5px_0px_#dc2626]"
+                  style={{ filter: "url(#comic-badge-wobble)" }}
                 />
-                <h2 className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-4 py-1.5 uppercase">
-                  NO ACTIVE INCIDENT CONNECTED
+                <h2 className="relative z-10 font-anton text-2xl sm:text-4xl text-black px-5 py-2 uppercase">
+                  NO ACTIVE INCIDENT CONNECTED!
                 </h2>
               </div>
 
-              <p className="text-xs sm:text-sm font-mono text-zinc-300 max-w-xl mx-auto leading-relaxed">
+              <p className="text-xs sm:text-sm font-bold text-zinc-300 max-w-xl mx-auto leading-relaxed">
                 Trigger a guest checkout error on the Checkout Service page, or click below to immediately launch an automated investigation swarm using the saved SentinelOps agent.
               </p>
 
@@ -455,43 +500,52 @@ export default function DarkRedComicSentinelOpsCommander() {
           )}
 
           {/* ========================================================================= */}
-          {/* TWO-STAGE HITL APPROVAL CARDS (NEOBRUTALIST COMIC CARDS) */}
+          {/* TWO-STAGE HITL APPROVAL CARDS (DISTORTED COMIC BOXES) */}
           {/* ========================================================================= */}
 
           {/* Checkpoint A: Fix Approval */}
           {incidentState?.status === "awaiting_fix_approval" && (
-            <div className="p-8 bg-black/95 border-[3.5px] border-red-600 shadow-[10px_10px_0px_0px_#dc2626] space-y-6 rotate-[-0.5deg]">
+            <div
+              className="p-8 bg-black/95 border-[4px] border-red-600 shadow-[10px_10px_0px_0px_#dc2626] space-y-6 rotate-[-0.6deg]"
+              style={{ filter: "url(#comic-card-wobble)" }}
+            >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className="w-4 h-4 rounded-full bg-red-600 border-[2px] border-white animate-ping" />
                   <div className="relative inline-block">
                     <div
                       className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-wobble-dark)" }}
+                      style={{ filter: "url(#comic-badge-wobble)" }}
                     />
-                    <h3 className="relative z-10 font-anton text-xl sm:text-2xl text-black px-3 py-1 uppercase">
-                      CHECKPOINT A // APPROVAL TO DRAFT &amp; TEST FIX
+                    <h3 className="relative z-10 font-anton text-xl sm:text-3xl text-black px-4 py-1 uppercase">
+                      🛑 CHECKPOINT A // APPROVAL TO DRAFT &amp; TEST FIX
                     </h3>
                   </div>
                 </div>
-                <span className="px-3 py-1 bg-red-600 text-white font-mono text-xs font-bold uppercase border-[2px] border-black">
-                  HITL GATE 1 OF 2
-                </span>
+                <div className="relative rotate-[2deg]">
+                  <div
+                    className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]"
+                    style={{ filter: "url(#comic-badge-wobble)" }}
+                  />
+                  <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block">
+                    HITL GATE 1 OF 2
+                  </span>
+                </div>
               </div>
 
-              <p className="text-xs sm:text-sm font-mono text-zinc-200 leading-relaxed bg-zinc-900/90 p-3.5 border-[2px] border-white/20">
+              <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2.5px] border-white/30">
                 SentinelOps has verified the root-cause hypothesis. Explicit human approval is required before drafting code or running candidate patches in the Daytona sandbox.
               </p>
 
-              <div className="p-4 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1">
+              <div className="p-4 bg-white border-[3.5px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
                 <p>
-                  <strong className="text-red-600">TARGET REPO:</strong> Sourjya-Saha/checkout-services
+                  <strong className="text-red-600 font-anton text-sm">TARGET REPO:</strong> Sourjya-Saha/checkout-services
                 </p>
                 <p>
-                  <strong className="text-black">TARGET ERROR:</strong> {incidentState.error_message || "Active production regression"}
+                  <strong className="text-black font-anton text-sm">TARGET ERROR:</strong> {incidentState.error_message || "Active production regression"}
                 </p>
                 <p>
-                  <strong className="text-zinc-600">ACTION:</strong> Install dependencies, apply safe fallback in payment_processor.py, and run sandbox verification.
+                  <strong className="text-zinc-600 font-anton text-sm">ACTION:</strong> Install dependencies, apply safe fallback in payment_processor.py, and run sandbox verification.
                 </p>
               </div>
 
@@ -518,35 +572,44 @@ export default function DarkRedComicSentinelOpsCommander() {
 
           {/* Checkpoint B: Pull Request Approval */}
           {incidentState?.status === "awaiting_pr_approval" && (
-            <div className="p-8 bg-black/95 border-[3.5px] border-white shadow-[10px_10px_0px_0px_#dc2626] space-y-6 rotate-[0.5deg]">
+            <div
+              className="p-8 bg-black/95 border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626] space-y-6 rotate-[0.6deg]"
+              style={{ filter: "url(#comic-card-wobble)" }}
+            >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className="w-4 h-4 rounded-full bg-white border-[2px] border-red-600 animate-ping" />
                   <div className="relative inline-block">
                     <div
                       className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-wobble-dark)" }}
+                      style={{ filter: "url(#comic-badge-wobble)" }}
                     />
-                    <h3 className="relative z-10 font-anton text-xl sm:text-2xl text-black px-3 py-1 uppercase">
-                      CHECKPOINT B // APPROVAL TO OPEN GITHUB PULL REQUEST
+                    <h3 className="relative z-10 font-anton text-xl sm:text-3xl text-black px-4 py-1 uppercase">
+                      🛑 CHECKPOINT B // APPROVAL TO OPEN GITHUB PULL REQUEST
                     </h3>
                   </div>
                 </div>
-                <span className="px-3 py-1 bg-white text-black font-mono text-xs font-bold uppercase border-[2px] border-black">
-                  HITL GATE 2 OF 2
-                </span>
+                <div className="relative rotate-[-2deg]">
+                  <div
+                    className="absolute -inset-1 bg-white border-[2px] border-black shadow-[2px_2px_0px_#dc2626]"
+                    style={{ filter: "url(#comic-badge-wobble)" }}
+                  />
+                  <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block">
+                    HITL GATE 2 OF 2
+                  </span>
+                </div>
               </div>
 
-              <p className="text-xs sm:text-sm font-mono text-zinc-200 leading-relaxed bg-zinc-900/90 p-3.5 border-[2px] border-white/20">
+              <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2.5px] border-white/30">
                 Candidate patch successfully verified in the Daytona sandbox with all test suites passing. Explicit human approval is required before opening a Pull Request on GitHub.
               </p>
 
-              <div className="p-4 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1">
+              <div className="p-4 bg-white border-[3.5px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
                 <p>
-                  <strong className="text-red-600">TARGET REPO:</strong> Sourjya-Saha/checkout-services
+                  <strong className="text-red-600 font-anton text-sm">TARGET REPO:</strong> Sourjya-Saha/checkout-services
                 </p>
                 <p>
-                  <strong className="text-black">DAYTONA PROOF:</strong> 100% verification checks passed in isolated Linux sandbox.
+                  <strong className="text-black font-anton text-sm">DAYTONA PROOF:</strong> 100% verification checks passed in isolated Linux sandbox.
                 </p>
               </div>
 
@@ -573,22 +636,25 @@ export default function DarkRedComicSentinelOpsCommander() {
 
           {/* Resolved Banner */}
           {incidentState?.status === "resolved" && (
-            <div className="p-8 bg-black/95 border-[3.5px] border-white shadow-[10px_10px_0px_0px_#dc2626] space-y-4">
+            <div
+              className="p-8 bg-black/95 border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626] space-y-4"
+              style={{ filter: "url(#comic-card-wobble)" }}
+            >
               <div className="flex items-center justify-between">
                 <div className="relative inline-block">
                   <div
                     className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                    style={{ filter: "url(#comic-wobble-dark)" }}
+                    style={{ filter: "url(#comic-badge-wobble)" }}
                   />
-                  <h3 className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-1 uppercase">
-                    INCIDENT REMEDIATED &amp; RESOLVED
+                  <h3 className="relative z-10 font-anton text-2xl sm:text-4xl text-black px-4 py-1 uppercase">
+                    🎉 INCIDENT REMEDIATED &amp; RESOLVED!
                   </h3>
                 </div>
-                <span className="px-4 py-1.5 bg-red-600 text-white font-mono text-xs font-bold uppercase border-[2px] border-black">
+                <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-xs uppercase border-[2px] border-black">
                   STATUS: RESOLVED ✓
                 </span>
               </div>
-              <p className="text-xs sm:text-sm font-mono text-zinc-200">
+              <p className="text-xs sm:text-sm font-bold text-zinc-200">
                 The incident has been completely remediated, verified in sandbox, reviewed by Qodo AI, and recorded to Supabase persistent memory.
               </p>
               {incidentState.pr_url && (
@@ -605,80 +671,108 @@ export default function DarkRedComicSentinelOpsCommander() {
           )}
 
           {/* ========================================================================= */}
-          {/* PARALLEL MULTI-AGENT SWARM (3 NEOBRUTALIST PANELS) */}
+          {/* 2. PARALLEL MULTI-AGENT SWARM (DISTORTED COMIC PANELS) */}
           {/* ========================================================================= */}
-          <div className="space-y-4">
-            <div className="relative inline-block">
+          <div className="space-y-5">
+            {/* Section Tag */}
+            <div className="relative inline-block rotate-[-1deg]">
               <div
                 className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                style={{ filter: "url(#comic-wobble-dark)" }}
+                style={{ filter: "url(#comic-badge-wobble)" }}
               />
-              <span className="relative z-10 font-anton text-lg sm:text-xl text-black px-3.5 py-0.5 uppercase block">
-                02 // PARALLEL MULTI-AGENT SWARM
+              <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase block">
+                🤖 02 // PARALLEL MULTI-AGENT SWARM
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {subagents.map((sub) => (
-                <div
-                  key={sub.id}
-                  className="p-6 bg-black/90 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626] flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1"
-                >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between pb-2 border-b-[2px] border-white/20">
-                      <span className="font-anton text-base text-white tracking-wide">{sub.name}</span>
-                      <span
-                        className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] ${
-                          sub.status === "completed"
-                            ? "bg-white text-black"
-                            : sub.status === "running"
-                            ? "bg-red-600 text-white animate-pulse"
-                            : "bg-zinc-800 text-zinc-400"
-                        }`}
-                      >
-                        {sub.status}
-                      </span>
+              {subagents.map((sub, idx) => {
+                const rot = idx === 0 ? "rotate-[-0.8deg]" : idx === 1 ? "rotate-[0.6deg]" : "rotate-[-0.4deg]";
+
+                return (
+                  <div
+                    key={sub.id}
+                    className={`p-6 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626] flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1.5 ${rot}`}
+                    style={{ filter: "url(#comic-card-wobble)" }}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between pb-2 border-b-[2.5px] border-white/20">
+                        {/* Subagent Name in Distorted White Patch */}
+                        <div className="relative inline-block">
+                          <div
+                            className="absolute -inset-1 bg-white border-[2px] border-black"
+                            style={{ filter: "url(#comic-badge-wobble)" }}
+                          />
+                          <span className="relative z-10 font-anton text-sm text-black px-2 py-0.5 tracking-wide block">
+                            {sub.name}
+                          </span>
+                        </div>
+
+                        <span
+                          className={`text-[10px] font-anton uppercase px-2.5 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] ${
+                            sub.status === "completed"
+                              ? "bg-white text-black"
+                              : sub.status === "running"
+                              ? "bg-red-600 text-white animate-pulse"
+                              : "bg-zinc-800 text-zinc-400"
+                          }`}
+                        >
+                          {sub.status}
+                        </span>
+                      </div>
+
+                      <h4 className="font-anton text-xl text-red-500 uppercase tracking-wide leading-tight">{sub.role}</h4>
+                      <p className="text-xs font-mono font-bold text-zinc-300">{sub.metric}</p>
                     </div>
 
-                    <h4 className="font-anton text-lg text-red-500 uppercase tracking-wide">{sub.role}</h4>
-                    <p className="text-xs font-mono text-zinc-400">{sub.metric}</p>
+                    <div className="p-3.5 bg-zinc-950 border-[2px] border-white/30 font-mono text-xs text-zinc-200 min-h-[90px] leading-relaxed">
+                      {sub.telemetry}
+                    </div>
                   </div>
-
-                  <div className="p-3.5 bg-zinc-950 border-[2px] border-white/20 font-mono text-xs text-zinc-200 min-h-[85px] leading-relaxed">
-                    {sub.telemetry}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* ========================================================================= */}
-          {/* LIVE TERMINAL & SSE EXECUTION STREAM */}
+          {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (DISTORTED COMIC TERMINAL) */}
           {/* ========================================================================= */}
-          <div className="space-y-4">
-            <div className="relative inline-block">
+          <div className="space-y-5">
+            {/* Section Tag */}
+            <div className="relative inline-block rotate-[1deg]">
               <div
                 className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                style={{ filter: "url(#comic-wobble-dark)" }}
+                style={{ filter: "url(#comic-badge-wobble)" }}
               />
-              <span className="relative z-10 font-anton text-lg sm:text-xl text-black px-3.5 py-0.5 uppercase block">
-                03 // LIVE TRUEFORGE SSE STREAM &amp; DAYTONA TERMINAL
+              <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase block">
+                🕹️ 03 // LIVE TRUEFORGE SSE STREAM &amp; DAYTONA TERMINAL
               </span>
             </div>
 
-            <div className="p-6 bg-black border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626] font-mono text-xs space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/20 text-[11px] gap-2">
-                <span className="text-zinc-300">
-                  STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
-                </span>
-                <span className="text-red-500 font-bold">
+            {/* Distorted Terminal Box */}
+            <div
+              className="relative p-7 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626] font-mono text-xs space-y-4 rotate-[-0.3deg]"
+              style={{ filter: "url(#comic-card-wobble)" }}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-2">
+                <div className="relative inline-block">
+                  <div
+                    className="absolute -inset-1 bg-zinc-900 border-[1.5px] border-red-600"
+                    style={{ filter: "url(#comic-badge-wobble)" }}
+                  />
+                  <span className="relative z-10 text-white font-bold px-2 py-0.5 block">
+                    STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
+                  </span>
+                </div>
+
+                <span className="text-red-500 font-anton text-xs uppercase tracking-wider">
                   SAVED AGENT: sentinelops ({SENTINELOPS_AGENT_ID})
                 </span>
               </div>
 
-              <div className="space-y-1.5 min-h-[180px] max-h-[320px] overflow-y-auto pr-2">
+              <div className="space-y-2 min-h-[200px] max-h-[340px] overflow-y-auto pr-2">
                 {terminalLogs.length === 0 ? (
-                  <p className="text-zinc-500">// Waiting for incident trigger on checkout-service...</p>
+                  <p className="text-zinc-500 font-['Permanent_Marker',cursive] text-sm">// Waiting for incident trigger on checkout-service...</p>
                 ) : (
                   terminalLogs.map((log, idx) => (
                     <p
@@ -689,7 +783,7 @@ export default function DarkRedComicSentinelOpsCommander() {
                           : log.includes("[✓]") || log.includes("PASS") || log.includes("Resolved")
                           ? "text-white font-bold underline"
                           : log.includes("[+]") || log.includes("[*]")
-                          ? "text-zinc-300"
+                          ? "text-zinc-200"
                           : "text-zinc-400"
                       }
                     >
@@ -702,21 +796,15 @@ export default function DarkRedComicSentinelOpsCommander() {
           </div>
         </main>
 
-        {/* Footer */}
+        {/* Comic Footer */}
         <footer className="mt-16 border-t-[3.5px] border-black bg-black/90 py-8 px-6 sm:px-12 text-zinc-400 font-mono text-xs">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="font-anton text-sm text-white uppercase">SENTINEL OPS</span> &bull; Autonomous Microservice Resilience Platform
             </div>
-            <div className="flex items-center gap-4">
-              <Link href="/checkout" className="hover:text-white transition-colors">
-                Storefront
-              </Link>
-              <Link href="/orders" className="hover:text-white transition-colors">
-                Orders
-              </Link>
-              <Link href="/incidents" className="hover:text-white transition-colors">
-                Postmortem DB
+            <div>
+              <Link href="/incidents" className="text-red-500 hover:text-white font-anton uppercase transition-colors">
+                Postmortem Reports Ledger ↗
               </Link>
             </div>
           </div>
