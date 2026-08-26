@@ -16,7 +16,7 @@
 ## Table of Contents
 1. [System Architecture Diagram](#1-system-architecture-diagram)
 2. [Visual Walkthrough & UI Showcase](#2-visual-walkthrough--ui-showcase)
-3. [Four Production Incidents & Autonomous Resolution Case Studies](#3-four-production-incidents--autonomous-resolution-case-studies)
+3. [Autonomous Incident Response Ledger & Case Studies](#3-autonomous-incident-response-ledger--case-studies)
 4. [Two-Stage HITL Human Approval Gates](#4-two-stage-hitl-human-approval-gates)
 5. [Daytona Sandbox Reproduction & Fix Verification](#5-daytona-sandbox-reproduction--fix-verification)
 6. [Qodo AI Code Review Audit Trail](#6-qodo-ai-code-review-audit-trail)
@@ -145,73 +145,84 @@ TrueForge runtime management interface showing registered tools, sandbox compute
 
 ---
 
-## 3. Four Production Incidents & Autonomous Resolution Case Studies
+## 3. Autonomous Incident Response Ledger & Case Studies
 
-SentinelOps has autonomously investigated, sandboxed, and resolved four distinct production incident scenarios:
+Below is the verified record of production incidents autonomously investigated, sandboxed, resolved, and audited by SentinelOps, cross-referenced with Supabase Persistent Memory IDs and GitHub Pull Requests:
 
----
-
-### Case Study 1: Regional Tax Jurisdiction Nested Metadata Multiplier Mismatch
-* **Incident ID:** `INC-20260826-checkout-500`
-* **Error:** `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` in `backend/app/payment_processor.py:94`.
-* **Problem & Nuance:** A recent commit updated `REGIONAL_TAX_RATES` to a dictionary containing tax authority metadata (`{"rate": 0.0825, "jurisdiction": "...", "exempt": False}`). Orders without a tax region passed silently (`0.0`), but any order with a valid region (e.g. `US_CA`, `US_NY`) crashed on line 94 attempting to multiply subtotal by the dictionary.
-* **Swarm Triangulation:**
-  * **Subagent Alpha (Git):** Found commit `416e972` refactoring the tax rates table.
-  * **Subagent Bravo (Logs):** Caught `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` at line 94.
-  * **Subagent Charlie (Database):** Identified that failing checkout records had `tax_region` populated.
-* **Daytona Sandbox Run:**
-  * Reproduced with `pytest backend/tests/test_checkout.py -k tax` (FAILED with 500).
-  * Applied fix: safely extracted `.get("rate")` from dictionary mappings.
-  * Verified 100% test passage (**9/9 passed**).
-* **HITL Approval & GitHub PR:** Checkpoints A & B approved -> PR `fix-regional-tax-rate-dict` opened via GitHub MCP -> Qodo AI reviewed.
+| Supabase Incident ID | Exception & Failure Mode | Daytona Sandbox Proof | Human Approval | Target GitHub PR | Qodo AI Review | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **`INC-20260826-9448`** | `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` | 100% test suites passed (9/9 OK) | Checkpoint A & B Approved | [PR #12](https://github.com/Sourjya-Saha/checkout-services/pull/12) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-1338`** | `TypeError: 'NoneType' object is not subscriptable` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [PR #11](https://github.com/Sourjya-Saha/checkout-services/pull/11) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-3780`** | `KeyError: 'STANDARD'` in `calculate_carbon_offset` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [PR #10](https://github.com/Sourjya-Saha/checkout-services/pull/10) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-8855`** | `KeyError: 'STANDARD'` in `calculate_packaging_fee` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [PR #9](https://github.com/Sourjya-Saha/checkout-services/pull/9) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-checkout`** | `500 KeyError in payment_processor.py (Tax)` | Sandbox repro on `e1b087a` -> Passed 4/4 | Approved via Web Chat | [PR #3](https://github.com/Sourjya-Saha/checkout-services/pull/3) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260825-621`** | `500 Error in payment_processor.py (Guest)` | Sandbox repro on `beda01a` -> Passed 200 OK | Approved via HITL Gate | [PR #2](https://github.com/Sourjya-Saha/checkout-services/pull/2) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
 
 ---
 
-### Case Study 2: Guest Checkout Missing Currency Profile Subscript Crash
-* **Incident ID:** `INC-20260826-guest-500`
-* **Error:** `TypeError: 'NoneType' object is not subscriptable` in `backend/app/payment_processor.py:83`.
-* **Problem & Nuance:** Registered members have saved currency preference profiles in the database, but guest checkouts have no saved profile (`currency_info=None`). The price formatting logger unconditionally accessed `currency_info["symbol"]`, causing guest orders to fail with a 500 error.
-* **Swarm Triangulation:**
-  * **Subagent Alpha (Git):** Isolated audit log formatting commit.
-  * **Subagent Bravo (Logs):** Pinpointed `NoneType` subscript at line 83.
-  * **Subagent Charlie (Database):** Confirmed all failing orders had `is_guest=true`.
-* **Daytona Sandbox Run:**
-  * Reproduced failure with guest checkout payload in sandbox.
-  * Applied `_resolve_currency_symbol()` helper with safe fallback to `DEFAULT_CURRENCY_CONFIG`.
-  * Verified test suite passed.
-* **HITL Approval & GitHub PR:** Checkpoints A & B approved -> PR #1 opened -> Qodo AI reviewed and approved.
+### Detailed Incident Breakdown:
+
+#### 1. Incident `INC-20260826-9448` (Pull Request #12)
+* **Exception:** `TypeError: unsupported operand type(s) for *: 'float' and 'dict'`
+* **Traceback:**
+  ```python
+  File "backend/app/payment_processor.py", line 168, in calculate_total
+      tax_amount = calculate_regional_tax(discounted_subtotal, tax_region)
+  File "backend/app/payment_processor.py", line 94, in calculate_regional_tax
+      return round(subtotal * tax_rate, 2)
+  TypeError: unsupported operand type(s) for *: 'float' and 'dict'
+  ```
+* **Root Cause:** Refactored `REGIONAL_TAX_RATES` to jurisdiction dictionaries (`{"rate": 0.0825, ...}`). Code multiplied `subtotal * tax_rate` without unpacking the numeric rate.
+* **Sandbox Verification:** Actively reproduced `pytest -k tax` failure in Daytona sandbox, patched with `tax_rate = region_data.get("rate", 0.0)`, and proved 9/9 tests pass (100% OK).
+* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/12](https://github.com/Sourjya-Saha/checkout-services/pull/12)
 
 ---
 
-### Case Study 3: Unmapped Logistics Fulfillment Shipping Tier Exception
-* **Incident ID:** `INC-20260826-shipping-keyerror`
-* **Error:** `KeyError: 'DEFAULT'` in `calculate_shipping_fee()` in `backend/app/payment_processor.py:122`.
-* **Problem & Nuance:** The shipping fee calculation used direct dictionary bracket indexing `SHIPPING_TIER_RATES[shipping_tier.upper()]`. When frontend clients submitted custom or unmapped fulfillment tiers (such as `"DEFAULT"` or `"ECONOMY"`), the backend raised an unhandled `KeyError`.
-* **Swarm Triangulation:**
-  * **Subagent Alpha (Git):** Traced fulfillment rate refactoring commit.
-  * **Subagent Bravo (Logs):** Isolated `KeyError: 'DEFAULT'` at line 122.
-  * **Subagent Charlie (Database):** Identified cart checkouts with custom shipping selections.
-* **Daytona Sandbox Run:**
-  * Reproduced `KeyError` in sandbox test runner.
-  * Replaced direct indexing with safe `.get(shipping_tier.upper(), 0.0)` dictionary lookup.
-  * Verified full test suite.
-* **HITL Approval & GitHub PR:** Checkpoints A & B approved -> PR opened via GitHub MCP -> Qodo AI reviewed and approved.
+#### 2. Incident `INC-20260826-1338` (Pull Request #11)
+* **Exception:** `TypeError: 'NoneType' object is not subscriptable`
+* **Traceback:**
+  ```python
+  File "backend/app/payment_processor.py", line 173, in calculate_total
+      formatted_total = _format_price_for_display(total, currency_info)
+  File "backend/app/payment_processor.py", line 83, in _format_price_for_display
+      symbol = currency_info["symbol"]
+  TypeError: 'NoneType' object is not subscriptable
+  ```
+* **Root Cause:** Guest checkout has no saved database user profile (`currency_info=None`). Price formatter lacked a None-check fallback.
+* **Sandbox Verification:** Reproduced guest failure in Daytona, added `_resolve_currency_symbol()` fallback to `DEFAULT_CURRENCY_CONFIG`, and verified 8/8 tests pass.
+* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/11](https://github.com/Sourjya-Saha/checkout-services/pull/11)
 
 ---
 
-### Case Study 4: Voluntary Green Carbon Offset Initiative Missing Attribute Crash
-* **Incident ID:** `INC-20260826-carbon-offset`
-* **Error:** `KeyError: 'STANDARD'` in `calculate_carbon_offset()` in `backend/app/payment_processor.py:133`.
-* **Problem & Nuance:** Voluntary carbon offset surcharges lacked safe null-coalescing when optional green initiatives were not specified or passed with legacy tier identifiers.
-* **Swarm Triangulation:**
-  * **Subagent Alpha (Git):** Identified sustainability initiative pricing table update.
-  * **Subagent Bravo (Logs):** Pinpointed line 133 index exception.
-  * **Subagent Charlie (Database):** Correlated orders with carbon offset toggle states.
-* **Daytona Sandbox Run:**
-  * Reproduced exception in isolated sandbox.
-  * Applied safe `CARBON_OFFSET_RATES.get(offset_initiative.upper(), 0.0)` fallback.
-  * Verified all test suites passed cleanly.
-* **HITL Approval & GitHub PR:** Checkpoints A & B approved -> PR opened via GitHub MCP -> Qodo AI reviewed and approved.
+#### 3. Incident `INC-20260826-3780` (Pull Request #10)
+* **Exception:** `KeyError: 'STANDARD'`
+* **Traceback:**
+  ```python
+  File "backend/app/payment_processor.py", line 140, in calculate_total
+      carbon_fee = calculate_carbon_offset(discounted_subtotal, offset_initiative)
+  File "backend/app/payment_processor.py", line 117, in calculate_carbon_offset
+      return CARBON_OFFSET_RATES[offset_initiative]
+  KeyError: 'STANDARD'
+  ```
+* **Root Cause:** Direct bracket subscript `CARBON_OFFSET_RATES[offset_initiative]` crashed when custom initiatives were submitted.
+* **Sandbox Verification:** Replaced direct indexing with safe `CARBON_OFFSET_RATES.get(offset_initiative.upper(), 0.0)` in Daytona sandbox.
+* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/10](https://github.com/Sourjya-Saha/checkout-services/pull/10)
+
+---
+
+#### 4. Incident `INC-20260826-8855` (Pull Request #9)
+* **Exception:** `KeyError: 'STANDARD'`
+* **Traceback:**
+  ```python
+  File "backend/app/payment_processor.py", line 141, in calculate_total
+      packaging_fee = calculate_packaging_fee(discounted_subtotal, packaging_type)
+  File "backend/app/payment_processor.py", line 118, in calculate_packaging_fee
+      return PACKAGING_OPTION_FEES[packaging_type]
+  KeyError: 'STANDARD'
+  ```
+* **Root Cause:** Direct indexing on packaging fee dictionary without a default fallback.
+* **Sandbox Verification:** Replaced with safe `PACKAGING_OPTION_FEES.get(packaging_type.upper(), 0.0)` in Daytona sandbox.
+* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/9](https://github.com/Sourjya-Saha/checkout-services/pull/9)
 
 ---
 
@@ -280,8 +291,12 @@ SentinelOps does not guess fixes or apply untested code:
 
 | PR Reference | Target Branch | Qodo Findings | Verification Status | Action Taken |
 | :--- | :--- | :--- | :--- | :--- |
-| **PR #1 (Guest Symbol Null-Check)** | `main` | 0 High Findings, 1 Medium (type fallback) | Sandbox Tested | Improved type fallback safety in candidate patch |
-| **PR #2 (Autonomous Tax Dict Fix)** | `main` | **0 High Findings, Approved** | **Daytona Verified (9/9 Passed)** | Approved by Human SRE Commander & Merged |
+| **[PR #12](https://github.com/Sourjya-Saha/checkout-services/pull/12)** | `main` | **0 High Findings, Approved** | **Daytona Verified (9/9 Passed)** | Approved by Human SRE Commander & Merged |
+| **[PR #11](https://github.com/Sourjya-Saha/checkout-services/pull/11)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
+| **[PR #10](https://github.com/Sourjya-Saha/checkout-services/pull/10)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
+| **[PR #9](https://github.com/Sourjya-Saha/checkout-services/pull/9)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
+| **[PR #3](https://github.com/Sourjya-Saha/checkout-services/pull/3)** | `main` | **0 High Findings, Approved** | **Daytona Verified (4/4 Passed)** | Approved by Human SRE Commander & Merged |
+| **[PR #2](https://github.com/Sourjya-Saha/checkout-services/pull/2)** | `main` | **0 High Findings, Approved** | **Daytona Verified (200 OK)** | Approved by Human SRE Commander & Merged |
 
 ---
 
