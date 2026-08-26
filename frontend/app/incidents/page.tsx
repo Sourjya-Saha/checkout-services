@@ -68,9 +68,25 @@ export default function DistortedIncidentsAudit() {
 
   return (
     <Blurred404Background blurIntensity="heavy">
-      {/* Google Fonts */}
+      {/* Google Fonts & Super Thin All-Black Scrollbar */}
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&display=swap');
+
+        /* Super Thin All-Black Scrollbar */
+        ::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #27272a;
+          border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #dc2626;
+        }
       `}</style>
 
       {/* SVG Distorted Drawing Filters */}

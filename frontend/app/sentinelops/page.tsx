@@ -68,7 +68,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
       id: "agent-03",
       name: "SUBAGENT CHARLIE",
       codename: "DATA-CORE",
-      role: "PostgreSQL Analytics",
+      role: "PostgreSQL Order Analytics",
       status: "idle",
       telemetry: "Supabase Database Cluster",
       metric: "Query: is_guest=true",
@@ -77,6 +77,12 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
 
   const [terminalLogs, setTerminalLogs] = useState<string[]>([]);
   const eventSourceRef = useRef<EventSource | null>(null);
+  const terminalEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Auto-scroll terminal on new logs
+  useEffect(() => {
+    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [terminalLogs]);
 
   // Auto-fetch latest incident if no query parameter
   useEffect(() => {
@@ -124,6 +130,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
             }))
           );
           setTerminalLogs((prev) => [
+            ...prev,
             `[+] [SUBAGENT] Spawned subagent worker thread: ${data.thread_id}`,
           ]);
         }
@@ -144,6 +151,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   pr_url: prMatch[0],
                 }));
                 setTerminalLogs((prev) => [
+                  ...prev,
                   `[OK] [PR CREATED] Successfully opened Pull Request: ${prMatch[0]}`,
                 ]);
               }
@@ -153,6 +161,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
             const tool = data.tool_calls[0];
             const args = tool.function?.arguments || "";
             setTerminalLogs((prev) => [
+              ...prev,
               `[*] [TOOL CALL] ${tool.function?.name || "call_tool"}: ${args.slice(0, 120)}...`,
             ]);
           }
@@ -172,12 +181,14 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
             }
           }
           setTerminalLogs((prev) => [
+            ...prev,
             `[OK] [TOOL RETURN] ${data.tool_name || "tool"}: response captured`,
           ]);
         }
 
         if (data.type === "sandbox.created") {
           setTerminalLogs((prev) => [
+            ...prev,
             `[Daytona-VM] Isolated container active (ID: ${data.sandbox_id || "sbx-daytona-linux"})`,
           ]);
         }
@@ -198,10 +209,12 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
 
           if (checkpoint === "fix") {
             setTerminalLogs((prev) => [
+              ...prev,
               `[!] [CHECKPOINT A] Human Approval required before drafting/testing fix in sandbox.`,
             ]);
           } else {
             setTerminalLogs((prev) => [
+              ...prev,
               `[!] [CHECKPOINT B] Human Approval required before opening GitHub Pull Request.`,
             ]);
           }
@@ -270,6 +283,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
       const data = await res.json();
       if (data.success) {
         setTerminalLogs((prev) => [
+          ...prev,
           `[+] [HITL DECISION: ${decision.toUpperCase()}] SRE Commander decision transmitted to TrueForge.`,
         ]);
         setIncidentState((prev) => (prev ? { ...prev, status: data.status } : null));
@@ -283,9 +297,25 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
 
   return (
     <Blurred404Background blurIntensity="heavy">
-      {/* Google Fonts */}
+      {/* Google Fonts & Super Thin All-Black Scrollbar */}
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&display=swap');
+
+        /* Super Thin All-Black Scrollbar */
+        ::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #27272a;
+          border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #dc2626;
+        }
       `}</style>
 
       {/* SVG Distorted Drawing Filters */}
@@ -330,7 +360,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
             </Link>
           </div>
 
-          {/* ONLY 1 Redirection Button: POSTMORTEM REPORTS (READABLE & BALANCED DISTORTION) */}
+          {/* ONLY 1 Redirection Button: POSTMORTEM REPORTS */}
           <div className="flex items-center">
             <Link
               href="/incidents"
@@ -349,7 +379,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </header>
 
         {/* ========================================================================= */}
-        {/* MAIN HUD CONTAINER (EXPANDED TO FILL VIEWPORT) */}
+        {/* MAIN HUD CONTAINER */}
         {/* ========================================================================= */}
         <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 pb-16 space-y-12 flex-1 w-full">
           {/* ========================================================================= */}
@@ -386,7 +416,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </div>
                 </div>
 
-                {/* Specs Ribbon (SLANTED LABEL MOVED TO BOTTOM) */}
+                {/* Specs Ribbon */}
                 <div className="pt-4">
                   <div className="relative inline-block rotate-[-1.5deg]">
                     <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
@@ -474,7 +504,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           )}
 
           {/* ========================================================================= */}
-          {/* TWO-STAGE HITL APPROVAL CARDS (DISTORTED BLACK BOXES) */}
+          {/* TWO-STAGE HITL APPROVAL CARDS */}
           {/* ========================================================================= */}
 
           {/* Checkpoint A: Fix Approval */}
@@ -498,7 +528,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </div>
                   <div className="relative rotate-[1.5deg]">
                     <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]" />
-                    <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block">
+                    <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block tracking-wider">
                       HITL GATE 1 OF 2
                     </span>
                   </div>
@@ -508,15 +538,19 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   SentinelOps has verified the root-cause hypothesis. Explicit human approval is required before drafting code or running candidate patches in the Daytona sandbox.
                 </p>
 
-                <div className="p-4 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
-                  <p>
-                    <strong className="text-red-600 font-anton text-sm">TARGET REPO:</strong> Sourjya-Saha/checkout-services
+                {/* TARGET REPO / TARGET ERROR / ACTION (HIGH-LEGIBILITY WIDE TRACKING) */}
+                <div className="p-5 bg-white border-[3px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs sm:text-sm font-semibold space-y-2.5 leading-relaxed">
+                  <p className="tracking-wide">
+                    <strong className="text-red-600 font-bold tracking-wider uppercase font-mono mr-2">[TARGET REPO]</strong>
+                    <span className="text-zinc-900 font-medium">Sourjya-Saha/checkout-services</span>
                   </p>
-                  <p>
-                    <strong className="text-black font-anton text-sm">TARGET ERROR:</strong> {incidentState.error_message || "Active production regression"}
+                  <p className="tracking-wide">
+                    <strong className="text-black font-bold tracking-wider uppercase font-mono mr-2">[TARGET ERROR]</strong>
+                    <span className="text-red-700 font-bold bg-red-50 px-1.5 py-0.5 border border-red-200">{incidentState.error_message || "Active production regression"}</span>
                   </p>
-                  <p>
-                    <strong className="text-zinc-600 font-anton text-sm">ACTION:</strong> Install dependencies, apply safe fallback in payment_processor.py, and run sandbox verification.
+                  <p className="tracking-wide">
+                    <strong className="text-zinc-800 font-bold tracking-wider uppercase font-mono mr-2">[ACTION]</strong>
+                    <span className="text-zinc-800">Install dependencies, apply safe fallback in payment_processor.py, and run sandbox verification.</span>
                   </p>
                 </div>
 
@@ -563,7 +597,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </div>
                   <div className="relative rotate-[-1.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-black shadow-[2px_2px_0px_#dc2626]" />
-                    <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block">
+                    <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block tracking-wider">
                       HITL GATE 2 OF 2
                     </span>
                   </div>
@@ -573,12 +607,15 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   Candidate patch successfully verified in the Daytona sandbox with all test suites passing. Explicit human approval is required before opening a Pull Request on GitHub.
                 </p>
 
-                <div className="p-4 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
-                  <p>
-                    <strong className="text-red-600 font-anton text-sm">TARGET REPO:</strong> Sourjya-Saha/checkout-services
+                {/* TARGET REPO / DAYTONA PROOF (WIDE TRACKING) */}
+                <div className="p-5 bg-white border-[3px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs sm:text-sm font-semibold space-y-2.5 leading-relaxed">
+                  <p className="tracking-wide">
+                    <strong className="text-red-600 font-bold tracking-wider uppercase font-mono mr-2">[TARGET REPO]</strong>
+                    <span className="text-zinc-900 font-medium">Sourjya-Saha/checkout-services</span>
                   </p>
-                  <p>
-                    <strong className="text-black font-anton text-sm">DAYTONA PROOF:</strong> 100% verification checks passed in isolated Linux sandbox.
+                  <p className="tracking-wide">
+                    <strong className="text-black font-bold tracking-wider uppercase font-mono mr-2">[DAYTONA PROOF]</strong>
+                    <span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">100% verification checks passed in isolated Linux sandbox.</span>
                   </p>
                 </div>
 
@@ -620,7 +657,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                       INCIDENT REMEDIATED &amp; RESOLVED
                     </h3>
                   </div>
-                  <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-xs uppercase border-[2px] border-black">
+                  <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-xs uppercase border-[2px] border-black tracking-wider">
                     STATUS: RESOLVED [OK]
                   </span>
                 </div>
@@ -642,7 +679,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           )}
 
           {/* ========================================================================= */}
-          {/* 2. PARALLEL MULTI-AGENT SWARM (DISTORTED BLACK BOXES) */}
+          {/* 2. PARALLEL MULTI-AGENT SWARM (WIDE TRACKING) */}
           {/* ========================================================================= */}
           <div className="space-y-5">
             {/* Section Tag */}
@@ -671,7 +708,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                     {/* Content inside Subagent Card */}
                     <div className="relative z-10 space-y-3">
                       <div className="flex items-center justify-between pb-2 border-b-[2px] border-white/20">
-                        {/* Subagent Name in Clean White Patch */}
+                        {/* Subagent Name */}
                         <div className="relative inline-block">
                           <div className="absolute -inset-1 bg-white border-[2px] border-black" />
                           <span className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 tracking-wide block">
@@ -680,7 +717,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                         </div>
 
                         <span
-                          className={`text-[10px] font-anton uppercase px-2.5 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] ${
+                          className={`text-[11px] font-anton uppercase px-3 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] tracking-wider ${
                             sub.status === "completed"
                               ? "bg-white text-black"
                               : sub.status === "running"
@@ -693,10 +730,10 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                       </div>
 
                       <h4 className="font-anton text-lg text-red-500 uppercase tracking-wide leading-tight">{sub.role}</h4>
-                      <p className="text-xs font-mono font-bold text-zinc-300">{sub.metric}</p>
+                      <p className="text-xs font-mono font-bold text-zinc-300 tracking-wider">{sub.metric}</p>
                     </div>
 
-                    <div className="relative z-10 p-3.5 bg-zinc-950 border-[1.5px] border-white/30 font-mono text-xs text-zinc-200 min-h-[85px] leading-relaxed">
+                    <div className="relative z-10 p-3.5 bg-zinc-950 border-[1.5px] border-white/30 font-mono text-xs text-zinc-200 min-h-[85px] leading-relaxed tracking-wide">
                       {sub.telemetry}
                     </div>
                   </div>
@@ -706,7 +743,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           </div>
 
           {/* ========================================================================= */}
-          {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (DISTORTED BLACK BOX) */}
+          {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (FULL HISTORY & THIN BLACK SCROLLBAR) */}
           {/* ========================================================================= */}
           <div className="space-y-5">
             {/* Section Tag */}
@@ -731,21 +768,21 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   {/* STREAM In White Box with Red Border */}
                   <div className="relative inline-block rotate-[-0.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 block tracking-wide">
+                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
                       STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
                     </span>
                   </div>
 
-                  {/* SAVED AGENT: sentinelops In White Box with Red Border (NO ID) */}
+                  {/* SAVED AGENT: sentinelops In White Box with Red Border */}
                   <div className="relative inline-block rotate-[0.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-wide">
-                      AGENT: sentinelops
+                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
+                      SAVED AGENT: sentinelops
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-2 min-h-[200px] max-h-[340px] overflow-y-auto pr-2">
+                <div className="space-y-2 min-h-[200px] max-h-[360px] overflow-y-auto pr-2">
                   {terminalLogs.length === 0 ? (
                     <p className="text-zinc-500 font-mono text-xs">// Waiting for incident trigger on checkout-service...</p>
                   ) : (
@@ -766,13 +803,14 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                       </p>
                     ))
                   )}
+                  <div ref={terminalEndRef} />
                 </div>
               </div>
             </div>
           </div>
         </main>
 
-        {/* Comic Footer (PINNED ABSOLUTELY TO BOTTOM WITH MATCHING SENTINEL OPS & POSTMORTEM BUTTON) */}
+        {/* Comic Footer */}
         <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -788,7 +826,9 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </span>
                 </div>
               </Link>
-            
+              <span className="text-zinc-400 font-mono text-xs font-bold hidden md:inline-block">
+                // Autonomous Microservice Resilience Platform
+              </span>
             </div>
 
             {/* Footer POSTMORTEM REPORTS Button */}
