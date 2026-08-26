@@ -90,7 +90,11 @@ def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) ->
     if not tax_region:
         tax_region = "STANDARD"
 
-    tax_rate = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
+    tax_config = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
+    if isinstance(tax_config, dict):
+        tax_rate = tax_config.get("rate", 0.0)
+    else:
+        tax_rate = tax_config
     return round(subtotal * tax_rate, 2)
 
 
