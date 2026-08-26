@@ -41,11 +41,6 @@ export default function CustomerOrdersPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  // Guest Order Lookup
-  const [lookupId, setLookupId] = useState<string>("");
-  const [lookupError, setLookupError] = useState<string | null>(null);
-  const [lookupLoading, setLookupLoading] = useState<boolean>(false);
-
   // Auth Modal State
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
@@ -109,28 +104,6 @@ export default function CustomerOrdersPage() {
     setUser(null);
     setOrders([]);
     setLoading(false);
-  };
-
-  const handleLookupOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const idClean = lookupId.trim();
-    if (!idClean) return;
-
-    setLookupLoading(true);
-    setLookupError(null);
-    try {
-      const res = await fetch(`${apiBase}/orders/${idClean}`);
-      if (res.ok) {
-        const orderData = await res.json();
-        setSelectedOrder(orderData);
-      } else {
-        setLookupError(`Order with ID "${idClean}" was not found.`);
-      }
-    } catch {
-      setLookupError("Failed to look up order. Check backend connection.");
-    } finally {
-      setLookupLoading(false);
-    }
   };
 
   const handleAuthSubmit = async (e: React.FormEvent) => {
@@ -289,7 +262,7 @@ export default function CustomerOrdersPage() {
         <header className="text-center max-w-xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
-            {user ? "Your Order History" : "Guest & Customer Orders"}
+            {user ? "Your Order History" : "Customer Orders"}
           </div>
           <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09]">
             Purchases & Invoices
@@ -297,37 +270,9 @@ export default function CustomerOrdersPage() {
           <p className="text-sm text-[#777169] leading-relaxed">
             {user
               ? `Displaying verified purchases recorded for ${user.name} (${user.email}).`
-              : "Sign in to access your personal order history or search by order reference."}
+              : "Sign in with your email and password to access your personalized order history and invoice receipts."}
           </p>
         </header>
-
-        {/* Quick Order Lookup Bar for Guests */}
-        {!user && (
-          <div className="max-w-lg mx-auto bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-5 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-3">
-            <span className="text-xs font-medium text-[#4e4e4e] block">
-              Quick Order Lookup
-            </span>
-            <form onSubmit={handleLookupOrder} className="flex gap-2">
-              <input
-                type="text"
-                value={lookupId}
-                onChange={(e) => setLookupId(e.target.value)}
-                placeholder="Enter Order UUID e.g. f47ac10b-..."
-                className="flex-1 px-3.5 py-2 rounded-full bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] font-mono focus:outline-none focus:border-[#0c0a09]"
-              />
-              <button
-                type="submit"
-                disabled={lookupLoading}
-                className="px-5 py-2 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs disabled:opacity-50"
-              >
-                {lookupLoading ? "Searching..." : "Lookup"}
-              </button>
-            </form>
-            {lookupError && (
-              <p className="text-xs text-[#dc2626] font-medium">{lookupError}</p>
-            )}
-          </div>
-        )}
 
         {/* Orders List / Empty State */}
         {loading ? (
