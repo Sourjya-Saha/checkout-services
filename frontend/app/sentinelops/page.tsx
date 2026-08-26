@@ -68,7 +68,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
       id: "agent-03",
       name: "SUBAGENT CHARLIE",
       codename: "DATA-CORE",
-      role: "PostgreSQL Order Analytics",
+      role: "PostgreSQL Analytics",
       status: "idle",
       telemetry: "Supabase Database Cluster",
       metric: "Query: is_guest=true",
@@ -731,7 +731,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   {/* STREAM In White Box with Red Border */}
                   <div className="relative inline-block rotate-[-0.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
+                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 block tracking-wide">
                       STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
                     </span>
                   </div>
@@ -739,8 +739,8 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   {/* SAVED AGENT: sentinelops In White Box with Red Border (NO ID) */}
                   <div className="relative inline-block rotate-[0.5deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
-                      SAVED AGENT: sentinelops
+                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-wide">
+                      AGENT: sentinelops
                     </span>
                   </div>
                 </div>
@@ -788,9 +788,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </span>
                 </div>
               </Link>
-              <span className="text-zinc-400 font-mono text-xs font-bold hidden md:inline-block">
-                // Autonomous Microservice Resilience Platform
-              </span>
+            
             </div>
 
             {/* Footer POSTMORTEM REPORTS Button */}

@@ -346,10 +346,10 @@ export default function DistortedIncidentsAudit() {
                         {/* Evidence & Approval Details */}
                         <div className="p-4 bg-zinc-950 border-[1.5px] border-white/20 font-mono text-xs text-zinc-300 space-y-2">
                           <p>
-                            <strong className="text-white font-anton text-xs">SUBAGENT EVIDENCE:</strong> {inc.evidence_summary}
+                            <strong className="text-white font-anton text-sm tracking-wider">SUBAGENT EVIDENCE :</strong> {inc.evidence_summary}
                           </p>
                           <p>
-                            <strong className="text-red-400 font-anton text-xs">HUMAN APPROVAL:</strong> {inc.approval_record}
+                            <strong className="text-red-400 font-anton text-sm tracking-wider">HUMAN APPROVAL:</strong> {inc.approval_record}
                           </p>
                         </div>
 
@@ -445,9 +445,7 @@ export default function DistortedIncidentsAudit() {
                   </span>
                 </div>
               </Link>
-              <span className="text-zinc-400 font-mono text-xs font-bold hidden md:inline-block">
-                // Autonomous Microservice Resilience Platform
-              </span>
+             
             </div>
 
             {/* Footer SENTINELOPS COMMAND HUD Button */}
