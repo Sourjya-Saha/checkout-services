@@ -29,11 +29,11 @@ SHIPPING_TIER_RATES = {
     "OVERNIGHT": 29.99,
 }
 
-PACKAGING_OPTION_FEES = {
-    "STANDARD_BOX": 1.50,
-    "ECO_FRIENDLY": 3.00,
-    "GIFT_WRAP": 5.00,
-    "PREMIUM_CRATE": 12.00,
+CARBON_OFFSET_RATES = {
+    "TREES": 1.25,
+    "OCEAN": 2.50,
+    "SOLAR": 3.75,
+    "WIND": 4.00,
 }
 
 
@@ -102,24 +102,19 @@ def calculate_shipping_fee(subtotal: float, shipping_tier: Optional[str] = None)
     if not shipping_tier:
         shipping_tier = "DEFAULT"
 
-    # Guest checkout and other flows may omit shipping tier selection.
     # Fall back to zero instead of raising KeyError for unmapped tiers.
     return SHIPPING_TIER_RATES.get(shipping_tier.upper(), 0.0)
 
 
-def calculate_packaging_fee(subtotal: float, packaging_type: Optional[str] = None) -> float:
+def calculate_carbon_offset(subtotal: float, offset_initiative: Optional[str] = None) -> float:
     """
-    Calculate fee for special order packaging and gift wrapping.
+    Calculate voluntary green carbon-neutral checkout surcharge.
     """
-    if not packaging_type:
-        return 0.0
+    if not offset_initiative:
+        offset_initiative = "STANDARD"
 
-    normalized = packaging_type.upper()
-    if normalized == "STANDARD":
-        return 0.0
-
-    # Fall back safely for unmapped packaging selections instead of crashing checkout.
-    return PACKAGING_OPTION_FEES.get(normalized, 0.0)
+    # Regression: Unchecked dictionary lookup throws KeyError: 'STANDARD' (expected keys: TREES, OCEAN, SOLAR, WIND)
+    return CARBON_OFFSET_RATES[offset_initiative]
 
 
 def calculate_total(
@@ -129,11 +124,11 @@ def calculate_total(
     tax_region: Optional[str] = None,
     promo_code: Optional[str] = None,
     shipping_tier: Optional[str] = None,
-    packaging_type: Optional[str] = None,
+    offset_initiative: Optional[str] = None,
 ) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
-    Applies promo discounts, shipping fees, packaging surcharges, and taxes.
+    Applies promo discounts, shipping fees, carbon neutral offsets, and taxes.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
 
@@ -141,8 +136,8 @@ def calculate_total(
     discount = apply_promo_discount(subtotal, promo_code)
     discounted_subtotal = max(0.0, subtotal - discount)
 
-    # Calculate packaging fee safely for guest/default checkouts.
-    packaging_fee = calculate_packaging_fee(discounted_subtotal, packaging_type)
+    # Calculate carbon offset (triggers KeyError: 'STANDARD' on default checkouts)
+    carbon_fee = calculate_carbon_offset(discounted_subtotal, offset_initiative)
 
     # Calculate shipping fee
     shipping_fee = calculate_shipping_fee(discounted_subtotal, shipping_tier)
@@ -155,10 +150,10 @@ def calculate_total(
 
     # Calculate regional tax
     tax_amount = calculate_regional_tax(discounted_subtotal, tax_region)
-    total = round((discounted_subtotal + tax_amount + shipping_fee + packaging_fee) * rate, 2)
+    total = round((discounted_subtotal + tax_amount + shipping_fee + carbon_fee) * rate, 2)
 
     # Format and log audit receipt total
     formatted_total = _format_price_for_display(total, currency_info)
-    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, packaging: {packaging_fee}, shipping: {shipping_fee}, tax: {tax_amount})")
+    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, carbon: {carbon_fee}, shipping: {shipping_fee}, tax: {tax_amount})")
 
     return total
