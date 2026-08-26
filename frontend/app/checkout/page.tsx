@@ -277,8 +277,8 @@ export default function ProfessionalCheckoutPage() {
   };
 
   // Submit Checkout
-  const handleCheckout = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCheckout = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (cartItems.length === 0) return;
 
     setLoading(true);
@@ -452,7 +452,7 @@ export default function ProfessionalCheckoutPage() {
       {/* ========================================================================= */}
       {/* MAIN CHECKOUT BODY */}
       {/* ========================================================================= */}
-      <main className="max-w-[1200px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
+      <main className="max-w-[1240px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
         {/* Editorial Header */}
         <header className="mb-12 text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
@@ -527,18 +527,20 @@ export default function ProfessionalCheckoutPage() {
             </div>
           </div>
         ) : (
-          /* Two-Column Checkout Layout */
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          /* ========================================================================= */
+          /* TWO-COLUMN BALANCED CHECKOUT LAYOUT */
+          /* ========================================================================= */
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* ========================================================================= */}
-            {/* LEFT COLUMN: Customer, Shipping, Combined Packaging & Payment */}
+            {/* LEFT COLUMN: Customer Details -> Shipping & Speed -> Packaging & Offset */}
             {/* ========================================================================= */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-6 space-y-6">
               {/* Card 1: Customer Information & Account Mode */}
-              <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-6">
+              <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e7e5e4] pb-4">
                   <div>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
-                      01 / Customer Account
+                      01 / Account Mode
                     </span>
                     <h2 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
                       Customer Details
@@ -605,11 +607,11 @@ export default function ProfessionalCheckoutPage() {
               </section>
 
               {/* Card 2: Shipping Destination & Delivery Speed */}
-              <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-6">
+              <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
                 <div className="border-b border-[#e7e5e4] pb-4 flex items-center justify-between">
                   <div>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
-                      02 / Delivery Address & Speed
+                      02 / Destination & Speed
                     </span>
                     <h2 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
                       Shipping & Logistics
@@ -636,7 +638,7 @@ export default function ProfessionalCheckoutPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="space-y-1.5">
                       <label className="block text-[13px] font-medium text-[#4e4e4e]">
                         City
@@ -645,7 +647,7 @@ export default function ProfessionalCheckoutPage() {
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all"
+                        className="w-full px-3 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all"
                       />
                     </div>
 
@@ -657,30 +659,30 @@ export default function ProfessionalCheckoutPage() {
                         type="text"
                         value={postalCode}
                         onChange={(e) => setPostalCode(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all"
+                        className="w-full px-3 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
                       <label className="block text-[13px] font-medium text-[#4e4e4e]">
-                        Tax Jurisdiction
+                        Tax Region
                       </label>
                       <select
                         value={taxRegion}
                         onChange={(e) => setTaxRegion(e.target.value)}
                         className="w-full px-3 py-2.5 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-sm text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all"
                       >
-                        <option value="US_CA">United States (California — 8.25%)</option>
-                        <option value="US_NY">United States (New York — 8.875%)</option>
+                        <option value="US_CA">US (California — 8.25%)</option>
+                        <option value="US_NY">US (New York — 8.875%)</option>
                         <option value="EU_DE">Germany (MwSt. — 19%)</option>
                         <option value="EU_FR">France (TVA — 20%)</option>
-                        <option value="STANDARD">International Standard (5%)</option>
+                        <option value="STANDARD">International (5%)</option>
                       </select>
                     </div>
                   </div>
 
                   {/* Shipping Tiers */}
-                  <div className="space-y-2 pt-2">
+                  <div className="space-y-2 pt-1">
                     <label className="block text-[13px] font-medium text-[#4e4e4e]">
                       Fulfillment Speed
                     </label>
@@ -718,185 +720,93 @@ export default function ProfessionalCheckoutPage() {
                 </div>
               </section>
 
-              {/* Card 3 & 4: SIDE-BY-SIDE Subgrid: Packaging & Carbon Offset + Payment Method */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                {/* Side A: Packaging & Sustainability */}
-                <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-4 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="border-b border-[#e7e5e4] pb-3">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
-                        03 / Options
-                      </span>
-                      <h2 className="text-lg font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-                        Packaging & Carbon Offset
-                      </h2>
-                    </div>
+              {/* Card 3: Packaging & Carbon Offset (FULL WIDTH below shipping card) */}
+              <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
+                <div className="border-b border-[#e7e5e4] pb-4">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
+                    03 / Presentation & Sustainability
+                  </span>
+                  <h2 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+                    Packaging & Carbon Offset
+                  </h2>
+                </div>
 
-                    {/* Packaging Selector */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-[#4e4e4e]">
-                        Order Packaging
-                      </label>
-                      <select
-                        value={packagingOption}
-                        onChange={(e) => setPackagingOption(e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all"
-                      >
-                        {PACKAGING_OPTIONS.map((opt) => (
-                          <option key={opt.id} value={opt.id}>
-                            {opt.name} ({opt.note})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Carbon Offset Checkbox */}
-                    <div className="p-3.5 rounded-xl bg-[#fafafa] border border-[#e7e5e4] space-y-2.5">
-                      <label className="flex items-start gap-2.5 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={enableCarbonOffset}
-                          onChange={(e) => setEnableCarbonOffset(e.target.checked)}
-                          className="accent-[#292524] w-3.5 h-3.5 mt-0.5"
-                        />
-                        <div>
-                          <p className="text-xs font-medium text-[#0c0a09]">
-                            Carbon-Neutral Delivery
-                          </p>
-                          <p className="text-[11px] text-[#777169] leading-snug">
-                            Offset transit emissions through certified environmental initiatives.
-                          </p>
-                        </div>
-                      </label>
-
-                      {enableCarbonOffset && (
-                        <div className="pt-1 pl-6 space-y-1.5">
-                          {CARBON_INITIATIVES.map((init) => (
-                            <label
-                              key={init.id}
-                              className={`flex items-center justify-between p-2 rounded-lg text-[11px] border cursor-pointer transition-all ${
-                                carbonInitiative === init.id
-                                  ? "border-[#292524] bg-[#ffffff] font-medium text-[#0c0a09]"
-                                  : "border-[#e7e5e4] text-[#777169]"
-                              }`}
-                            >
-                              <div className="flex items-center gap-2">
-                                <input
-                                  type="radio"
-                                  name="carbon_initiative"
-                                  checked={carbonInitiative === init.id}
-                                  onChange={() => setCarbonInitiative(init.id)}
-                                  className="accent-[#292524] w-3 h-3"
-                                />
-                                <span>{init.name}</span>
-                              </div>
-                              <span className="font-semibold">
-                                +{currencyConfig.symbol}{(init.rate * currencyConfig.rate).toFixed(2)}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-                      )}
+                <div className="space-y-4">
+                  {/* Packaging Options */}
+                  <div className="space-y-2">
+                    <label className="block text-[13px] font-medium text-[#4e4e4e]">
+                      Order Packaging Presentation
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {PACKAGING_OPTIONS.map((opt) => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setPackagingOption(opt.id)}
+                          className={`p-3 rounded-xl text-left border transition-all text-xs ${
+                            packagingOption === opt.id
+                              ? "border-[#292524] bg-[#fafafa] text-[#0c0a09] shadow-xs"
+                              : "border-[#e7e5e4] bg-[#ffffff] text-[#777169] hover:border-[#d6d3d1]"
+                          }`}
+                        >
+                          <div className="font-medium text-[#0c0a09]">{opt.name}</div>
+                          <div className="text-[11px] text-[#777169] mt-0.5">{opt.note}</div>
+                        </button>
+                      ))}
                     </div>
                   </div>
-                </section>
 
-                {/* Side B: Payment Method */}
-                <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-4 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="border-b border-[#e7e5e4] pb-3">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
-                        04 / Payment
-                      </span>
-                      <h2 className="text-lg font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-                        Payment Authorization
-                      </h2>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setPaymentMethod("card")}
-                        className={`py-2 px-3 rounded-lg border text-center text-xs font-medium transition-all ${
-                          paymentMethod === "card"
-                            ? "border-[#292524] bg-[#fafafa] text-[#0c0a09] shadow-xs"
-                            : "border-[#e7e5e4] text-[#777169] hover:border-[#d6d3d1]"
-                        }`}
-                      >
-                        Credit Card
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setPaymentMethod("express")}
-                        className={`py-2 px-3 rounded-lg border text-center text-xs font-medium transition-all ${
-                          paymentMethod === "express"
-                            ? "border-[#292524] bg-[#fafafa] text-[#0c0a09] shadow-xs"
-                            : "border-[#e7e5e4] text-[#777169] hover:border-[#d6d3d1]"
-                        }`}
-                      >
-                        Express Pay
-                      </button>
-                    </div>
-
-                    {paymentMethod === "card" ? (
-                      <div className="space-y-2.5">
-                        <div className="space-y-1">
-                          <label className="block text-[11px] font-medium text-[#4e4e4e]">
-                            Card Number
-                          </label>
-                          <input
-                            type="text"
-                            value={cardNumber}
-                            onChange={(e) => setCardNumber(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all font-mono"
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="space-y-1">
-                            <label className="block text-[11px] font-medium text-[#4e4e4e]">
-                              Expires
-                            </label>
-                            <input
-                              type="text"
-                              value={cardExpiry}
-                              onChange={(e) => setCardExpiry(e.target.value)}
-                              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all font-mono"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <label className="block text-[11px] font-medium text-[#4e4e4e]">
-                              CVC
-                            </label>
-                            <input
-                              type="text"
-                              value={cardCvc}
-                              onChange={(e) => setCardCvc(e.target.value)}
-                              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all font-mono"
-                            />
-                          </div>
-                        </div>
+                  {/* Carbon Offset Checkbox */}
+                  <div className="p-4 rounded-xl bg-[#fafafa] border border-[#e7e5e4] space-y-3">
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={enableCarbonOffset}
+                        onChange={(e) => setEnableCarbonOffset(e.target.checked)}
+                        className="accent-[#292524] w-4 h-4 mt-0.5"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-[#0c0a09]">
+                          Carbon-Neutral Delivery Contribution
+                        </p>
+                        <p className="text-xs text-[#777169]">
+                          Offset 100% of transit emissions through certified environmental initiatives.
+                        </p>
                       </div>
-                    ) : (
-                      <div className="p-4 rounded-xl bg-[#fafafa] border border-[#e7e5e4] text-center space-y-1.5">
-                        <p className="text-xs text-[#0c0a09] font-medium">
-                          Biometric Wallet Ready
-                        </p>
-                        <p className="text-[11px] text-[#777169]">
-                          Clicking Complete Order will authorize payment via device passkey.
-                        </p>
+                    </label>
+
+                    {enableCarbonOffset && (
+                      <div className="pt-2 pl-7 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {CARBON_INITIATIVES.map((init) => (
+                          <button
+                            key={init.id}
+                            type="button"
+                            onClick={() => setCarbonInitiative(init.id)}
+                            className={`p-2.5 rounded-lg text-left text-xs border transition-all ${
+                              carbonInitiative === init.id
+                                ? "border-[#292524] bg-[#ffffff] font-medium text-[#0c0a09]"
+                                : "border-[#e7e5e4] bg-[#ffffff] text-[#777169]"
+                            }`}
+                          >
+                            <div className="font-medium text-[#0c0a09] truncate">{init.name}</div>
+                            <div className="text-[11px] text-[#292524] font-semibold mt-0.5">
+                              +{currencyConfig.symbol}{(init.rate * currencyConfig.rate).toFixed(2)}
+                            </div>
+                          </button>
+                        ))}
                       </div>
                     )}
                   </div>
-                </section>
-              </div>
+                </div>
+              </section>
             </div>
 
             {/* ========================================================================= */}
-            {/* RIGHT COLUMN: Order Summary, Promo Input, Cost Breakdown & Primary CTA */}
+            {/* RIGHT COLUMN: Cart Summary & Breakdown -> Payment Method & Complete CTA */}
             {/* ========================================================================= */}
-            <div className="lg:col-span-5 space-y-6 sticky top-24">
-              <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-8 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-6">
+            <div className="lg:col-span-6 space-y-6">
+              {/* Card 4: Order Cart & Cost Breakdown (FULL WIDTH in right column) */}
+              <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
                 <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-4">
                   <div>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
@@ -907,12 +817,12 @@ export default function ProfessionalCheckoutPage() {
                     </h2>
                   </div>
                   <span className="text-xs text-[#777169] font-mono">
-                    {currency}
+                    Currency: {currency}
                   </span>
                 </div>
 
                 {/* Items List */}
-                <div className="divide-y divide-[#f0efed] max-h-72 overflow-y-auto pr-1">
+                <div className="divide-y divide-[#f0efed] max-h-60 overflow-y-auto pr-1">
                   {cartItems.map((item) => (
                     <div key={item.sku} className="py-3 flex items-center justify-between gap-3">
                       <div>
@@ -1047,7 +957,7 @@ export default function ProfessionalCheckoutPage() {
 
                   {packagingFeeUSD > 0 && (
                     <div className="flex justify-between text-[#777169]">
-                      <span>Packaging</span>
+                      <span>Packaging Presentation</span>
                       <span className="font-medium text-[#0c0a09]">
                         +{currencyConfig.symbol}
                         {(packagingFeeUSD * currencyConfig.rate).toFixed(2)}
@@ -1075,7 +985,7 @@ export default function ProfessionalCheckoutPage() {
 
                   <div className="border-t border-[#e7e5e4] pt-2.5 flex items-baseline justify-between">
                     <div>
-                      <span className="text-sm font-semibold text-[#0c0a09]">Total</span>
+                      <span className="text-sm font-semibold text-[#0c0a09]">Order Total</span>
                       <p className="text-[10px] text-[#777169]">All duties & taxes included</p>
                     </div>
                     <div className="text-right">
@@ -1086,30 +996,119 @@ export default function ProfessionalCheckoutPage() {
                     </div>
                   </div>
                 </div>
-
-                {/* Primary CTA (Design.md: button-primary near-black ink pill) */}
-                <button
-                  type="button"
-                  onClick={handleCheckout}
-                  disabled={loading || cartItems.length === 0}
-                  className="w-full h-12 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-[14px] font-medium transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  {loading ? (
-                    <>
-                      <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                      <span>Authorizing Payment...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Complete Order & Authorize</span>
-                      <span className="font-['EB_Garamond',serif] text-base font-normal">
-                        ({currencyConfig.symbol}{convertedTotal})
-                      </span>
-                      <span>→</span>
-                    </>
-                  )}
-                </button>
               </div>
+
+              {/* Card 5: Payment Authorization & Complete Order (FULL WIDTH below cart card) */}
+              <section className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-6 sm:p-7 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-5">
+                <div className="border-b border-[#e7e5e4] pb-4">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
+                    04 / Payment Method
+                  </span>
+                  <h2 className="text-xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+                    Payment Authorization
+                  </h2>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod("card")}
+                      className={`py-2 px-3 rounded-lg border text-center text-xs font-medium transition-all ${
+                        paymentMethod === "card"
+                          ? "border-[#292524] bg-[#fafafa] text-[#0c0a09] shadow-xs"
+                          : "border-[#e7e5e4] text-[#777169] hover:border-[#d6d3d1]"
+                      }`}
+                    >
+                      Credit / Debit Card
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod("express")}
+                      className={`py-2 px-3 rounded-lg border text-center text-xs font-medium transition-all ${
+                        paymentMethod === "express"
+                          ? "border-[#292524] bg-[#fafafa] text-[#0c0a09] shadow-xs"
+                          : "border-[#e7e5e4] text-[#777169] hover:border-[#d6d3d1]"
+                      }`}
+                    >
+                      Express Pay
+                    </button>
+                  </div>
+
+                  {paymentMethod === "card" ? (
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <label className="block text-[11px] font-medium text-[#4e4e4e]">
+                          Card Number
+                        </label>
+                        <input
+                          type="text"
+                          value={cardNumber}
+                          onChange={(e) => setCardNumber(e.target.value)}
+                          className="w-full px-3.5 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all font-mono"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <label className="block text-[11px] font-medium text-[#4e4e4e]">
+                            Expires
+                          </label>
+                          <input
+                            type="text"
+                            value={cardExpiry}
+                            onChange={(e) => setCardExpiry(e.target.value)}
+                            className="w-full px-3.5 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all font-mono"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="block text-[11px] font-medium text-[#4e4e4e]">
+                            CVC
+                          </label>
+                          <input
+                            type="text"
+                            value={cardCvc}
+                            onChange={(e) => setCardCvc(e.target.value)}
+                            className="w-full px-3.5 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-all font-mono"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-4 rounded-xl bg-[#fafafa] border border-[#e7e5e4] text-center space-y-1.5">
+                      <p className="text-xs text-[#0c0a09] font-medium">
+                        Biometric Express Pay Ready
+                      </p>
+                      <p className="text-[11px] text-[#777169]">
+                        Clicking Complete Order will authorize payment via device passkey.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Primary Complete Order CTA (Design.md: button-primary near-black ink pill) */}
+                  <button
+                    type="button"
+                    onClick={handleCheckout}
+                    disabled={loading || cartItems.length === 0}
+                    className="w-full h-12 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-[14px] font-medium transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-2"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        <span>Authorizing Payment...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Complete Order & Authorize</span>
+                        <span className="font-['EB_Garamond',serif] text-base font-normal">
+                          ({currencyConfig.symbol}{convertedTotal})
+                        </span>
+                        <span>→</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </section>
             </div>
           </div>
         )}
@@ -1302,7 +1301,7 @@ export default function ProfessionalCheckoutPage() {
 
       {/* Footer */}
       <footer className="mt-20 border-t border-[#e7e5e4] bg-[#f5f5f5] py-12 px-6 sm:px-12 text-sm text-[#777169]">
-        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs">
+        <div className="max-w-[1240px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs">
           <div>
             <span className="font-['EB_Garamond',serif] text-sm text-[#0c0a09]">SentinelOps Store</span> · Autonomous Resilience Platform
           </div>
