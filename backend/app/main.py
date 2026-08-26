@@ -62,12 +62,194 @@ _in_memory_orders: Dict[str, Dict[str, Any]] = {}
 _in_memory_incidents: Dict[str, Dict[str, Any]] = {}
 
 
+from app.auth import (
+    UserSignup,
+    UserLogin,
+    UserResponse,
+    AuthTokenResponse,
+    hash_password,
+    verify_password,
+    create_access_token,
+    decode_access_token,
+    _in_memory_users,
+    _in_memory_users_by_email,
+)
+
 @app.get("/health", tags=["Monitoring"])
 async def health_check():
     """Health check endpoint and Supabase connectivity status."""
     client = get_supabase_client()
     db_status = "connected" if client is not None else "unconfigured"
     return {"status": "ok", "database": db_status}
+
+
+# ==========================================
+# AUTHENTICATION & USER MANAGEMENT
+# ==========================================
+
+@app.post("/auth/signup", response_model=AuthTokenResponse, tags=["Authentication"])
+async def signup(req: UserSignup):
+    """
+    Register a new customer account with verified email and password.
+    """
+    email_clean = req.email.strip().lower()
+    
+    # Check if user already exists
+    if email_clean in _in_memory_users_by_email:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An account with this email address already exists.",
+        )
+
+    client = get_supabase_client()
+    if client:
+        try:
+            res = client.table("users").select("id").eq("email", email_clean).execute()
+            if res.data and len(res.data) > 0:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="An account with this email address already exists.",
+                )
+        except HTTPException:
+            raise
+        except Exception:
+            pass
+
+    user_id = str(uuid.uuid4())
+    pw_hash = hash_password(req.password)
+    now_iso = datetime.utcnow().isoformat()
+
+    user_record = {
+        "id": user_id,
+        "email": email_clean,
+        "name": req.name or "Customer",
+        "password_hash": pw_hash,
+        "address": req.address or "",
+        "is_guest": False,
+        "created_at": now_iso,
+    }
+
+    _in_memory_users[user_id] = user_record
+    _in_memory_users_by_email[email_clean] = user_id
+
+    if client:
+        try:
+            client.table("users").insert(user_record).execute()
+        except Exception:
+            pass
+
+    token = create_access_token(user_id, email_clean)
+    return AuthTokenResponse(
+        access_token=token,
+        token_type="Bearer",
+        user=UserResponse(
+            id=user_id,
+            email=email_clean,
+            name=user_record["name"],
+            address=user_record["address"],
+            is_guest=False,
+            created_at=now_iso,
+        ),
+    )
+
+
+@app.post("/auth/login", response_model=AuthTokenResponse, tags=["Authentication"])
+async def login(req: UserLogin):
+    """
+    Authenticate an existing customer via email and password, returning a JWT token.
+    """
+    email_clean = req.email.strip().lower()
+    user_record = None
+
+    # Check in-memory store
+    if email_clean in _in_memory_users_by_email:
+        uid = _in_memory_users_by_email[email_clean]
+        user_record = _in_memory_users.get(uid)
+
+    # Fallback to Supabase
+    if not user_record:
+        client = get_supabase_client()
+        if client:
+            try:
+                res = client.table("users").select("*").eq("email", email_clean).execute()
+                if res.data and len(res.data) > 0:
+                    user_record = res.data[0]
+                    _in_memory_users[user_record["id"]] = user_record
+                    _in_memory_users_by_email[email_clean] = user_record["id"]
+            except Exception:
+                pass
+
+    if not user_record or not verify_password(req.password, user_record.get("password_hash", "")):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password.",
+        )
+
+    token = create_access_token(user_record["id"], email_clean)
+    return AuthTokenResponse(
+        access_token=token,
+        token_type="Bearer",
+        user=UserResponse(
+            id=user_record["id"],
+            email=user_record["email"],
+            name=user_record.get("name", "Customer"),
+            address=user_record.get("address"),
+            is_guest=user_record.get("is_guest", False),
+            created_at=user_record.get("created_at"),
+        ),
+    )
+
+
+@app.get("/auth/me", response_model=UserResponse, tags=["Authentication"])
+async def get_current_user(request: Request):
+    """
+    Fetch the authenticated customer's profile using their JWT Bearer token.
+    """
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing or invalid Authorization header.",
+        )
+
+    token = auth_header.split(" ", 1)[1]
+    payload = decode_access_token(token)
+    if not payload or "sub" not in payload:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired access token.",
+        )
+
+    user_id = payload["sub"]
+    user_record = _in_memory_users.get(user_id)
+
+    if not user_record:
+        client = get_supabase_client()
+        if client:
+            try:
+                res = client.table("users").select("*").eq("id", user_id).execute()
+                if res.data and len(res.data) > 0:
+                    user_record = res.data[0]
+            except Exception:
+                pass
+
+    if not user_record:
+        return UserResponse(
+            id=user_id,
+            email=payload.get("email", ""),
+            name="Customer",
+            address=None,
+            is_guest=False,
+        )
+
+    return UserResponse(
+        id=user_record["id"],
+        email=user_record["email"],
+        name=user_record.get("name", "Customer"),
+        address=user_record.get("address"),
+        is_guest=user_record.get("is_guest", False),
+        created_at=user_record.get("created_at"),
+    )
 
 
 # ==========================================
