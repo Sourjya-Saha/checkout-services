@@ -36,6 +36,22 @@ CARBON_OFFSET_RATES = {
     "WIND": 4.00,
 }
 
+PACKAGING_TYPE_RATES = {
+    "STANDARD": 0.0,
+    "STANDARD_BOX": 1.5,
+    "PREMIUM": 3.0,
+    "ECO_MINIMAL": 0.5,
+}
+
+
+def calculate_packaging_fee(subtotal: float, packaging_type: Optional[str] = None) -> float:
+    """
+    Calculate custom packaging fee based on packaging type preference.
+    """
+    if not packaging_type:
+        return 0.0
+    return PACKAGING_TYPE_RATES.get(packaging_type.upper(), 0.0)
+
 
 def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]:
     """

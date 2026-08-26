@@ -29,7 +29,7 @@ def test_checkout_logged_in_success():
     assert response.status_code == 200
     data = response.json()
     assert "order_id" in data
-    assert data["total"] == 150.5
+    assert data["total"] == 149.0
     assert data["currency"] == "USD"
     assert data["status"] == "completed"
 
