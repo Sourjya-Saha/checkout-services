@@ -187,19 +187,19 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Previous "My Harness Agent" Text Styling with Staggered Fade Down */}
-        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-entrance-eyebrow cursor-default transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105">
+        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-entrance-eyebrow cursor-default">
           My Harness Agent
         </p>
 
-        {/* Giant Main Title: "SENTINEL OPS" in White with Cinematic Spring Reveal */}
-        <div className="relative inline-block select-none my-1 animate-entrance-hero cursor-default group transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.03]">
-          {/* Soft tight black shadow underlayer */}
-          <span className="absolute inset-0 translate-x-[3px] translate-y-[5px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-black filter blur-[4px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-[5px] group-hover:translate-y-[8px]">
-            SENTINEL OPS
-          </span>
-
-          {/* Sharp Front White Title */}
-          <h1 className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-white drop-shadow-[0_6px_20px_rgba(0,0,0,0.95)] z-10 whitespace-nowrap">
+        {/* Giant Main Title: "SENTINEL OPS" (TEXT + SHADOW 100% UNIFIED ATOMICALLY) */}
+        <div className="relative inline-block select-none my-1 animate-entrance-hero cursor-default">
+          <h1
+            className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-white z-10 whitespace-nowrap"
+            style={{
+              textShadow:
+                "3px 5px 6px rgba(0,0,0,0.95), 0 8px 24px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.95)",
+            }}
+          >
             SENTINEL OPS
           </h1>
         </div>

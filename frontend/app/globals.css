@@ -220,20 +220,16 @@ body {
 @keyframes entranceCenterTitle {
   0% {
     opacity: 0;
-    transform: translateY(52px) scale(0.86);
-    filter: blur(20px);
+    transform: translateY(40px) scale(0.9);
+    filter: blur(14px);
   }
-  60% {
+  65% {
     opacity: 0.95;
-    transform: translateY(-6px) scale(1.028);
-    filter: blur(2px);
+    transform: translateY(-4px) scale(1.018);
+    filter: blur(1px);
   }
-  80% {
-    transform: translateY(2px) scale(0.994);
-    filter: blur(0px);
-  }
-  92% {
-    transform: translateY(-1px) scale(1.006);
+  85% {
+    transform: translateY(1.5px) scale(0.996);
   }
   100% {
     opacity: 1;
@@ -245,17 +241,14 @@ body {
 @keyframes entranceEyebrow {
   0% {
     opacity: 0;
-    transform: translateY(-24px) scale(0.95);
-    letter-spacing: 0.28em;
-    filter: blur(8px);
+    transform: translateY(-20px) scale(0.96);
+    letter-spacing: 0.24em;
+    filter: blur(6px);
   }
-  65% {
+  70% {
     opacity: 0.95;
-    transform: translateY(3px) scale(1.02);
+    transform: translateY(2px) scale(1.015);
     filter: blur(0px);
-  }
-  85% {
-    transform: translateY(-1px) scale(0.995);
   }
   100% {
     opacity: 1;
