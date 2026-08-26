@@ -34,8 +34,6 @@ interface IncidentState {
   root_cause?: string | null;
 }
 
-const SENTINELOPS_AGENT_ID = "01m0xgq0c13c5p67k7rtjk0s35";
-
 export default function DistortedBlackBoxSentinelOpsCommander() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -290,7 +288,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&display=swap');
       `}</style>
 
-      {/* SVG Distorted Drawing Filters (Subtle Organic Comic Distortion) */}
+      {/* SVG Distorted Drawing Filters */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
           <filter id="comic-box-wobble" x="-4%" y="-4%" width="108%" height="108%">
@@ -332,14 +330,15 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
             </Link>
           </div>
 
-          {/* ONLY 1 Redirection Button */}
+          {/* ONLY 1 Redirection Button: POSTMORTEM REPORTS (DISTORTED LIKE SENTINEL OPS) */}
           <div className="flex items-center">
             <Link
               href="/incidents"
-              className="relative inline-block group rotate-[-1deg] hover:rotate-0 transition-transform"
+              className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform"
+              style={{ filter: "url(#comic-title-wobble)" }}
             >
-              <div className="absolute -inset-1 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all" />
-              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-2 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+              <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all" />
+              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-1 uppercase tracking-tight flex items-center gap-2 block transition-colors">
                 <span>POSTMORTEM REPORTS</span>
                 <span>→</span>
               </span>
@@ -385,9 +384,9 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </div>
                 </div>
 
-                {/* Specs Ribbon (COMPACT TRACKING MOVED TOWARDS BOTTOM) */}
+                {/* Specs Ribbon (SLANTED LABEL MOVED TO BOTTOM) */}
                 <div className="pt-4">
-                  <div className="relative inline-block">
+                  <div className="relative inline-block rotate-[-1.5deg]">
                     <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
                     <p className="relative z-10 text-xs sm:text-sm font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
                       <span className="text-red-500">TRUEFORGE AGENT RUNTIME</span>
@@ -726,17 +725,22 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
 
               {/* Terminal Content */}
               <div className="relative z-10 space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-2">
-                  <div className="relative inline-block">
-                    <div className="absolute -inset-1 bg-zinc-900 border-[1.5px] border-red-600" />
-                    <span className="relative z-10 text-white font-bold px-2 py-0.5 block">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-3">
+                  {/* STREAM In White Box with Red Border */}
+                  <div className="relative inline-block rotate-[-0.5deg]">
+                    <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
+                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
                       STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
                     </span>
                   </div>
 
-                  <span className="text-red-500 font-anton text-xs uppercase tracking-wider">
-                    SAVED AGENT: sentinelops ({SENTINELOPS_AGENT_ID})
-                  </span>
+                  {/* SAVED AGENT: sentinelops In White Box with Red Border (NO ID) */}
+                  <div className="relative inline-block rotate-[0.5deg]">
+                    <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
+                    <span className="relative z-10 text-black font-anton text-xs px-3 py-1 uppercase block tracking-tight">
+                      SAVED AGENT: sentinelops
+                    </span>
+                  </div>
                 </div>
 
                 <div className="space-y-2 min-h-[200px] max-h-[340px] overflow-y-auto pr-2">
