@@ -187,14 +187,14 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       <div className="relative z-50 my-auto text-center py-4">
         {/* Previous "My Harness Agent" Text Styling with Staggered Fade Down */}
-        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-entrance-eyebrow">
+        <p className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-entrance-eyebrow cursor-default transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105">
           My Harness Agent
         </p>
 
-        {/* Giant Main Title: "SENTINEL OPS" in White with Cinematic Blur/Scale Reveal */}
-        <div className="relative inline-block select-none my-1 animate-entrance-hero">
+        {/* Giant Main Title: "SENTINEL OPS" in White with Cinematic Spring Reveal */}
+        <div className="relative inline-block select-none my-1 animate-entrance-hero cursor-default group transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.03]">
           {/* Soft tight black shadow underlayer */}
-          <span className="absolute inset-0 translate-x-[3px] translate-y-[5px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-black filter blur-[4px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap">
+          <span className="absolute inset-0 translate-x-[3px] translate-y-[5px] text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-black filter blur-[4px] opacity-95 select-none pointer-events-none z-0 whitespace-nowrap transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-[5px] group-hover:translate-y-[8px]">
             SENTINEL OPS
           </span>
 
