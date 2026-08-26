@@ -8,9 +8,8 @@
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_Persistence-3ECF8E?logo=supabase)](https://supabase.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)](https://python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **SentinelOps** is an autonomous AI Site Reliability Engineering (SRE) orchestration platform powered by **TrueForge**. It actively monitors production microservices, automatically spins up a parallel multi-agent swarm to triangulate root causes across Git history, application logs, and database records, safely synthesizes and executes fixes inside an isolated **Daytona Linux Sandbox**, enforces strict **Two-Stage Human-in-the-Loop (HITL)** approval gates, subjects candidate pull requests to automated **Qodo AI** code reviews, and records persistent postmortem incident memory into **Supabase PostgreSQL**.
+> **SentinelOps** is an autonomous AI Site Reliability Engineering (SRE) orchestration platform powered by **TrueForge**. It actively monitors production microservices, automatically spins up a parallel multi-agent swarm to triangulate root causes across Git history, application logs, and database records, safely **reproduces and validates bugs inside an isolated Daytona Linux Sandbox**, executes fixes with strict **Two-Stage Human-in-the-Loop (HITL)** approval gates, subjects candidate pull requests to automated **Qodo AI** code reviews, and records persistent postmortem incident memory into **Supabase PostgreSQL**.
 
 ---
 
@@ -55,10 +54,10 @@ flowchart TD
     end
 
     subgraph SandboxAndHITL ["4. DAYTONA SANDBOX & TWO-STAGE HITL APPROVAL"]
-        Hypothesis --> GateA{"CHECKPOINT A<br/>Human Approval to Draft & Test Fix"}
+        Hypothesis --> GateA{"CHECKPOINT A<br/>Human Approval to Reproduce & Fix"}
         
         GateA -->|Approved by SRE Commander| DaytonaBox["Daytona Linux MicroVM Sandbox<br/>(Clean Working Copy / Isolated Env)"]
-        DaytonaBox -->|1. pip install requirements<br/>2. Apply Safe Patch<br/>3. Run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed"]
+        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce TypeError in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (8/8 OK)"]
         
         SandboxProof --> GateB{"CHECKPOINT B<br/>Human Approval to Open GitHub PR"}
     end
@@ -137,7 +136,7 @@ TrueForge runtime management interface showing registered tools, sandbox compute
 | Feature Component | Implementation Details | Engineering Benefit |
 | :--- | :--- | :--- |
 | **Multi-Agent Swarm** | TrueForge Parallel Subagents (Alpha: Git Diffs, Bravo: Log Traces, Charlie: Database Correlator) | Reduces Mean Time to Detect (MTTD) and Triangulate (MTTT) from hours to under 30 seconds. |
-| **Daytona Sandbox** | Ephemeral isolated Linux container compute | Prevents unverified or broken candidate patches from reaching production. |
+| **Daytona Bug Reproduction & Sandbox** | Ephemeral isolated Linux container compute | Actively reproduces the bug in isolation first, preventing false positives and unverified patches from reaching production. |
 | **Two-Stage HITL Gate** | **Checkpoint A** (Fix Approval) + **Checkpoint B** (PR Approval) | Guarantees human oversight and zero unauthorized code deployment. |
 | **Qodo AI Review** | Automated PR code quality & security review | Verifies zero high-severity regressions before human merging. |
 | **Supabase Persistence** | PostgreSQL `incidents` schema with full evidence payload | Permanent organizational memory prevents identical future regressions. |
@@ -157,11 +156,12 @@ TrueForge runtime management interface showing registered tools, sandbox compute
    ├── Subagent Bravo: Parses FastAPI 500 stack trace
    └── Subagent Charlie: Queries PostgreSQL orders database (is_guest=true)
 [4. CHECKPOINT A // HUMAN APPROVAL GATE 1]
-   └── SRE Commander reviews hypothesis -> APPROVES fix drafting & sandbox testing
-[5. DAYTONA ISOLATED SANDBOX RUN]
+   └── SRE Commander reviews hypothesis -> APPROVES sandbox reproduction and fix drafting
+[5. DAYTONA ISOLATED SANDBOX RUN (REPRODUCE -> FIX -> VERIFY)]
    ├── Clones working copy -> installs requirements.txt
+   ├── Actively reproduces failure: pytest backend/tests/test_checkout.py -k guest (fails with TypeError)
    ├── Applies candidate patch in payment_processor.py
-   └── Runs Pytest verification suite -> 8/8 tests pass (100% OK)
+   └── Runs full Pytest verification suite -> 8/8 tests pass (100% OK)
 [6. CHECKPOINT B // HUMAN APPROVAL GATE 2]
    └── SRE Commander reviews sandbox proof -> APPROVES opening GitHub PR
 [7. GITHUB PULL REQUEST & QODO REVIEW]
@@ -176,13 +176,13 @@ TrueForge runtime management interface showing registered tools, sandbox compute
 
 SentinelOps enforces strict security boundaries between the sandbox and external systems:
 
-### Checkpoint A // Approval to Draft & Verify in Sandbox
+### Checkpoint A // Approval to Reproduce & Fix in Sandbox
 * **Trigger:** Multi-agent swarm completes evidence gathering and isolates root cause.
 * **Payload Presented:** `[TARGET REPO]`, `[TARGET ERROR]`, and proposed sandbox action.
 * **Security Guarantee:** No sandbox compute is executed without explicit human consent.
 
 ### Checkpoint B // Approval to Open GitHub Pull Request
-* **Trigger:** 100% of automated test suites pass inside the isolated Daytona Linux sandbox.
+* **Trigger:** 100% of automated test suites pass inside the isolated Daytona Linux sandbox after reproducing and fixing the bug.
 * **Payload Presented:** Daytona test execution logs and candidate file diff.
 * **Security Guarantee:** No code is written or committed to GitHub without human authorization.
 
@@ -349,8 +349,3 @@ NEXT_PUBLIC_CHECKOUT_API_URL=http://localhost:8000
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
-
----
-
-## License
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
