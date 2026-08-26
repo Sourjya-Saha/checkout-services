@@ -406,7 +406,7 @@ export default function ProfessionalCheckoutPage() {
       <nav className="sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Link
-            href="/checkout"
+            href="/"
             className="text-lg font-['EB_Garamond',serif] font-normal tracking-[-0.02em] text-[#0c0a09] flex items-center gap-2 group"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-[#292524] inline-block transition-transform group-hover:scale-125" />
@@ -502,10 +502,7 @@ export default function ProfessionalCheckoutPage() {
       <main className="max-w-[1240px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
         {/* Editorial Header */}
         <header className="mb-12 text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
-            Secure Order Fulfillment
-          </div>
+        
           <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09] leading-[1.1]">
             Review & Complete Your Order
           </h1>
@@ -597,8 +594,8 @@ export default function ProfessionalCheckoutPage() {
                   {/* Authenticated vs Guest Presentation */}
                   {currentUser ? (
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#a7e5d3]/30 text-[#16a34a] text-xs font-medium border border-[#a7e5d3]">
-                      <span className="w-2 h-2 rounded-full bg-[#16a34a]" />
-                      <span>Member: {currentUser.name}</span>
+                      
+                      <span>Member</span>
                     </div>
                   ) : (
                     <div className="inline-flex rounded-full bg-[#f0efed] p-1 border border-[#e7e5e4]">
