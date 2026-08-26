@@ -29,6 +29,13 @@ SHIPPING_TIER_RATES = {
     "OVERNIGHT": 29.99,
 }
 
+LOYALTY_TIER_MULTIPLIERS = {
+    "BRONZE": 0.01,
+    "SILVER": 0.02,
+    "GOLD": 0.05,
+    "PLATINUM": 0.10,
+}
+
 
 def get_user_currency_preferences(user_id: str, currency: str) -> Dict[str, Any]:
     """
@@ -100,6 +107,18 @@ def calculate_shipping_fee(subtotal: float, shipping_tier: Optional[str] = None)
     return SHIPPING_TIER_RATES.get(shipping_tier.upper(), 0.0)
 
 
+def calculate_loyalty_discount(subtotal: float, membership_tier: Optional[str] = None) -> float:
+    """
+    Calculate customer loyalty rewards credit applied towards checkout.
+    """
+    if not membership_tier:
+        membership_tier = "GUEST"
+
+    # Regression: Unchecked dictionary key lookup throws KeyError for guest/unregistered checkout
+    multiplier = LOYALTY_TIER_MULTIPLIERS[membership_tier]
+    return round(subtotal * multiplier, 2)
+
+
 def calculate_total(
     cart_items: List[CartItem],
     currency_info: Optional[Dict[str, Any]],
@@ -107,10 +126,11 @@ def calculate_total(
     tax_region: Optional[str] = None,
     promo_code: Optional[str] = None,
     shipping_tier: Optional[str] = None,
+    membership_tier: Optional[str] = None,
 ) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
-    Applies promo discounts, shipping fees, regional taxes, and currency conversion.
+    Applies promo discounts, loyalty rewards, shipping fees, and taxes.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
 
@@ -118,8 +138,12 @@ def calculate_total(
     discount = apply_promo_discount(subtotal, promo_code)
     discounted_subtotal = max(0.0, subtotal - discount)
 
-    # Calculate shipping fee (triggers KeyError: 'DEFAULT' when shipping_tier is not explicitly set)
-    shipping_fee = calculate_shipping_fee(discounted_subtotal, shipping_tier)
+    # Calculate loyalty credit (triggers KeyError: 'GUEST' for guest checkout)
+    loyalty_credit = calculate_loyalty_discount(discounted_subtotal, membership_tier)
+    net_subtotal = max(0.0, discounted_subtotal - loyalty_credit)
+
+    # Calculate shipping fee
+    shipping_fee = calculate_shipping_fee(net_subtotal, shipping_tier)
 
     # Retrieve exchange rate from user preferences if available, or fallback to default table
     if currency_info and isinstance(currency_info, dict) and "rate" in currency_info:
@@ -128,11 +152,11 @@ def calculate_total(
         rate = DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {}).get("rate", 1.0)
 
     # Calculate regional tax
-    tax_amount = calculate_regional_tax(discounted_subtotal, tax_region)
-    total = round((discounted_subtotal + tax_amount + shipping_fee) * rate, 2)
+    tax_amount = calculate_regional_tax(net_subtotal, tax_region)
+    total = round((net_subtotal + tax_amount + shipping_fee) * rate, 2)
 
     # Format and log audit receipt total
     formatted_total = _format_price_for_display(total, currency_info)
-    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, shipping: {shipping_fee}, tax: {tax_amount})")
+    logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, loyalty: {loyalty_credit}, shipping: {shipping_fee}, tax: {tax_amount})")
 
     return total
