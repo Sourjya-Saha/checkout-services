@@ -1,4 +1,4 @@
-# 🛡️ SentinelOps: Autonomous Incident Response Engine & Resilient Microservice Platform
+# SentinelOps: Autonomous Incident Response Engine & Resilient Microservice Platform
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
@@ -14,7 +14,7 @@
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 1. [System Architecture Diagram](#1-system-architecture-diagram)
 2. [Visual Walkthrough & UI Showcase](#2-visual-walkthrough--ui-showcase)
 3. [Core Feature Matrix](#3-core-feature-matrix)
@@ -33,41 +33,41 @@
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["1. CLIENT & E-COMMERCE STOREFRONT"]
-        User["👤 Customer / QA Engineer"] -->|Triggers Guest Checkout| WebStore["🛒 Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
-        WebStore -->|HTTP POST /checkout| APIGateway["⚡ FastAPI Microservice (:8000)"]
+        User["Customer / QA Client"] -->|Triggers Guest Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
+        WebStore -->|HTTP POST /checkout| APIGateway["FastAPI Microservice (:8000)"]
     end
 
     subgraph FailureIngestion ["2. INCIDENT DETECTION & INGESTION"]
-        APIGateway -->|Unhandled Exception 500 Spike| ExceptionLogger["💥 payment_processor.py<br/>TypeError: 'NoneType'"]
-        ExceptionLogger -->|Automated Incident Dispatch| IncidentStore["📡 Next.js SSE Dispatcher<br/>/api/incidents/report"]
+        APIGateway -->|Unhandled Exception 500 Spike| ExceptionLogger["payment_processor.py<br/>TypeError: 'NoneType'"]
+        ExceptionLogger -->|Automated Incident Dispatch| IncidentStore["Next.js SSE Dispatcher<br/>/api/incidents/report"]
     end
 
     subgraph TrueForgeSwarm ["3. TRUEFORGE MULTI-AGENT SWARM"]
-        IncidentStore -->|SSE Webhook & Event Dispatch| TFCommander["🤖 SentinelOps Incident Commander<br/>(TrueForge Agent Runtime)"]
+        IncidentStore -->|SSE Webhook & Event Dispatch| TFCommander["SentinelOps Incident Commander<br/>(TrueForge Agent Runtime)"]
         
-        TFCommander -->|Launch Parallel Subagents| SubA["🔍 Subagent Alpha<br/>Git Commit & Diff Inspector<br/>(GitHub MCP)"]
-        TFCommander -->|Launch Parallel Subagents| SubB["📜 Subagent Bravo<br/>Exception Traceback Decoder<br/>(FastAPI Log Streams)"]
-        TFCommander -->|Launch Parallel Subagents| SubC["🗄️ Subagent Charlie<br/>Database Telemetry Correlator<br/>(Supabase MCP)"]
+        TFCommander -->|Launch Parallel Subagents| SubA["Subagent Alpha<br/>Git Commit & Diff Inspector<br/>(GitHub MCP)"]
+        TFCommander -->|Launch Parallel Subagents| SubB["Subagent Bravo<br/>Exception Traceback Decoder<br/>(FastAPI Log Streams)"]
+        TFCommander -->|Launch Parallel Subagents| SubC["Subagent Charlie<br/>Database Telemetry Correlator<br/>(Supabase MCP)"]
         
-        SubA -->|Correlates Evidence| Hypothesis["🎯 Root-Cause Hypothesis:<br/>Missing dictionary fallback in price formatting"]
+        SubA -->|Correlates Evidence| Hypothesis["Root-Cause Hypothesis:<br/>Missing dictionary fallback in price formatting"]
         SubB -->|Correlates Evidence| Hypothesis
         SubC -->|Correlates Evidence| Hypothesis
     end
 
     subgraph SandboxAndHITL ["4. DAYTONA SANDBOX & TWO-STAGE HITL APPROVAL"]
-        Hypothesis --> GateA{"🛑 CHECKPOINT A<br/>Human Approval to Draft & Test Fix"}
+        Hypothesis --> GateA{"CHECKPOINT A<br/>Human Approval to Draft & Test Fix"}
         
-        GateA -->|Approved by SRE Commander| DaytonaBox["📦 Daytona Linux MicroVM Sandbox<br/>(Clean Working Copy / Isolated Env)"]
-        DaytonaBox -->|1. pip install requirements<br/>2. Apply Safe Patch<br/>3. Run pytest backend/tests| SandboxProof["✅ 100% Sandbox Verification Passed"]
+        GateA -->|Approved by SRE Commander| DaytonaBox["Daytona Linux MicroVM Sandbox<br/>(Clean Working Copy / Isolated Env)"]
+        DaytonaBox -->|1. pip install requirements<br/>2. Apply Safe Patch<br/>3. Run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed"]
         
-        SandboxProof --> GateB{"🛑 CHECKPOINT B<br/>Human Approval to Open GitHub PR"}
+        SandboxProof --> GateB{"CHECKPOINT B<br/>Human Approval to Open GitHub PR"}
     end
 
     subgraph RemediationAndAudit ["5. REMEDIATION, QODO REVIEW & POSTMORTEM MEMORY"]
-        GateB -->|Approved by SRE Commander| GitHubPR["🐙 GitHub MCP Connector<br/>Open Pull Request #2"]
-        GitHubPR -->|Automated PR Analysis| Qodo["🤖 Qodo AI Code Review<br/>0 High Severity / Approved"]
-        Qodo --> DBCommit[("🐘 Supabase PostgreSQL<br/>Table: incidents (Persistent Memory)")]
-        DBCommit --> AuditLedger["📊 Postmortem Audit Ledger UI<br/>(/incidents)"]
+        GateB -->|Approved by SRE Commander| GitHubPR["GitHub MCP Connector<br/>Open Pull Request #2"]
+        GitHubPR -->|Automated PR Analysis| Qodo["Qodo AI Code Review<br/>0 High Severity / Approved"]
+        Qodo --> DBCommit[("Supabase PostgreSQL<br/>Table: incidents (Persistent Memory)")]
+        DBCommit --> AuditLedger["Postmortem Audit Ledger UI<br/>(/incidents)"]
     end
 
     classDef redBox fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
@@ -83,49 +83,49 @@ flowchart TD
 
 ## 2. Visual Walkthrough & UI Showcase
 
-### 🌟 1. Interactive Landing Experience
-The entry poster features cinematic typography, fluid silk wave simulations, and direct entry triggers into all services.
+### 1. Interactive Landing Experience
+The entry poster features typography, fluid wave simulations, and direct navigation triggers to all sub-applications.
 ![SentinelOps Landing Experience](docs/landingpage.png)
 
 ---
 
-### 🛒 2. E-Commerce Storefront & Checkout Gateway
+### 2. E-Commerce Storefront & Checkout Gateway
 Full-featured e-commerce checkout supporting multi-currency (`USD`, `EUR`, `GBP`), regional tax calculation, promotional discount codes, member authentication, and guest checkout paths.
 ![Checkout Storefront Overview](docs/checkout_service_patient_site.png)
 
 ---
 
-### 🔐 3. Authentication Modal & Guest Mode
-Customers can seamlessly authenticate or toggle Guest Mode. Guest checkout intentionally triggers realistic microservice regressions to test autonomous SRE response loops.
+### 3. Authentication Modal & Guest Mode
+Customers can authenticate or toggle Guest Mode. Guest checkout intentionally triggers realistic microservice regressions to test autonomous SRE response loops.
 ![Authentication & Order Configuration](docs/checkout_service_patient_site_1.png)
 
 ---
 
-### 🚀 4. Autonomous SRE Command Center (HUD)
+### 4. Autonomous SRE Command Center (HUD)
 Live multi-agent swarm telemetry displays parallel investigation state across Subagent Alpha, Subagent Bravo, and Subagent Charlie.
 ![SentinelOps Swarm Command HUD](docs/sentinleops_hub.png)
 
 ---
 
-### 🛑 5. Two-Stage Human Approval Gates & Live SSE Stream
+### 5. Two-Stage Human Approval Gates & Live SSE Stream
 Interactive Checkpoint approval cards with high-contrast monospace metadata (`[TARGET REPO]`, `[TARGET ERROR]`, `[ACTION]`) and real-time TrueForge event accumulation.
 ![Two-Stage Approval Gates & Live Terminal](docs/sentinleops_hub_2.png)
 
 ---
 
-### 📊 6. Postmortem Incident Audit Ledger
+### 6. Postmortem Incident Audit Ledger
 Persistent PostgreSQL memory records root-cause analyses, Daytona sandbox verification logs, human approval audit trails, and GitHub PR links.
 ![Postmortem Audit Ledger](docs/sentinleops_incident.png)
 
 ---
 
-### 🔍 7. Supabase Persistent Memory Schema Inspector
+### 7. Supabase Persistent Memory Schema Inspector
 Interactive modal inspector providing raw JSON schema payloads stored inside the Supabase cluster for compliance and auditing.
 ![Supabase Memory Record Inspector](docs/sentinleops_incident_2.png)
 
 ---
 
-### ⚙️ 8. TrueForge Multi-Agent Runtime & Daytona Sandbox
+### 8. TrueForge Multi-Agent Runtime & Daytona Sandbox
 TrueForge runtime management interface showing registered tools, sandbox compute instances, and execution thread logs.
 ![TrueForge Runtime Interface](docs/trueforge_1.png)
 ![TrueForge Sandbox Compute](docs/trueforge_2.png)
@@ -137,7 +137,7 @@ TrueForge runtime management interface showing registered tools, sandbox compute
 | Feature Component | Implementation Details | Engineering Benefit |
 | :--- | :--- | :--- |
 | **Multi-Agent Swarm** | TrueForge Parallel Subagents (Alpha: Git Diffs, Bravo: Log Traces, Charlie: Database Correlator) | Reduces Mean Time to Detect (MTTD) and Triangulate (MTTT) from hours to under 30 seconds. |
-| **Daytona Sandbox** | Ephemeral isolated Linux container compute | Prevents hallucinated or broken candidate patches from reaching production. |
+| **Daytona Sandbox** | Ephemeral isolated Linux container compute | Prevents unverified or broken candidate patches from reaching production. |
 | **Two-Stage HITL Gate** | **Checkpoint A** (Fix Approval) + **Checkpoint B** (PR Approval) | Guarantees human oversight and zero unauthorized code deployment. |
 | **Qodo AI Review** | Automated PR code quality & security review | Verifies zero high-severity regressions before human merging. |
 | **Supabase Persistence** | PostgreSQL `incidents` schema with full evidence payload | Permanent organizational memory prevents identical future regressions. |
@@ -352,5 +352,5 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
 ---
 
-## 📄 License
+## License
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
