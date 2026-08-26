@@ -290,16 +290,16 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&display=swap');
       `}</style>
 
-      {/* SVG Distorted Drawing Filters for Comic Frames & Title Patches */}
+      {/* SVG Distorted Drawing Filters (Subtle Organic Comic Distortion) */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
-          <filter id="comic-box-wobble" x="-6%" y="-6%" width="112%" height="112%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5.5" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="comic-box-wobble" x="-4%" y="-4%" width="108%" height="108%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
           </filter>
-          <filter id="comic-title-wobble" x="-8%" y="-8%" width="116%" height="116%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5.5" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="comic-title-wobble" x="-4%" y="-4%" width="108%" height="108%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>
@@ -310,14 +310,14 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         {/* ========================================================================= */}
         <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
-            {/* Distorted White Background Patch for SENTINEL OPS (TIGHTER & DISTORTED) */}
+            {/* Distorted White Background Patch for SENTINEL OPS */}
             <Link href="/" className="group flex items-center gap-3">
               <div
                 className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
                 style={{ filter: "url(#comic-title-wobble)" }}
               >
                 <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-tighter uppercase block">
+                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-tight uppercase block">
                   SENTINEL OPS
                 </span>
               </div>
@@ -348,11 +348,11 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </header>
 
         {/* ========================================================================= */}
-        {/* MAIN HUD CONTAINER (PUSHED MORE DOWNWARDS WITH pt-14 sm:pt-20) */}
+        {/* MAIN HUD CONTAINER (PUSHED DOWNWARDS) */}
         {/* ========================================================================= */}
         <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 space-y-12">
           {/* ========================================================================= */}
-          {/* 1. HERO BANNER: DISTORTED BLACK CONTAINER BOX + TIGHT DISTORTED TITLE */}
+          {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
           <div className="relative p-8 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
@@ -363,7 +363,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
 
             {/* Content inside Hero Banner */}
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
-              <div className="space-y-5">
+              <div className="space-y-6">
                 {/* Subtitle Badge */}
                 <div className="relative inline-block rotate-[0.5deg]">
                   <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
@@ -372,29 +372,31 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
                   </span>
                 </div>
 
-                {/* Big Title: SENTINELOPS INCIDENT HUD (TIGHTER & DISTORTED) */}
+                {/* Big Title: SENTINELOPS INCIDENT HUD */}
                 <div>
                   <div
                     className="relative inline-block mt-1"
                     style={{ filter: "url(#comic-title-wobble)" }}
                   >
                     <div className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[6px_6px_0px_#dc2626]" />
-                    <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-tighter uppercase px-4 py-1.5 leading-none block">
+                    <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-tight uppercase px-4 py-1.5 leading-none block">
                       SENTINELOPS INCIDENT HUD
                     </h1>
                   </div>
                 </div>
 
-                {/* Specs Ribbon (EXPANDED LETTER SPACING) */}
-                <div className="relative inline-block pt-2">
-                  <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
-                  <p className="relative z-10 text-xs sm:text-[13px] font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-[0.18em] uppercase">
-                    <span className="text-red-500">TRUEFORGE AGENT RUNTIME</span>
-                    <span className="text-zinc-500">•</span>
-                    <span className="text-white">DAYTONA LINUX SANDBOX</span>
-                    <span className="text-zinc-500">•</span>
-                    <span className="text-red-500">TWO-STAGE HITL APPROVAL</span>
-                  </p>
+                {/* Specs Ribbon (COMPACT TRACKING MOVED TOWARDS BOTTOM) */}
+                <div className="pt-4">
+                  <div className="relative inline-block">
+                    <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
+                    <p className="relative z-10 text-xs sm:text-sm font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
+                      <span className="text-red-500">TRUEFORGE AGENT RUNTIME</span>
+                      <span className="text-zinc-500">•</span>
+                      <span className="text-white">DAYTONA LINUX SANDBOX</span>
+                      <span className="text-zinc-500">•</span>
+                      <span className="text-red-500">TWO-STAGE HITL APPROVAL</span>
+                    </p>
+                  </div>
                 </div>
               </div>
 
