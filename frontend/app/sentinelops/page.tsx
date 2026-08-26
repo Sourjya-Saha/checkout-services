@@ -36,7 +36,7 @@ interface IncidentState {
 
 const SENTINELOPS_AGENT_ID = "01m0xgq0c13c5p67k7rtjk0s35";
 
-export default function ComicDistortedSentinelOpsCommander() {
+export default function CleanComicSentinelOpsCommander() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const incidentQueryId = searchParams.get("incident");
@@ -148,7 +148,7 @@ export default function ComicDistortedSentinelOpsCommander() {
                 }));
                 setTerminalLogs((prev) => [
                   ...prev,
-                  `[✓] [PR CREATED] Successfully opened Pull Request: ${prMatch[0]}`,
+                  `[OK] [PR CREATED] Successfully opened Pull Request: ${prMatch[0]}`,
                 ]);
               }
             }
@@ -178,7 +178,7 @@ export default function ComicDistortedSentinelOpsCommander() {
           }
           setTerminalLogs((prev) => [
             ...prev,
-            `[✓] [TOOL RETURN] ${data.tool_name || "tool"}: response captured`,
+            `[OK] [TOOL RETURN] ${data.tool_name || "tool"}: response captured`,
           ]);
         }
 
@@ -206,12 +206,12 @@ export default function ComicDistortedSentinelOpsCommander() {
           if (checkpoint === "fix") {
             setTerminalLogs((prev) => [
               ...prev,
-              `[🛑] [CHECKPOINT A] Human Approval required before drafting/testing fix in sandbox.`,
+              `[!] [CHECKPOINT A] Human Approval required before drafting/testing fix in sandbox.`,
             ]);
           } else {
             setTerminalLogs((prev) => [
               ...prev,
-              `[🛑] [CHECKPOINT B] Human Approval required before opening GitHub Pull Request.`,
+              `[!] [CHECKPOINT B] Human Approval required before opening GitHub Pull Request.`,
             ]);
           }
         }
@@ -293,55 +293,47 @@ export default function ComicDistortedSentinelOpsCommander() {
 
   return (
     <Blurred404Background blurIntensity="heavy">
-      {/* Import Comic Fonts */}
+      {/* Import Clean Google Fonts */}
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&family=Permanent+Marker&family=Bungee&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&display=swap');
       `}</style>
 
-      {/* SVG Distorted Comic Drawing Filters */}
+      {/* Subtle Drawing Stroke Filter */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
-          <filter id="comic-card-wobble" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-          <filter id="comic-badge-wobble" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-          <filter id="comic-hero-wobble" x="-8%" y="-8%" width="116%" height="116%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+          <filter id="comic-subtle-wobble" x="-4%" y="-4%" width="108%" height="108%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>
 
       <div className="min-h-screen text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white pb-20">
         {/* ========================================================================= */}
-        {/* TOP COMIC NAVIGATION BAR (ONLY 1 REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
+        {/* TOP NAVIGATION BAR (ONLY 1 BUTTON: POSTMORTEM REPORTS) */}
         {/* ========================================================================= */}
         <header className="px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
-            {/* Distorted Drawing White Patch for Logo Title */}
+            {/* White Drawing Patch for Logo */}
             <Link href="/" className="group flex items-center gap-3">
-              <div className="relative inline-block rotate-[-2deg] group-hover:rotate-0 transition-transform">
+              <div className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform">
                 <div
-                  className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-badge-wobble)" }}
+                  className="absolute -inset-2 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
+                  style={{ filter: "url(#comic-subtle-wobble)" }}
                 />
                 <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-wider uppercase block">
                   SENTINEL OPS
                 </span>
               </div>
 
-              {/* Distorted Comic SWARM HUD Tag */}
-              <div className="relative inline-block rotate-[3deg]">
+              {/* Clean Comic SWARM HUD Tag */}
+              <div className="relative inline-block rotate-[2deg]">
                 <div
-                  className="absolute -inset-1 bg-red-600 border-[2.5px] border-black shadow-[3px_3px_0px_#000000]"
-                  style={{ filter: "url(#comic-badge-wobble)" }}
+                  className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#000000]"
+                  style={{ filter: "url(#comic-subtle-wobble)" }}
                 />
-                <span className="relative z-10 font-['Permanent_Marker',cursive] text-xs text-white px-3 py-0.5 uppercase tracking-wider block">
-                  SWARM HUD!
+                <span className="relative z-10 font-anton text-xs text-white px-3 py-0.5 uppercase tracking-wider block">
+                  SWARM HUD
                 </span>
               </div>
             </Link>
@@ -355,46 +347,46 @@ export default function ComicDistortedSentinelOpsCommander() {
             >
               <div
                 className="absolute -inset-1 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all"
-                style={{ filter: "url(#comic-badge-wobble)" }}
+                style={{ filter: "url(#comic-subtle-wobble)" }}
               />
               <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-2 uppercase tracking-wide flex items-center gap-2 block transition-colors">
-                <span>🗄️ POSTMORTEM REPORTS</span>
-                <span>↗</span>
+                <span>POSTMORTEM REPORTS</span>
+                <span>→</span>
               </span>
             </Link>
           </div>
         </header>
 
         {/* ========================================================================= */}
-        {/* MAIN COMIC HUD CONTAINER */}
+        {/* MAIN HUD CONTAINER */}
         {/* ========================================================================= */}
         <main className="max-w-7xl mx-auto px-6 sm:px-12 py-10 space-y-10">
           {/* ========================================================================= */}
-          {/* 1. HERO BANNER WITH DISTORTED BLACK BG & DISTORTED WHITE TITLE PATCH */}
+          {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
           <div
-            className="relative p-7 sm:p-10 bg-black/95 border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626] rotate-[-0.5deg]"
-            style={{ filter: "url(#comic-card-wobble)" }}
+            className="relative p-7 sm:p-10 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626] rotate-[-0.3deg]"
+            style={{ filter: "url(#comic-subtle-wobble)" }}
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-4">
-                {/* Comic Jagged Distorted Subtitle Badge */}
-                <div className="relative inline-block rotate-[1deg]">
+                {/* Subtitle Badge */}
+                <div className="relative inline-block rotate-[0.5deg]">
                   <div
-                    className="absolute -inset-1.5 bg-red-600 border-[2.5px] border-black shadow-[3px_3px_0px_#ffffff]"
-                    style={{ filter: "url(#comic-badge-wobble)" }}
+                    className="absolute -inset-1.5 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]"
+                    style={{ filter: "url(#comic-subtle-wobble)" }}
                   />
-                  <span className="relative z-10 font-['Permanent_Marker',cursive] text-xs sm:text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
-                    ⚡ 01 // AUTONOMOUS INCIDENT INGESTION &amp; LIVE STREAM
+                  <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                    01 // AUTONOMOUS INCIDENT INGESTION &amp; LIVE STREAM
                   </span>
                 </div>
 
-                {/* Big Title Wrapped in Distorted Hand-Drawn White Patch */}
+                {/* Big Title in Distorted White Patch */}
                 <div>
                   <div className="relative inline-block mt-1">
                     <div
-                      className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[7px_7px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-hero-wobble)" }}
+                      className="absolute -inset-2.5 sm:-inset-4 bg-white border-[3.5px] border-black shadow-[6px_6px_0px_#dc2626]"
+                      style={{ filter: "url(#comic-subtle-wobble)" }}
                     />
                     <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-normal uppercase px-4 py-1.5 leading-none block">
                       SENTINELOPS INCIDENT HUD
@@ -402,18 +394,18 @@ export default function ComicDistortedSentinelOpsCommander() {
                   </div>
                 </div>
 
-                {/* Comic Specs Ribbon */}
+                {/* Specs Ribbon */}
                 <div className="relative inline-block pt-2">
                   <div
-                    className="absolute -inset-1.5 bg-zinc-900 border-[2.5px] border-white shadow-[3px_3px_0px_#dc2626]"
-                    style={{ filter: "url(#comic-badge-wobble)" }}
+                    className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]"
+                    style={{ filter: "url(#comic-subtle-wobble)" }}
                   />
-                  <p className="relative z-10 text-xs sm:text-[13px] font-bold text-zinc-100 px-3.5 py-1 flex items-center gap-2 flex-wrap">
-                    <span className="text-red-500 font-anton text-sm">⚡ TRUEFORGE AGENT RUNTIME</span>
+                  <p className="relative z-10 text-xs sm:text-sm font-bold text-zinc-100 px-3.5 py-1 flex items-center gap-2 flex-wrap">
+                    <span className="text-red-500 font-anton tracking-wide text-sm">TRUEFORGE AGENT RUNTIME</span>
                     <span>&bull;</span>
-                    <span className="text-white font-anton text-sm">💥 DAYTONA LINUX SANDBOX</span>
+                    <span className="text-white font-anton tracking-wide text-sm">DAYTONA LINUX SANDBOX</span>
                     <span>&bull;</span>
-                    <span className="text-red-500 font-anton text-sm">🛡️ TWO-STAGE HITL APPROVAL</span>
+                    <span className="text-red-500 font-anton tracking-wide text-sm">TWO-STAGE HITL APPROVAL</span>
                   </p>
                 </div>
               </div>
@@ -421,10 +413,10 @@ export default function ComicDistortedSentinelOpsCommander() {
               {/* Status and Action Buttons */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 {incidentId ? (
-                  <div className="relative rotate-[2deg]">
+                  <div className="relative rotate-[1deg]">
                     <div
-                      className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-badge-wobble)" }}
+                      className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]"
+                      style={{ filter: "url(#comic-subtle-wobble)" }}
                     />
                     <span className="relative z-10 font-anton text-sm text-black px-3.5 py-1.5 uppercase block">
                       INCIDENT: {incidentId.slice(0, 16)}...
@@ -437,20 +429,20 @@ export default function ComicDistortedSentinelOpsCommander() {
                     className="relative group rotate-[-1deg] hover:rotate-0 transition-transform"
                   >
                     <div
-                      className="absolute -inset-1.5 bg-red-600 border-[3.5px] border-black shadow-[5px_5px_0px_#ffffff] group-hover:shadow-[7px_7px_0px_#ffffff]"
-                      style={{ filter: "url(#comic-badge-wobble)" }}
+                      className="absolute -inset-1.5 bg-red-600 border-[3px] border-black shadow-[5px_5px_0px_#ffffff] group-hover:shadow-[7px_7px_0px_#ffffff]"
+                      style={{ filter: "url(#comic-subtle-wobble)" }}
                     />
                     <span className="relative z-10 font-anton text-sm text-white px-6 py-3 uppercase tracking-wider block">
-                      {isSpawning ? "SPAWNING SWARM..." : "⚡ LAUNCH INCIDENT SWARM ↗"}
+                      {isSpawning ? "SPAWNING SWARM..." : "LAUNCH INCIDENT SWARM →"}
                     </span>
                   </button>
                 )}
 
                 {incidentState?.status && (
-                  <div className="relative rotate-[-2deg]">
+                  <div className="relative rotate-[-1deg]">
                     <div
-                      className="absolute -inset-1 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-badge-wobble)" }}
+                      className="absolute -inset-1 bg-white border-[2px] border-black shadow-[3px_3px_0px_#dc2626]"
+                      style={{ filter: "url(#comic-subtle-wobble)" }}
                     />
                     <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block">
                       STATUS: {incidentState.status}
@@ -464,16 +456,16 @@ export default function ComicDistortedSentinelOpsCommander() {
           {/* Empty State Banner when no incident is connected */}
           {!incidentId && (
             <div
-              className="p-8 sm:p-12 bg-black/90 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626] text-center space-y-6 rotate-[0.3deg]"
-              style={{ filter: "url(#comic-card-wobble)" }}
+              className="p-8 sm:p-12 bg-black/90 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626] text-center space-y-6 rotate-[0.2deg]"
+              style={{ filter: "url(#comic-subtle-wobble)" }}
             >
               <div className="relative inline-block">
                 <div
-                  className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[5px_5px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-badge-wobble)" }}
+                  className="absolute -inset-2 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
+                  style={{ filter: "url(#comic-subtle-wobble)" }}
                 />
                 <h2 className="relative z-10 font-anton text-2xl sm:text-4xl text-black px-5 py-2 uppercase">
-                  NO ACTIVE INCIDENT CONNECTED!
+                  NO ACTIVE INCIDENT CONNECTED
                 </h2>
               </div>
 
@@ -487,7 +479,7 @@ export default function ComicDistortedSentinelOpsCommander() {
                   disabled={isSpawning}
                   className="px-7 py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all disabled:opacity-50"
                 >
-                  {isSpawning ? "INITIALIZING TRUEFORGE..." : "⚡ LAUNCH AUTONOMOUS SWARM INVESTIGATION ↗"}
+                  {isSpawning ? "INITIALIZING TRUEFORGE..." : "LAUNCH AUTONOMOUS SWARM INVESTIGATION →"}
                 </button>
                 <Link
                   href="/checkout"
@@ -500,32 +492,32 @@ export default function ComicDistortedSentinelOpsCommander() {
           )}
 
           {/* ========================================================================= */}
-          {/* TWO-STAGE HITL APPROVAL CARDS (DISTORTED COMIC BOXES) */}
+          {/* TWO-STAGE HITL APPROVAL CARDS */}
           {/* ========================================================================= */}
 
           {/* Checkpoint A: Fix Approval */}
           {incidentState?.status === "awaiting_fix_approval" && (
             <div
-              className="p-8 bg-black/95 border-[4px] border-red-600 shadow-[10px_10px_0px_0px_#dc2626] space-y-6 rotate-[-0.6deg]"
-              style={{ filter: "url(#comic-card-wobble)" }}
+              className="p-8 bg-black/95 border-[3.5px] border-red-600 shadow-[9px_9px_0px_0px_#dc2626] space-y-6 rotate-[-0.4deg]"
+              style={{ filter: "url(#comic-subtle-wobble)" }}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="w-4 h-4 rounded-full bg-red-600 border-[2px] border-white animate-ping" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-red-600 border-[2px] border-white animate-ping" />
                   <div className="relative inline-block">
                     <div
                       className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-badge-wobble)" }}
+                      style={{ filter: "url(#comic-subtle-wobble)" }}
                     />
-                    <h3 className="relative z-10 font-anton text-xl sm:text-3xl text-black px-4 py-1 uppercase">
-                      🛑 CHECKPOINT A // APPROVAL TO DRAFT &amp; TEST FIX
+                    <h3 className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase">
+                      CHECKPOINT A // APPROVAL TO DRAFT &amp; TEST FIX
                     </h3>
                   </div>
                 </div>
-                <div className="relative rotate-[2deg]">
+                <div className="relative rotate-[1.5deg]">
                   <div
                     className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]"
-                    style={{ filter: "url(#comic-badge-wobble)" }}
+                    style={{ filter: "url(#comic-subtle-wobble)" }}
                   />
                   <span className="relative z-10 font-anton text-xs text-white px-3 py-1 uppercase block">
                     HITL GATE 1 OF 2
@@ -533,11 +525,11 @@ export default function ComicDistortedSentinelOpsCommander() {
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2.5px] border-white/30">
+              <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2px] border-white/30">
                 SentinelOps has verified the root-cause hypothesis. Explicit human approval is required before drafting code or running candidate patches in the Daytona sandbox.
               </p>
 
-              <div className="p-4 bg-white border-[3.5px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
+              <div className="p-4 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
                 <p>
                   <strong className="text-red-600 font-anton text-sm">TARGET REPO:</strong> Sourjya-Saha/checkout-services
                 </p>
@@ -557,7 +549,7 @@ export default function ComicDistortedSentinelOpsCommander() {
                 >
                   {isApproving && approvalDecision === "approve"
                     ? "TRANSMITTING APPROVAL..."
-                    : "APPROVE: DRAFT & TEST FIX IN SANDBOX ↗"}
+                    : "APPROVE: DRAFT & TEST FIX IN SANDBOX →"}
                 </button>
                 <button
                   onClick={() => handleApproveAction("deny")}
@@ -573,26 +565,26 @@ export default function ComicDistortedSentinelOpsCommander() {
           {/* Checkpoint B: Pull Request Approval */}
           {incidentState?.status === "awaiting_pr_approval" && (
             <div
-              className="p-8 bg-black/95 border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626] space-y-6 rotate-[0.6deg]"
-              style={{ filter: "url(#comic-card-wobble)" }}
+              className="p-8 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626] space-y-6 rotate-[0.4deg]"
+              style={{ filter: "url(#comic-subtle-wobble)" }}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="w-4 h-4 rounded-full bg-white border-[2px] border-red-600 animate-ping" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-white border-[2px] border-red-600 animate-ping" />
                   <div className="relative inline-block">
                     <div
                       className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-badge-wobble)" }}
+                      style={{ filter: "url(#comic-subtle-wobble)" }}
                     />
-                    <h3 className="relative z-10 font-anton text-xl sm:text-3xl text-black px-4 py-1 uppercase">
-                      🛑 CHECKPOINT B // APPROVAL TO OPEN GITHUB PULL REQUEST
+                    <h3 className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase">
+                      CHECKPOINT B // APPROVAL TO OPEN GITHUB PULL REQUEST
                     </h3>
                   </div>
                 </div>
-                <div className="relative rotate-[-2deg]">
+                <div className="relative rotate-[-1.5deg]">
                   <div
                     className="absolute -inset-1 bg-white border-[2px] border-black shadow-[2px_2px_0px_#dc2626]"
-                    style={{ filter: "url(#comic-badge-wobble)" }}
+                    style={{ filter: "url(#comic-subtle-wobble)" }}
                   />
                   <span className="relative z-10 font-anton text-xs text-black px-3 py-1 uppercase block">
                     HITL GATE 2 OF 2
@@ -600,11 +592,11 @@ export default function ComicDistortedSentinelOpsCommander() {
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2.5px] border-white/30">
+              <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2px] border-white/30">
                 Candidate patch successfully verified in the Daytona sandbox with all test suites passing. Explicit human approval is required before opening a Pull Request on GitHub.
               </p>
 
-              <div className="p-4 bg-white border-[3.5px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
+              <div className="p-4 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626] text-black font-mono text-xs font-bold space-y-1.5">
                 <p>
                   <strong className="text-red-600 font-anton text-sm">TARGET REPO:</strong> Sourjya-Saha/checkout-services
                 </p>
@@ -621,7 +613,7 @@ export default function ComicDistortedSentinelOpsCommander() {
                 >
                   {isApproving && approvalDecision === "approve"
                     ? "OPENING GITHUB PR..."
-                    : "APPROVE: OPEN GITHUB PULL REQUEST ↗"}
+                    : "APPROVE: OPEN GITHUB PULL REQUEST →"}
                 </button>
                 <button
                   onClick={() => handleApproveAction("deny")}
@@ -637,21 +629,21 @@ export default function ComicDistortedSentinelOpsCommander() {
           {/* Resolved Banner */}
           {incidentState?.status === "resolved" && (
             <div
-              className="p-8 bg-black/95 border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626] space-y-4"
-              style={{ filter: "url(#comic-card-wobble)" }}
+              className="p-8 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626] space-y-4"
+              style={{ filter: "url(#comic-subtle-wobble)" }}
             >
               <div className="flex items-center justify-between">
                 <div className="relative inline-block">
                   <div
                     className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                    style={{ filter: "url(#comic-badge-wobble)" }}
+                    style={{ filter: "url(#comic-subtle-wobble)" }}
                   />
-                  <h3 className="relative z-10 font-anton text-2xl sm:text-4xl text-black px-4 py-1 uppercase">
-                    🎉 INCIDENT REMEDIATED &amp; RESOLVED!
+                  <h3 className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-4 py-1 uppercase">
+                    INCIDENT REMEDIATED &amp; RESOLVED
                   </h3>
                 </div>
                 <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-xs uppercase border-[2px] border-black">
-                  STATUS: RESOLVED ✓
+                  STATUS: RESOLVED [OK]
                 </span>
               </div>
               <p className="text-xs sm:text-sm font-bold text-zinc-200">
@@ -662,7 +654,7 @@ export default function ComicDistortedSentinelOpsCommander() {
                   href={incidentState.pr_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block px-6 py-3.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[6px_6px_0px_#dc2626] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all"
+                  className="inline-block px-6 py-3.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all"
                 >
                   VIEW PULL REQUEST ON GITHUB →
                 </a>
@@ -671,39 +663,37 @@ export default function ComicDistortedSentinelOpsCommander() {
           )}
 
           {/* ========================================================================= */}
-          {/* 2. PARALLEL MULTI-AGENT SWARM (DISTORTED COMIC PANELS) */}
+          {/* 2. PARALLEL MULTI-AGENT SWARM */}
           {/* ========================================================================= */}
           <div className="space-y-5">
             {/* Section Tag */}
-            <div className="relative inline-block rotate-[-1deg]">
+            <div className="relative inline-block rotate-[-0.8deg]">
               <div
                 className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                style={{ filter: "url(#comic-badge-wobble)" }}
+                style={{ filter: "url(#comic-subtle-wobble)" }}
               />
               <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase block">
-                🤖 02 // PARALLEL MULTI-AGENT SWARM
+                02 // PARALLEL MULTI-AGENT SWARM
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {subagents.map((sub, idx) => {
-                const rot = idx === 0 ? "rotate-[-0.8deg]" : idx === 1 ? "rotate-[0.6deg]" : "rotate-[-0.4deg]";
+                const rot = idx === 0 ? "rotate-[-0.5deg]" : idx === 1 ? "rotate-[0.5deg]" : "rotate-[-0.3deg]";
 
                 return (
                   <div
                     key={sub.id}
-                    className={`p-6 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626] flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1.5 ${rot}`}
-                    style={{ filter: "url(#comic-card-wobble)" }}
+                    className={`p-6 bg-black/95 border-[3px] border-white shadow-[6px_6px_0px_0px_#dc2626] flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1 ${rot}`}
                   >
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between pb-2 border-b-[2.5px] border-white/20">
-                        {/* Subagent Name in Distorted White Patch */}
+                      <div className="flex items-center justify-between pb-2 border-b-[2px] border-white/20">
+                        {/* Subagent Name in Clean White Patch */}
                         <div className="relative inline-block">
                           <div
                             className="absolute -inset-1 bg-white border-[2px] border-black"
-                            style={{ filter: "url(#comic-badge-wobble)" }}
                           />
-                          <span className="relative z-10 font-anton text-sm text-black px-2 py-0.5 tracking-wide block">
+                          <span className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 tracking-wide block">
                             {sub.name}
                           </span>
                         </div>
@@ -721,11 +711,11 @@ export default function ComicDistortedSentinelOpsCommander() {
                         </span>
                       </div>
 
-                      <h4 className="font-anton text-xl text-red-500 uppercase tracking-wide leading-tight">{sub.role}</h4>
+                      <h4 className="font-anton text-lg text-red-500 uppercase tracking-wide leading-tight">{sub.role}</h4>
                       <p className="text-xs font-mono font-bold text-zinc-300">{sub.metric}</p>
                     </div>
 
-                    <div className="p-3.5 bg-zinc-950 border-[2px] border-white/30 font-mono text-xs text-zinc-200 min-h-[90px] leading-relaxed">
+                    <div className="p-3.5 bg-zinc-950 border-[1.5px] border-white/30 font-mono text-xs text-zinc-200 min-h-[85px] leading-relaxed">
                       {sub.telemetry}
                     </div>
                   </div>
@@ -735,30 +725,29 @@ export default function ComicDistortedSentinelOpsCommander() {
           </div>
 
           {/* ========================================================================= */}
-          {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (DISTORTED COMIC TERMINAL) */}
+          {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM */}
           {/* ========================================================================= */}
           <div className="space-y-5">
             {/* Section Tag */}
-            <div className="relative inline-block rotate-[1deg]">
+            <div className="relative inline-block rotate-[0.8deg]">
               <div
                 className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]"
-                style={{ filter: "url(#comic-badge-wobble)" }}
+                style={{ filter: "url(#comic-subtle-wobble)" }}
               />
               <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase block">
-                🕹️ 03 // LIVE TRUEFORGE SSE STREAM &amp; DAYTONA TERMINAL
+                03 // LIVE TRUEFORGE SSE STREAM &amp; DAYTONA TERMINAL
               </span>
             </div>
 
             {/* Distorted Terminal Box */}
             <div
-              className="relative p-7 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626] font-mono text-xs space-y-4 rotate-[-0.3deg]"
-              style={{ filter: "url(#comic-card-wobble)" }}
+              className="relative p-7 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626] font-mono text-xs space-y-4 rotate-[-0.2deg]"
+              style={{ filter: "url(#comic-subtle-wobble)" }}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-2">
                 <div className="relative inline-block">
                   <div
                     className="absolute -inset-1 bg-zinc-900 border-[1.5px] border-red-600"
-                    style={{ filter: "url(#comic-badge-wobble)" }}
                   />
                   <span className="relative z-10 text-white font-bold px-2 py-0.5 block">
                     STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
@@ -772,15 +761,15 @@ export default function ComicDistortedSentinelOpsCommander() {
 
               <div className="space-y-2 min-h-[200px] max-h-[340px] overflow-y-auto pr-2">
                 {terminalLogs.length === 0 ? (
-                  <p className="text-zinc-500 font-['Permanent_Marker',cursive] text-sm">// Waiting for incident trigger on checkout-service...</p>
+                  <p className="text-zinc-500 font-mono text-xs">// Waiting for incident trigger on checkout-service...</p>
                 ) : (
                   terminalLogs.map((log, idx) => (
                     <p
                       key={idx}
                       className={
-                        log.includes("[🛑]") || log.includes("TypeError") || log.includes("KeyError")
+                        log.includes("[!]") || log.includes("TypeError") || log.includes("KeyError")
                           ? "text-red-400 font-bold"
-                          : log.includes("[✓]") || log.includes("PASS") || log.includes("Resolved")
+                          : log.includes("[OK]") || log.includes("PASS") || log.includes("Resolved")
                           ? "text-white font-bold underline"
                           : log.includes("[+]") || log.includes("[*]")
                           ? "text-zinc-200"
@@ -804,7 +793,7 @@ export default function ComicDistortedSentinelOpsCommander() {
             </div>
             <div>
               <Link href="/incidents" className="text-red-500 hover:text-white font-anton uppercase transition-colors">
-                Postmortem Reports Ledger ↗
+                POSTMORTEM REPORTS LEDGER →
               </Link>
             </div>
           </div>
