@@ -11,10 +11,10 @@ DEFAULT_CURRENCY_CONFIG = {
 }
 
 REGIONAL_TAX_RATES = {
-    "US_CA": 0.0825,
-    "US_NY": 0.08875,
-    "EU_DE": 0.19,
-    "EU_FR": 0.20,
+    "US_CA": {"rate": 0.0825, "jurisdiction": "California Department of Tax and Fee Administration", "exempt": False},
+    "US_NY": {"rate": 0.08875, "jurisdiction": "New York State Department of Taxation and Finance", "exempt": False},
+    "EU_DE": {"rate": 0.19, "jurisdiction": "Federal Central Tax Office (BZSt)", "exempt": False},
+    "EU_FR": {"rate": 0.20, "jurisdiction": "Direction Générale des Finances Publiques", "exempt": False},
 }
 
 PROMO_CODE_DISCOUNTS = {

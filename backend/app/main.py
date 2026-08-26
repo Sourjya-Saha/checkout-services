@@ -276,8 +276,16 @@ async def checkout(request: CheckoutRequest):
         user_id = request.user_id or "usr_demo_12345"
         currency_info = get_user_currency_preferences(user_id, request.currency)
 
-    # Calculate total (triggers seeded regression if is_guest=True)
-    total = calculate_total(request.cart_items, currency_info, currency=request.currency)
+    # Calculate total with regional tax, promo, shipping, and offset fees
+    total = calculate_total(
+        request.cart_items,
+        currency_info,
+        currency=request.currency,
+        tax_region=request.tax_region,
+        promo_code=request.promo_code,
+        shipping_tier=request.shipping_tier,
+        offset_initiative=request.offset_initiative,
+    )
     order_id = str(uuid.uuid4())
 
     order_record = {

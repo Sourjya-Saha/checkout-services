@@ -13,6 +13,10 @@ class CheckoutRequest(BaseModel):
     cart_items: List[CartItem] = Field(..., description="Items in the cart")
     currency: str = Field("USD", description="Checkout currency code (e.g. USD, EUR, GBP)")
     is_guest: bool = Field(False, description="Whether this is a guest checkout")
+    tax_region: Optional[str] = Field(None, description="Regional tax jurisdiction code e.g. US_CA, EU_DE")
+    promo_code: Optional[str] = Field(None, description="Promotional discount code e.g. SUMMER20")
+    shipping_tier: Optional[str] = Field(None, description="Fulfillment logistics tier e.g. EXPRESS")
+    offset_initiative: Optional[str] = Field(None, description="Carbon offset initiative e.g. TREES")
 
 
 class CheckoutResponse(BaseModel):
