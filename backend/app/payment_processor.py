@@ -114,8 +114,8 @@ def calculate_loyalty_discount(subtotal: float, membership_tier: Optional[str] =
     if not membership_tier:
         membership_tier = "GUEST"
 
-    # Regression: Unchecked dictionary key lookup throws KeyError for guest/unregistered checkout
-    multiplier = LOYALTY_TIER_MULTIPLIERS[membership_tier]
+    # Guest and other unmapped tiers should not crash checkout.
+    multiplier = LOYALTY_TIER_MULTIPLIERS.get(membership_tier, 0.0)
     return round(subtotal * multiplier, 2)
 
 
