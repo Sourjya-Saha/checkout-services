@@ -302,7 +302,7 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </defs>
       </svg>
 
-      <div className="min-h-screen text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white pb-24">
+      <div className="min-h-screen flex flex-col justify-between text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white">
         {/* ========================================================================= */}
         {/* TOP NAVIGATION BAR (SINGLE REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
         {/* ========================================================================= */}
@@ -330,15 +330,17 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
             </Link>
           </div>
 
-          {/* ONLY 1 Redirection Button: POSTMORTEM REPORTS (DISTORTED LIKE SENTINEL OPS) */}
+          {/* ONLY 1 Redirection Button: POSTMORTEM REPORTS (READABLE & BALANCED DISTORTION) */}
           <div className="flex items-center">
             <Link
               href="/incidents"
               className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform"
-              style={{ filter: "url(#comic-title-wobble)" }}
             >
-              <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all" />
-              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-1 uppercase tracking-tight flex items-center gap-2 block transition-colors">
+              <div
+                className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                style={{ filter: "url(#comic-title-wobble)" }}
+              />
+              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-1.5 uppercase tracking-wide flex items-center gap-2 block transition-colors">
                 <span>POSTMORTEM REPORTS</span>
                 <span>→</span>
               </span>
@@ -347,9 +349,9 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </header>
 
         {/* ========================================================================= */}
-        {/* MAIN HUD CONTAINER (PUSHED DOWNWARDS) */}
+        {/* MAIN HUD CONTAINER (EXPANDED TO FILL VIEWPORT) */}
         {/* ========================================================================= */}
-        <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 space-y-12">
+        <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 pb-16 space-y-12 flex-1 w-full">
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
@@ -770,15 +772,41 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
           </div>
         </main>
 
-        {/* Comic Footer */}
-        <footer className="mt-20 border-t-[3.5px] border-black bg-black/90 py-8 px-6 sm:px-12 text-zinc-400 font-mono text-xs">
+        {/* Comic Footer (PINNED ABSOLUTELY TO BOTTOM WITH MATCHING SENTINEL OPS & POSTMORTEM BUTTON) */}
+        <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <span className="font-anton text-sm text-white uppercase">SENTINEL OPS</span> &bull; Autonomous Microservice Resilience Platform
+            <div className="flex items-center gap-3">
+              {/* Footer SENTINEL OPS Distorted Badge */}
+              <Link href="/" className="group inline-block">
+                <div
+                  className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
+                  style={{ filter: "url(#comic-title-wobble)" }}
+                >
+                  <div className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626]" />
+                  <span className="relative z-10 font-anton text-base sm:text-lg text-black px-2.5 py-0.5 tracking-tight uppercase block">
+                    SENTINEL OPS
+                  </span>
+                </div>
+              </Link>
+              <span className="text-zinc-400 font-mono text-xs font-bold hidden md:inline-block">
+                // Autonomous Microservice Resilience Platform
+              </span>
             </div>
+
+            {/* Footer POSTMORTEM REPORTS Button */}
             <div>
-              <Link href="/incidents" className="text-red-500 hover:text-white font-anton uppercase transition-colors">
-                POSTMORTEM REPORTS LEDGER →
+              <Link
+                href="/incidents"
+                className="group relative inline-block rotate-[-1deg] hover:rotate-0 transition-transform"
+              >
+                <div
+                  className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                  style={{ filter: "url(#comic-title-wobble)" }}
+                />
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                  <span>POSTMORTEM REPORTS LEDGER</span>
+                  <span>→</span>
+                </span>
               </Link>
             </div>
           </div>
