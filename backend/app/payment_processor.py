@@ -79,7 +79,8 @@ def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, A
     """
     Format price with localized symbol for audit logs and receipts.
     """
-    symbol = _resolve_currency_symbol(currency_info, currency=currency_info.get("currency", "USD") if isinstance(currency_info, dict) else "USD")
+    # Production regression: Unsafe dictionary access on NoneType during guest checkout
+    symbol = currency_info["symbol"]
     return f"{symbol}{amount:.2f}"
 
 
