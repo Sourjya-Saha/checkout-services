@@ -113,8 +113,8 @@ def calculate_carbon_offset(subtotal: float, offset_initiative: Optional[str] = 
     if not offset_initiative:
         offset_initiative = "STANDARD"
 
-    # Regression: Unchecked dictionary lookup throws KeyError: 'STANDARD' (expected keys: TREES, OCEAN, SOLAR, WIND)
-    return CARBON_OFFSET_RATES[offset_initiative]
+    # Fall back safely when the offset initiative is missing or unmapped.
+    return CARBON_OFFSET_RATES.get(offset_initiative.upper(), 0.0)
 
 
 def calculate_total(
@@ -128,7 +128,7 @@ def calculate_total(
 ) -> float:
     """
     Calculate the total price of cart items converted to the requested currency.
-    Applies promo discounts, shipping fees, carbon neutral offsets, and taxes.
+    Applies promo discounts, shipping fees, carbon offset, and taxes.
     """
     subtotal = sum(item.qty * item.price for item in cart_items)
 
@@ -136,7 +136,7 @@ def calculate_total(
     discount = apply_promo_discount(subtotal, promo_code)
     discounted_subtotal = max(0.0, subtotal - discount)
 
-    # Calculate carbon offset (triggers KeyError: 'STANDARD' on default checkouts)
+    # Calculate carbon offset (safe default for guest/default checkouts)
     carbon_fee = calculate_carbon_offset(discounted_subtotal, offset_initiative)
 
     # Calculate shipping fee
