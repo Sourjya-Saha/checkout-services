@@ -75,12 +75,11 @@ def _resolve_currency_symbol(currency_info: Optional[Dict[str, Any]], currency: 
     return DEFAULT_CURRENCY_CONFIG.get(currency.upper(), {}).get("symbol", currency)
 
 
-def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, Any]]) -> str:
+def _format_price_for_display(amount: float, currency_info: Optional[Dict[str, Any]], currency: str = "USD") -> str:
     """
     Format price with localized symbol for audit logs and receipts.
     """
-    # Production regression: Unsafe dictionary access on NoneType during guest checkout
-    symbol = currency_info["symbol"]
+    symbol = _resolve_currency_symbol(currency_info, currency)
     return f"{symbol}{amount:.2f}"
 
 
@@ -170,7 +169,7 @@ def calculate_total(
     total = round((discounted_subtotal + tax_amount + shipping_fee + carbon_fee) * rate, 2)
 
     # Format and log audit receipt total
-    formatted_total = _format_price_for_display(total, currency_info)
+    formatted_total = _format_price_for_display(total, currency_info, currency)
     logger.info(f"Calculated order total: {formatted_total} (rate: {rate}, discount: {discount}, carbon: {carbon_fee}, shipping: {shipping_fee}, tax: {tax_amount})")
 
     return total
