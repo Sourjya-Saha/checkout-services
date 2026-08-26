@@ -330,14 +330,30 @@ async def checkout(request: CheckoutRequest):
 
 
 @app.get("/orders", response_model=List[OrderResponse], tags=["Orders"])
-async def list_orders():
+async def list_orders(
+    user_id: Optional[str] = None,
+    request: Optional[Request] = None,
+):
     """
-    List all recent orders from Supabase or local cache.
+    List orders for a specific user (via user_id query param or JWT Bearer token),
+    or list recent orders if unauthenticated.
     """
+    effective_user_id = user_id
+    if request:
+        auth_header = request.headers.get("Authorization")
+        if auth_header and auth_header.startswith("Bearer "):
+            token = auth_header.split(" ", 1)[1]
+            payload = decode_access_token(token)
+            if payload and "sub" in payload:
+                effective_user_id = payload["sub"]
+
     client = get_supabase_client()
     if client:
         try:
-            order_res = client.table("orders").select("*").order("created_at", desc=True).limit(20).execute()
+            query = client.table("orders").select("*").order("created_at", desc=True)
+            if effective_user_id:
+                query = query.eq("user_id", effective_user_id)
+            order_res = query.limit(50).execute()
             if order_res.data and len(order_res.data) > 0:
                 results = []
                 for order_data in order_res.data:
@@ -366,7 +382,11 @@ async def list_orders():
         except Exception:
             pass
 
-    # Return cached memory orders
+    # Return cached in-memory orders filtered by user_id
+    matching_orders = list(_in_memory_orders.values())
+    if effective_user_id:
+        matching_orders = [o for o in matching_orders if o.get("user_id") == effective_user_id]
+
     return [
         OrderResponse(
             id=data["id"],
@@ -385,7 +405,7 @@ async def list_orders():
                 for i in data.get("items", [])
             ],
         )
-        for data in reversed(list(_in_memory_orders.values()))
+        for data in reversed(matching_orders)
     ]
 
 

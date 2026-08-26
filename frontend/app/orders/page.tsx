@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getStoredUser, clearAuthSession, UserProfile } from "@/lib/auth";
+import {
+  getStoredUser,
+  getStoredToken,
+  loginUser,
+  signupUser,
+  clearAuthSession,
+  UserProfile,
+} from "@/lib/auth";
 
 interface OrderItem {
   id: string;
@@ -34,29 +41,63 @@ export default function CustomerOrdersPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
+  // Guest Order Lookup
+  const [lookupId, setLookupId] = useState<string>("");
+  const [lookupError, setLookupError] = useState<string | null>(null);
+  const [lookupLoading, setLookupLoading] = useState<boolean>(false);
+
+  // Auth Modal State
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const [authEmail, setAuthEmail] = useState<string>("");
+  const [authPassword, setAuthPassword] = useState<string>("");
+  const [authName, setAuthName] = useState<string>("");
+  const [authAddress, setAuthAddress] = useState<string>("");
+  const [authLoading, setAuthLoading] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const apiBase = process.env.NEXT_PUBLIC_CHECKOUT_API_URL || "http://127.0.0.1:8000";
 
-  useEffect(() => {
-    setUser(getStoredUser());
+  const loadUserOrders = async (currentUserProfile: UserProfile | null) => {
+    setLoading(true);
+    const token = getStoredToken();
+    try {
+      const headers: Record<string, string> = {};
+      let url = `${apiBase}/orders`;
 
-    const loadOrders = async () => {
-      try {
-        const res = await fetch(`${apiBase}/orders`);
-        if (res.ok) {
-          const data = await res.json();
-          setOrders(data);
-        }
-      } catch (err) {
-        console.error("Failed to load orders:", err);
-      } finally {
-        setLoading(false);
+      if (token && currentUserProfile) {
+        headers["Authorization"] = `Bearer ${token}`;
+        url = `${apiBase}/orders?user_id=${currentUserProfile.id}`;
       }
-    };
 
-    loadOrders();
+      const res = await fetch(url, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        // If user is logged in, filter strictly to user's orders
+        if (currentUserProfile) {
+          setOrders(data.filter((o: Order) => o.user_id === currentUserProfile.id));
+        } else {
+          // If guest, only show guest orders
+          setOrders(data.filter((o: Order) => o.is_guest));
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const stored = getStoredUser();
+    setUser(stored);
+    loadUserOrders(stored);
 
     const handleAuthChange = () => {
-      setUser(getStoredUser());
+      const updated = getStoredUser();
+      setUser(updated);
+      loadUserOrders(updated);
     };
     window.addEventListener("sentinelops_auth_change", handleAuthChange);
     return () => window.removeEventListener("sentinelops_auth_change", handleAuthChange);
@@ -65,12 +106,69 @@ export default function CustomerOrdersPage() {
   const handleLogout = () => {
     clearAuthSession();
     setUser(null);
+    setOrders([]);
+    setLoading(false);
+  };
+
+  const handleLookupOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const idClean = lookupId.trim();
+    if (!idClean) return;
+
+    setLookupLoading(true);
+    setLookupError(null);
+    try {
+      const res = await fetch(`${apiBase}/orders/${idClean}`);
+      if (res.ok) {
+        const orderData = await res.json();
+        setSelectedOrder(orderData);
+      } else {
+        setLookupError(`Order with ID "${idClean}" was not found.`);
+      }
+    } catch {
+      setLookupError("Failed to look up order. Check backend connection.");
+    } finally {
+      setLookupLoading(false);
+    }
+  };
+
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError(null);
+
+    try {
+      if (authMode === "signup") {
+        const res = await signupUser(authEmail, authPassword, authName, authAddress);
+        if (!res.success) {
+          setAuthError(res.error || "Registration failed.");
+          return;
+        }
+        if (res.user) {
+          setUser(res.user);
+          loadUserOrders(res.user);
+        }
+      } else {
+        const res = await loginUser(authEmail, authPassword);
+        if (!res.success) {
+          setAuthError(res.error || "Invalid credentials.");
+          return;
+        }
+        if (res.user) {
+          setUser(res.user);
+          loadUserOrders(res.user);
+        }
+      }
+      setShowAuthModal(false);
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-[#292524] font-['Inter',sans-serif] relative overflow-hidden antialiased selection:bg-[#292524] selection:text-white">
       {/* ========================================================================= */}
-      {/* ATMOSPHERIC GRADIENT ORBS (Design.md Signature) */}
+      {/* ATMOSPHERIC GRADIENT ORBS */}
       {/* ========================================================================= */}
       <div className="absolute top-[-120px] left-[20%] w-[500px] h-[500px] rounded-full bg-[#a7e5d3]/35 blur-[140px] pointer-events-none -z-10" />
       <div className="absolute top-[350px] right-[10%] w-[450px] h-[450px] rounded-full bg-[#f4c5a8]/30 blur-[140px] pointer-events-none -z-10" />
@@ -100,8 +198,8 @@ export default function CustomerOrdersPage() {
         <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="text-xs text-[#777169] hidden sm:inline">
-                Signed in as <strong className="text-[#0c0a09]">{user.name}</strong>
+              <span className="text-xs text-[#777169] hidden sm:inline font-medium">
+                {user.name} ({user.email})
               </span>
               <button
                 type="button"
@@ -112,12 +210,16 @@ export default function CustomerOrdersPage() {
               </button>
             </div>
           ) : (
-            <Link
-              href="/checkout"
-              className="px-4 py-1.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-sm"
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("login");
+                setShowAuthModal(true);
+              }}
+              className="px-4 py-1.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
             >
               Sign In
-            </Link>
+            </button>
           )}
         </div>
       </nav>
@@ -125,26 +227,56 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {/* MAIN ORDERS CONTENT */}
       {/* ========================================================================= */}
-      <main className="max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-10">
+      <main className="max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-8">
         {/* Header */}
         <header className="text-center max-w-xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
-            Order History & Receipts
+            {user ? "Your Order History" : "Guest & Customer Orders"}
           </div>
           <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09]">
             Purchases & Invoices
           </h1>
           <p className="text-sm text-[#777169] leading-relaxed">
-            Review past fulfillment orders, itemized invoice receipts, and delivery tracking.
+            {user
+              ? `Displaying verified purchases recorded for ${user.name} (${user.email}).`
+              : "Sign in to access your personal order history or search by order reference."}
           </p>
         </header>
+
+        {/* Quick Order Lookup Bar for Guests */}
+        {!user && (
+          <div className="max-w-lg mx-auto bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-5 shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-3">
+            <span className="text-xs font-medium text-[#4e4e4e] block">
+              Quick Order Lookup
+            </span>
+            <form onSubmit={handleLookupOrder} className="flex gap-2">
+              <input
+                type="text"
+                value={lookupId}
+                onChange={(e) => setLookupId(e.target.value)}
+                placeholder="Enter Order UUID e.g. f47ac10b-..."
+                className="flex-1 px-3.5 py-2 rounded-full bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] font-mono focus:outline-none focus:border-[#0c0a09]"
+              />
+              <button
+                type="submit"
+                disabled={lookupLoading}
+                className="px-5 py-2 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs disabled:opacity-50"
+              >
+                {lookupLoading ? "Searching..." : "Lookup"}
+              </button>
+            </form>
+            {lookupError && (
+              <p className="text-xs text-[#dc2626] font-medium">{lookupError}</p>
+            )}
+          </div>
+        )}
 
         {/* Orders List / Empty State */}
         {loading ? (
           <div className="py-20 text-center space-y-3">
             <div className="w-8 h-8 rounded-full border-2 border-[#292524]/20 border-t-[#292524] animate-spin mx-auto" />
-            <p className="text-sm text-[#777169]">Loading purchase history...</p>
+            <p className="text-sm text-[#777169]">Retrieving order ledger...</p>
           </div>
         ) : orders.length === 0 ? (
           <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-12 text-center max-w-lg mx-auto shadow-[0_4px_16px_rgba(0,0,0,0.04)] space-y-4">
@@ -152,18 +284,32 @@ export default function CustomerOrdersPage() {
               0
             </div>
             <h2 className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
-              No Orders Placed Yet
+              {user ? "No Orders Found For Your Account" : "No Orders to Display"}
             </h2>
             <p className="text-sm text-[#777169]">
-              Your order ledger is currently empty. Complete your first checkout to view itemized receipts here.
+              {user
+                ? "You haven't placed any orders with this account yet. Complete a checkout to view itemized receipts here."
+                : "Sign in with your email and password to load your personal orders, or complete a new purchase."}
             </p>
-            <div className="pt-2">
+            <div className="pt-2 flex justify-center gap-3">
               <Link
                 href="/checkout"
-                className="inline-block px-6 py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-sm"
+                className="px-6 py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
               >
                 Go to Store & Checkout →
               </Link>
+              {!user && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode("login");
+                    setShowAuthModal(true);
+                  }}
+                  className="px-5 py-2.5 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all"
+                >
+                  Sign In
+                </button>
+              )}
             </div>
           </div>
         ) : (
@@ -186,7 +332,7 @@ export default function CustomerOrdersPage() {
                         </span>
                       </div>
                       <p className="text-xs text-[#777169]">
-                        Type: {order.is_guest ? "Guest Checkout" : "Registered Member"} · Reference: {order.id}
+                        Account: {order.is_guest ? "Guest Checkout" : "Verified Customer"} · Reference: {order.id}
                       </p>
                     </div>
 
@@ -197,14 +343,14 @@ export default function CustomerOrdersPage() {
                       <button
                         type="button"
                         onClick={() => setSelectedOrder(order)}
-                        className="text-xs text-[#292524] font-medium hover:underline inline-block mt-0.5"
+                        className="text-xs text-[#292524] font-medium hover:underline inline-block mt-0.5 cursor-pointer"
                       >
                         View Full Invoice Receipt →
                       </button>
                     </div>
                   </div>
 
-                  {/* Line Items Preview */}
+                  {/* Line Items */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-1">
                     {order.items.map((item, idx) => (
                       <div
@@ -254,7 +400,7 @@ export default function CustomerOrdersPage() {
             </div>
 
             <div className="space-y-4 text-sm">
-              <div className="divide-y divide-[#f0efed]">
+              <div className="divide-y divide-[#f0efed] max-h-56 overflow-y-auto">
                 {selectedOrder.items.map((item, idx) => (
                   <div key={idx} className="py-2.5 flex justify-between items-center text-xs">
                     <div>
@@ -274,11 +420,11 @@ export default function CustomerOrdersPage() {
                   <span className="font-semibold text-[#16a34a] capitalize">{selectedOrder.status}</span>
                 </div>
                 <div className="flex justify-between text-[#777169]">
-                  <span>Payment Currency:</span>
+                  <span>Currency:</span>
                   <span className="text-[#0c0a09]">{selectedOrder.currency}</span>
                 </div>
                 <div className="border-t border-[#e7e5e4] pt-2 flex justify-between text-sm font-semibold text-[#0c0a09]">
-                  <span>Total Amount:</span>
+                  <span>Total Amount Charged:</span>
                   <span>{CURRENCY_SYMBOLS[selectedOrder.currency] || "$"}{selectedOrder.total.toFixed(2)}</span>
                 </div>
               </div>
@@ -302,6 +448,154 @@ export default function CustomerOrdersPage() {
         </div>
       )}
 
+      {/* ========================================================================= */}
+      {/* AUTH MODAL */}
+      {/* ========================================================================= */}
+      {showAuthModal && (
+        <div className="fixed inset-0 bg-[#0c0a09]/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#ffffff] rounded-2xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-[#e7e5e4] animate-in fade-in zoom-in duration-150">
+            <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-3">
+              <div>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
+                  {authMode === "login" ? "Account Access" : "Create Account"}
+                </span>
+                <h3 className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+                  {authMode === "login" ? "Sign in to your account" : "Register customer account"}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowAuthModal(false)}
+                className="text-[#a8a29e] hover:text-[#0c0a09] text-sm p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            {authError && (
+              <div className="p-3 rounded-lg bg-[#dc2626]/10 border border-[#dc2626]/20 text-xs text-[#dc2626]">
+                {authError}
+              </div>
+            )}
+
+            <form onSubmit={handleAuthSubmit} className="space-y-3.5 text-xs">
+              {authMode === "signup" && (
+                <>
+                  <div className="space-y-1">
+                    <label className="block font-medium text-[#4e4e4e]">Full Name</label>
+                    <input
+                      type="text"
+                      value={authName}
+                      onChange={(e) => setAuthName(e.target.value)}
+                      placeholder="Jane Doe"
+                      required
+                      className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="block font-medium text-[#4e4e4e]">Default Delivery Address</label>
+                    <input
+                      type="text"
+                      value={authAddress}
+                      onChange={(e) => setAuthAddress(e.target.value)}
+                      placeholder="500 Howard St, San Francisco, CA"
+                      className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="space-y-1">
+                <label className="block font-medium text-[#4e4e4e]">Email Address</label>
+                <input
+                  type="email"
+                  value={authEmail}
+                  onChange={(e) => setAuthEmail(e.target.value)}
+                  placeholder="jane@company.com"
+                  required
+                  className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block font-medium text-[#4e4e4e]">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    minLength={6}
+                    className="w-full pl-3 pr-9 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#777169] hover:text-[#0c0a09] transition-colors p-1"
+                    title={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={authLoading}
+                className="w-full py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs disabled:opacity-50"
+              >
+                {authLoading
+                  ? "Verifying..."
+                  : authMode === "login"
+                  ? "Sign In"
+                  : "Create Account"}
+              </button>
+
+              <div className="text-center pt-1 text-[11px] text-[#777169]">
+                {authMode === "login" ? (
+                  <p>
+                    Don&apos;t have an account?{" "}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAuthMode("signup");
+                        setAuthError(null);
+                      }}
+                      className="text-[#0c0a09] font-semibold underline"
+                    >
+                      Sign Up
+                    </button>
+                  </p>
+                ) : (
+                  <p>
+                    Already have an account?{" "}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAuthMode("login");
+                        setAuthError(null);
+                      }}
+                      className="text-[#0c0a09] font-semibold underline"
+                    >
+                      Sign In
+                    </button>
+                  </p>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="mt-20 border-t border-[#e7e5e4] bg-[#f5f5f5] py-12 px-6 sm:px-12 text-sm text-[#777169]">
         <div className="max-w-[1100px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs">
@@ -313,7 +607,7 @@ export default function CustomerOrdersPage() {
               Checkout
             </Link>
             <Link href="/orders" className="hover:text-[#0c0a09] transition-colors">
-              Order Ledger
+              Orders
             </Link>
           </div>
         </div>
