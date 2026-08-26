@@ -260,10 +260,6 @@ export default function CustomerOrdersPage() {
       <main className="max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-8">
         {/* Header */}
         <header className="text-center max-w-xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
-            {user ? "Your Order History" : "Customer Orders"}
-          </div>
           <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09]">
             Purchases & Invoices
           </h1>
@@ -281,72 +277,37 @@ export default function CustomerOrdersPage() {
             <p className="text-sm text-[#777169]">Retrieving order ledger...</p>
           </div>
         ) : orders.length === 0 ? (
-          <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-8 sm:p-14 text-center max-w-2xl mx-auto shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-6 relative overflow-hidden">
-            {/* Architectural Grid Watermark */}
-            <div className="absolute inset-0 bg-[radial-gradient(#e7e5e4_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
+          <div className="bg-[#ffffff] rounded-2xl border border-[#e7e5e4] p-8 sm:p-12 text-center max-w-lg mx-auto shadow-[0_4px_16px_rgba(0,0,0,0.03)] space-y-5">
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl font-['EB_Garamond',serif] font-light text-[#0c0a09] tracking-[-0.02em]">
+                {user ? "No Recorded Purchases" : "Account Ledger Empty"}
+              </h2>
+              <p className="text-xs sm:text-[13px] text-[#777169] leading-relaxed font-normal">
+                {user
+                  ? `No active transactions or order receipts are associated with ${user.email}. Complete an order in the checkout store to view your invoice receipts.`
+                  : "Sign in with your verified credentials to view your order history, or visit our catalog to complete a new purchase."}
+              </p>
+            </div>
 
-            <div className="relative space-y-5">
-              {/* Minimalist Editorial Tag */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[11px] font-semibold tracking-[0.96px] uppercase text-[#777169]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
-                Archive / Invoices
-              </div>
-
-              {/* Serif Headline */}
-              <div className="space-y-2 max-w-md mx-auto">
-                <h2 className="text-3xl sm:text-4xl font-['EB_Garamond',serif] font-light text-[#0c0a09] tracking-[-0.02em] leading-tight">
-                  {user ? "No Recorded Purchases" : "Account Ledger Empty"}
-                </h2>
-                <p className="text-xs sm:text-[13px] text-[#777169] leading-relaxed font-normal">
-                  {user
-                    ? `No active transactions or order receipts are associated with ${user.email}. Complete an order in the checkout store to generate itemized invoices.`
-                    : "Sign in with your verified credentials to view your order history, or visit our catalog to complete a new purchase."}
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link
-                  href="/checkout"
-                  className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs text-center"
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href="/checkout"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs text-center"
+              >
+                Explore Store Catalog →
+              </Link>
+              {!user && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode("login");
+                    setShowAuthModal(true);
+                  }}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all"
                 >
-                  Explore Store Catalog →
-                </Link>
-                {!user && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAuthMode("login");
-                      setShowAuthModal(true);
-                    }}
-                    className="w-full sm:w-auto px-6 py-3 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all"
-                  >
-                    Sign In to Account
-                  </button>
-                )}
-              </div>
-
-              {/* Trust & Guarantee Specs */}
-              <div className="border-t border-[#f0efed] pt-6 grid grid-cols-3 gap-3 text-left">
-                <div className="space-y-0.5">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
-                    Ledger
-                  </span>
-                  <p className="text-[11px] font-medium text-[#0c0a09]">Immutable Audit</p>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
-                    Invoicing
-                  </span>
-                  <p className="text-[11px] font-medium text-[#0c0a09]">PDF & Print Ready</p>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-[#a8a29e] block">
-                    Telemetry
-                  </span>
-                  <p className="text-[11px] font-medium text-[#0c0a09]">Real-time Status</p>
-                </div>
-              </div>
+                  Sign In to Account
+                </button>
+              )}
             </div>
           </div>
         ) : (
