@@ -19,7 +19,7 @@
 3. [Autonomous Incident Response Ledger & Case Studies](#3-autonomous-incident-response-ledger--case-studies)
 4. [Two-Stage HITL Human Approval Gates](#4-two-stage-hitl-human-approval-gates)
 5. [Daytona Sandbox Reproduction & Fix Verification](#5-daytona-sandbox-reproduction--fix-verification)
-6. [Qodo AI Code Review Audit Trail](#6-qodo-ai-code-review-audit-trail)
+6. [Qodo AI Automated Code Review & Logic Flow Verification](#6-qodo-ai-automated-code-review--logic-flow-verification)
 7. [Target Microservice Architecture](#7-target-microservice-architecture)
 8. [TrueForge Agent Configuration (agent.yaml & manifest.json)](#8-trueforge-agent-configuration-agentyaml--manifestjson)
 9. [Quickstart & Local Setup](#9-quickstart--local-setup)
@@ -33,7 +33,7 @@
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["1. CLIENT & E-COMMERCE STOREFRONT"]
-        User["Customer / QA Client"] -->|Triggers Tax-Aware Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
+        User["Customer / QA Client"] -->|Applies Promo / Triggers Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
         WebStore -->|HTTP POST /checkout| APIGateway["FastAPI Microservice (:8000)"]
     end
 
@@ -58,7 +58,7 @@ flowchart TD
         Hypothesis --> GateA{"CHECKPOINT A<br/>Human Approval to Reproduce & Fix"}
         
         GateA -->|Approved by SRE Commander| DaytonaBox["Daytona Linux MicroVM Sandbox<br/>(Clean Working Copy / Isolated Env)"]
-        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce Bug in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (9/9 OK)"]
+        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce Bug in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (10/10 OK)"]
         
         SandboxProof --> GateB{"CHECKPOINT B<br/>Human Approval to Open GitHub PR"}
     end
@@ -107,38 +107,44 @@ The agent pauses execution at Checkpoint A and Checkpoint B to request explicit 
 
 ---
 
-### 5. Automated Pull Request Creation via GitHub MCP
-Once verified inside the Daytona Sandbox, the agent creates a Pull Request with complete root-cause diffs and sandbox execution proofs.
-![Pull Request Creation](docs/pr_req1.png)
+### 5. Automated Qodo AI Code Review & PR Summary
+Upon PR opening via GitHub MCP, **Qodo AI** generates an automated PR summary, assesses risk, and provides architectural flow diagrams.
+![Qodo AI PR Summary](docs/qodo_pr_summary.png)
 
 ---
 
-### 6. Qodo AI Automated Code Review & Analysis
-Candidate pull requests undergo automated security and code quality reviews by Qodo AI before being approved and merged.
-![Qodo AI Code Review](docs/pr_req2.png)
+### 6. Qodo AI Automated Decision Logic Flow Diagram
+Qodo AI automatically parses the candidate patch and generates a visual logic flowchart verifying the metadata dictionary lookup vs numeric fallback path.
+![Qodo AI Logic Diagram](docs/qodo_logic_diagram.png)
 
 ---
 
-### 7. Postmortem Incident Audit Ledger
+### 7. Qodo AI Code Review Approval (0 Issues Found)
+Qodo AI rigorously reviews the candidate fix across security rules, bugs, and requirement gaps, issuing an official approval: **"Great, no issues found! (0 Bugs, 0 Rule Violations, 0 Requirement Gaps)"**.
+![Qodo AI Code Review Approved](docs/qodo_code_review_approved.png)
+
+---
+
+### 8. Postmortem Incident Audit Ledger
 Persistent PostgreSQL memory records root-cause analyses, Daytona sandbox verification logs, human approval audit trails, and GitHub PR links.
 ![Postmortem Audit Ledger](docs/sentinleops_incident.png)
 
 ---
 
-### 8. Supabase Persistent Memory Schema Inspector
+### 9. Supabase Persistent Memory Schema Inspector
 Interactive modal inspector providing raw JSON schema payloads stored inside the Supabase cluster for compliance and auditing.
 ![Supabase Memory Record Inspector](docs/sentinleops_incident_2.png)
 
 ---
 
-### 9. E-Commerce Storefront & Checkout Gateway
+### 10. E-Commerce Storefront & Checkout Gateway
 Full-featured e-commerce checkout supporting multi-currency (`USD`, `EUR`, `GBP`), regional tax calculation, promotional discount codes, member authentication, and guest checkout paths.
 ![Checkout Storefront Overview](docs/checkout_service_patient_site.png)
 ![Authentication & Order Configuration](docs/checkout_service_patient_site_1.png)
 
 ---
 
-### 10. TrueForge Multi-Agent Runtime & Daytona Sandbox
+### 11. TrueForge Multi-Agent Runtime & Daytona Sandbox
 TrueForge runtime management interface showing registered tools, sandbox compute instances, and execution thread logs.
 ![TrueForge Runtime Interface](docs/trueforge_1.png)
 ![TrueForge Sandbox Compute](docs/trueforge_2.png)
@@ -151,78 +157,52 @@ Below is the verified record of production incidents autonomously investigated, 
 
 | Supabase Incident ID | Exception & Failure Mode | Daytona Sandbox Proof | Human Approval | Target GitHub PR | Qodo AI Review | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **`INC-20260826-9448`** | `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` | 100% test suites passed (9/9 OK) | Checkpoint A & B Approved | [PR #12](https://github.com/Sourjya-Saha/checkout-services/pull/12) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
-| **`INC-20260826-1338`** | `TypeError: 'NoneType' object is not subscriptable` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [PR #11](https://github.com/Sourjya-Saha/checkout-services/pull/11) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
-| **`INC-20260826-3780`** | `KeyError: 'STANDARD'` in `calculate_carbon_offset` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [PR #10](https://github.com/Sourjya-Saha/checkout-services/pull/10) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
-| **`INC-20260826-8855`** | `KeyError: 'STANDARD'` in `calculate_packaging_fee` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [PR #9](https://github.com/Sourjya-Saha/checkout-services/pull/9) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
-| **`INC-20260826-checkout`** | `500 KeyError in payment_processor.py (Tax)` | Sandbox repro on `e1b087a` -> Passed 4/4 | Approved via Web Chat | [PR #3](https://github.com/Sourjya-Saha/checkout-services/pull/3) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
-| **`INC-20260825-621`** | `500 Error in payment_processor.py (Guest)` | Sandbox repro on `beda01a` -> Passed 200 OK | Approved via HITL Gate | [PR #2](https://github.com/Sourjya-Saha/checkout-services/pull/2) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260828-checkout`** | `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` | 100% test suites passed (10/10 OK) | Checkpoint A & B Approved | [**PR #13**](https://github.com/Sourjya-Saha/checkout-services/pull/13) | **APPROVED (0 BUGS / 0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-9448`** | `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` | 100% test suites passed (9/9 OK) | Checkpoint A & B Approved | [**PR #12**](https://github.com/Sourjya-Saha/checkout-services/pull/12) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-1338`** | `TypeError: 'NoneType' object is not subscriptable` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [**PR #11**](https://github.com/Sourjya-Saha/checkout-services/pull/11) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-3780`** | `KeyError: 'STANDARD'` in `calculate_carbon_offset` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [**PR #10**](https://github.com/Sourjya-Saha/checkout-services/pull/10) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-8855`** | `KeyError: 'STANDARD'` in `calculate_packaging_fee` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [**PR #9**](https://github.com/Sourjya-Saha/checkout-services/pull/9) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260826-checkout`** | `500 KeyError in payment_processor.py (Tax)` | Sandbox repro on `e1b087a` -> Passed 4/4 | Approved via Web Chat | [**PR #3**](https://github.com/Sourjya-Saha/checkout-services/pull/3) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
+| **`INC-20260825-621`** | `500 Error in payment_processor.py (Guest)` | Sandbox repro on `beda01a` -> Passed 200 OK | Approved via HITL Gate | [**PR #2**](https://github.com/Sourjya-Saha/checkout-services/pull/2) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
 
 ---
 
-### Detailed Incident Breakdown:
+### Marquee Case Study: Promo Coupon Metadata Multiplier Regression (`INC-20260828-checkout` / PR #13)
 
-#### 1. Incident `INC-20260826-9448` (Pull Request #12)
-* **Exception:** `TypeError: unsupported operand type(s) for *: 'float' and 'dict'`
-* **Traceback:**
+* **Incident ID:** `INC-20260828-checkout`
+* **Trigger Traceback:**
   ```python
-  File "backend/app/payment_processor.py", line 168, in calculate_total
-      tax_amount = calculate_regional_tax(discounted_subtotal, tax_region)
-  File "backend/app/payment_processor.py", line 94, in calculate_regional_tax
-      return round(subtotal * tax_rate, 2)
+  File "checkout-service/backend/app/payment_processor.py", line 157, in calculate_total
+      discount = apply_promo_discount(subtotal, promo_code)
+  File "checkout-service/backend/app/payment_processor.py", line 111, in apply_promo_discount
+      return round(subtotal * discount_rate, 2)
   TypeError: unsupported operand type(s) for *: 'float' and 'dict'
   ```
-* **Root Cause:** Refactored `REGIONAL_TAX_RATES` to jurisdiction dictionaries (`{"rate": 0.0825, ...}`). Code multiplied `subtotal * tax_rate` without unpacking the numeric rate.
-* **Sandbox Verification:** Actively reproduced `pytest -k tax` failure in Daytona sandbox, patched with `tax_rate = region_data.get("rate", 0.0)`, and proved 9/9 tests pass (100% OK).
-* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/12](https://github.com/Sourjya-Saha/checkout-services/pull/12)
-
----
-
-#### 2. Incident `INC-20260826-1338` (Pull Request #11)
-* **Exception:** `TypeError: 'NoneType' object is not subscriptable`
-* **Traceback:**
-  ```python
-  File "backend/app/payment_processor.py", line 173, in calculate_total
-      formatted_total = _format_price_for_display(total, currency_info)
-  File "backend/app/payment_processor.py", line 83, in _format_price_for_display
-      symbol = currency_info["symbol"]
-  TypeError: 'NoneType' object is not subscriptable
-  ```
-* **Root Cause:** Guest checkout has no saved database user profile (`currency_info=None`). Price formatter lacked a None-check fallback.
-* **Sandbox Verification:** Reproduced guest failure in Daytona, added `_resolve_currency_symbol()` fallback to `DEFAULT_CURRENCY_CONFIG`, and verified 8/8 tests pass.
-* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/11](https://github.com/Sourjya-Saha/checkout-services/pull/11)
-
----
-
-#### 3. Incident `INC-20260826-3780` (Pull Request #10)
-* **Exception:** `KeyError: 'STANDARD'`
-* **Traceback:**
-  ```python
-  File "backend/app/payment_processor.py", line 140, in calculate_total
-      carbon_fee = calculate_carbon_offset(discounted_subtotal, offset_initiative)
-  File "backend/app/payment_processor.py", line 117, in calculate_carbon_offset
-      return CARBON_OFFSET_RATES[offset_initiative]
-  KeyError: 'STANDARD'
-  ```
-* **Root Cause:** Direct bracket subscript `CARBON_OFFSET_RATES[offset_initiative]` crashed when custom initiatives were submitted.
-* **Sandbox Verification:** Replaced direct indexing with safe `CARBON_OFFSET_RATES.get(offset_initiative.upper(), 0.0)` in Daytona sandbox.
-* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/10](https://github.com/Sourjya-Saha/checkout-services/pull/10)
-
----
-
-#### 4. Incident `INC-20260826-8855` (Pull Request #9)
-* **Exception:** `KeyError: 'STANDARD'`
-* **Traceback:**
-  ```python
-  File "backend/app/payment_processor.py", line 141, in calculate_total
-      packaging_fee = calculate_packaging_fee(discounted_subtotal, packaging_type)
-  File "backend/app/payment_processor.py", line 118, in calculate_packaging_fee
-      return PACKAGING_OPTION_FEES[packaging_type]
-  KeyError: 'STANDARD'
-  ```
-* **Root Cause:** Direct indexing on packaging fee dictionary without a default fallback.
-* **Sandbox Verification:** Replaced with safe `PACKAGING_OPTION_FEES.get(packaging_type.upper(), 0.0)` in Daytona sandbox.
-* **PR:** [https://github.com/Sourjya-Saha/checkout-services/pull/9](https://github.com/Sourjya-Saha/checkout-services/pull/9)
+* **Root Cause:**
+  * Commit `55d66d8` (`feat(promo): migrate promo codes to structured metadata dictionaries`) updated `PROMO_CODE_DISCOUNTS` to dictionaries like `{"rate": 0.20, "description": "Summer Seasonal 20% Discount", "active": True}`.
+  * However, `apply_promo_discount()` in `payment_processor.py:111` treated the lookup result as a float rate and directly multiplied `subtotal * discount_rate`.
+* **Swarm Evidence & Triangulation:**
+  * **Subagent Alpha:** Identified commit `55d66d8` introducing structured dictionary shapes to promo tables.
+  * **Subagent Bravo:** Pinpointed line 111 in `apply_promo_discount()` attempting binary arithmetic on a float and dictionary.
+  * **Subagent Charlie:** Correlated checkout requests passing promo codes (`SUMMER20`, `WELCOME10`, `VIP50`).
+* **Two-Stage Human-in-the-Loop Flow:**
+  1. **Checkpoint A (03:33:03 PM):** Agent paused and requested approval: *"Requesting approval to: draft and test a fix in the sandbox."* $\to$ Approved by SRE Commander.
+  2. **Daytona Linux Sandbox Execution (03:34:50 PM):**
+     * Actively reproduced the original `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` in the sandbox.
+     * Applied safe dictionary normalization:
+       ```python
+       discount_config = PROMO_CODE_DISCOUNTS.get(promo_code.upper(), 0.0)
+       if isinstance(discount_config, dict):
+           discount_rate = discount_config.get("rate", 0.0)
+       else:
+           discount_rate = float(discount_config) if discount_config else 0.0
+       return round(subtotal * discount_rate, 2)
+       ```
+     * Executed test suite: **10 passed (100% OK)**.
+  3. **Checkpoint B (03:34:50 PM):** Agent presented sandbox execution proof and requested approval: *"Requesting approval to: open a pull request with the verified fix."* $\to$ Approved by SRE Commander.
+  4. **GitHub PR Creation via GitHub MCP (03:35:41 PM):** Opened Pull Request **[PR #13: Fix structured promo discount handling in checkout](https://github.com/Sourjya-Saha/checkout-services/pull/13)**.
+* **Qodo AI Automated Review & Verification:**
+  * Qodo AI automatically reviewed PR #13, generated the PR summary and logic flowchart, and issued an official approval: **"Great, no issues found! (0 Bugs, 0 Rule violations, 0 Requirement gaps)"**.
 
 ---
 
@@ -253,7 +233,7 @@ SentinelOps enforces strict security boundaries between the sandbox and external
                                              1. pip install deps
                                              2. Actively reproduce bug
                                              3. Apply candidate fix
-                                             4. Run pytest suite (9/9 pass)
+                                             4. Run pytest suite (10/10 pass)
                                                        │
                                                        ▼
         ╔══════════════════════════════════════════════════════════╗
@@ -285,18 +265,19 @@ SentinelOps does not guess fixes or apply untested code:
 
 ---
 
-## 6. Qodo AI Code Review Audit Trail
+## 6. Qodo AI Automated Code Review & Logic Flow Verification
 
-> **Hackathon Requirement Compliance:** Every substantive change goes through a GitHub Pull Request reviewed by Qodo before it is merged.
+> **Hackathon Requirement Compliance:** Every substantive change goes through a GitHub Pull Request reviewed and verified by Qodo AI before it is merged.
 
-| PR Reference | Target Branch | Qodo Findings | Verification Status | Action Taken |
-| :--- | :--- | :--- | :--- | :--- |
-| **[PR #12](https://github.com/Sourjya-Saha/checkout-services/pull/12)** | `main` | **0 High Findings, Approved** | **Daytona Verified (9/9 Passed)** | Approved by Human SRE Commander & Merged |
-| **[PR #11](https://github.com/Sourjya-Saha/checkout-services/pull/11)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
-| **[PR #10](https://github.com/Sourjya-Saha/checkout-services/pull/10)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
-| **[PR #9](https://github.com/Sourjya-Saha/checkout-services/pull/9)** | `main` | **0 High Findings, Approved** | **Daytona Verified (8/8 Passed)** | Approved by Human SRE Commander & Merged |
-| **[PR #3](https://github.com/Sourjya-Saha/checkout-services/pull/3)** | `main` | **0 High Findings, Approved** | **Daytona Verified (4/4 Passed)** | Approved by Human SRE Commander & Merged |
-| **[PR #2](https://github.com/Sourjya-Saha/checkout-services/pull/2)** | `main` | **0 High Findings, Approved** | **Daytona Verified (200 OK)** | Approved by Human SRE Commander & Merged |
+| PR Reference | Target Branch | Qodo AI Verdict | Qodo AI Findings | Daytona Verification Status | Action Taken |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **[PR #13](https://github.com/Sourjya-Saha/checkout-services/pull/13)** | `main` | **APPROVED** | **0 Bugs, 0 Rule Violations, 0 Gaps** | **Daytona Verified (10/10 Passed)** | Verified by Qodo AI & Merged |
+| **[PR #12](https://github.com/Sourjya-Saha/checkout-services/pull/12)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (9/9 Passed)** | Verified by Qodo AI & Merged |
+| **[PR #11](https://github.com/Sourjya-Saha/checkout-services/pull/11)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (8/8 Passed)** | Verified by Qodo AI & Merged |
+| **[PR #10](https://github.com/Sourjya-Saha/checkout-services/pull/10)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (8/8 Passed)** | Verified by Qodo AI & Merged |
+| **[PR #9](https://github.com/Sourjya-Saha/checkout-services/pull/9)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (8/8 Passed)** | Verified by Qodo AI & Merged |
+| **[PR #3](https://github.com/Sourjya-Saha/checkout-services/pull/3)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (4/4 Passed)** | Verified by Qodo AI & Merged |
+| **[PR #2](https://github.com/Sourjya-Saha/checkout-services/pull/2)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (200 OK)** | Verified by Qodo AI & Merged |
 
 ---
 
@@ -307,7 +288,7 @@ checkout-service/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py               # FastAPI application entrypoint & incident routing
-│   │   ├── payment_processor.py  # Regional tax calculation & payment logic
+│   │   ├── payment_processor.py  # Promo codes, tax calculation & payment logic
 │   │   ├── database.py           # Supabase PostgreSQL client & session pool
 │   │   ├── auth.py               # JWT customer authentication
 │   │   └── models.py             # SQLAlchemy & Pydantic schemas
@@ -462,18 +443,6 @@ Run the full automated test suite across backend and frontend:
 # 1. Run Python Unit Tests (FastAPI / Pytest)
 cd checkout-service/backend
 pytest -v
-
-# Expected Output:
-# tests/test_checkout.py::test_health_check PASSED
-# tests/test_checkout.py::test_checkout_logged_in_success PASSED
-# tests/test_checkout.py::test_checkout_guest_success PASSED
-# tests/test_checkout.py::test_checkout_with_tax_region PASSED
-# tests/test_checkout.py::test_calculate_total_missing_shipping_tier_defaults_safely PASSED
-# tests/test_checkout.py::test_calculate_shipping_fee_unknown_tier_does_not_raise PASSED
-# tests/test_checkout.py::test_calculate_packaging_fee_missing_or_unknown_type_defaults_safely PASSED
-# tests/test_checkout.py::test_order_lookup_and_list_endpoints PASSED
-# tests/test_checkout.py::test_auth_signup_login_and_me PASSED
-# ======================== 9 passed in 0.45s ========================
 
 # 2. Run TypeScript Typecheck (Next.js / TypeScript)
 cd checkout-service/frontend
