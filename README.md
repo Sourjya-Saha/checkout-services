@@ -1,5 +1,6 @@
 # SentinelOps: Autonomous Incident Response Engine & Resilient Microservice Platform
 
+[![Demo Video](https://img.shields.io/badge/YouTube-Demonstration_Video-FF0000?logo=youtube)](https://youtu.be/yeeHMPeY1Ww)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-checkout--services-181717?logo=github)](https://github.com/Sourjya-Saha/checkout-services)
 [![Skills Repo](https://img.shields.io/badge/GitHub-sentinelops--skills-181717?logo=github)](https://github.com/Sourjya-Saha/sentinelops-skills)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
@@ -10,6 +11,14 @@
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_Persistence-3ECF8E?logo=supabase)](https://supabase.com/)
 
 > **SentinelOps** is an autonomous AI Site Reliability Engineering (SRE) orchestration platform powered by **TrueForge**. It actively monitors production microservices, automatically spins up a parallel multi-agent swarm to triangulate root causes across Git history, application logs, and database records, safely **reproduces and validates bugs inside an isolated Daytona Linux Sandbox**, executes fixes with strict **Two-Stage Human-in-the-Loop (HITL)** approval gates, subjects candidate pull requests to automated **Qodo AI** code reviews, and records persistent postmortem incident memory into **Supabase PostgreSQL**.
+
+---
+
+## 🎥 Live Demonstration Video
+
+Watch SentinelOps autonomously detect, isolate, sandbox, verify, and resolve a live production checkout outage end-to-end:
+
+▶️ **YouTube Video Link**: [**https://youtu.be/yeeHMPeY1Ww**](https://youtu.be/yeeHMPeY1Ww)
 
 ---
 
