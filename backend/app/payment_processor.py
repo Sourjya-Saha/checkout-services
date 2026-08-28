@@ -107,7 +107,11 @@ def apply_promo_discount(subtotal: float, promo_code: Optional[str] = None) -> f
         promo_code = "NONE"
 
     # Fall back to no discount when the promo code is missing or unmapped.
-    discount_rate = PROMO_CODE_DISCOUNTS.get(promo_code.upper(), 0.0)
+    discount_config = PROMO_CODE_DISCOUNTS.get(promo_code.upper(), 0.0)
+    if isinstance(discount_config, dict):
+        discount_rate = discount_config.get("rate", 0.0)
+    else:
+        discount_rate = float(discount_config) if discount_config else 0.0
     return round(subtotal * discount_rate, 2)
 
 
