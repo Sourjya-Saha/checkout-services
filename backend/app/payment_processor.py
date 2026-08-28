@@ -118,12 +118,12 @@ def apply_promo_discount(subtotal: float, promo_code: Optional[str] = None) -> f
 def calculate_shipping_fee(subtotal: float, shipping_tier: Optional[str] = None) -> float:
     """
     Calculate shipping and logistics fee based on selected fulfillment tier.
-    Free shipping applies to orders with subtotal >= $150.00.
+    Free shipping applies to standard domestic orders with subtotal >= $150.00.
     """
-    if subtotal >= 150.0:
+    if not shipping_tier:
         return 0.0
 
-    if not shipping_tier:
+    if subtotal >= 150.0 and shipping_tier.upper() == "STANDARD":
         return 0.0
 
     # Direct bracket index lookup without .get() fallback (VULNERABLE TO UNMAPPED TIERS)

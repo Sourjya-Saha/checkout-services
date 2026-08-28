@@ -769,7 +769,7 @@ export default function ProfessionalCheckoutPage() {
                         </span>
                       )}
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {SHIPPING_TIERS.map((tier) => {
                         const isFree = tier.id === "STANDARD" && discountedSubtotalUSD >= 150.0;
                         const priceFormatted = isFree
