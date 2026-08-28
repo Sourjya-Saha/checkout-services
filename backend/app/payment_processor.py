@@ -11,6 +11,7 @@ DEFAULT_CURRENCY_CONFIG = {
 }
 
 REGIONAL_TAX_RATES = {
+    "STANDARD": {"rate": 0.05, "jurisdiction": "Standard International Jurisdiction", "exempt": False},
     "US_CA": {"rate": 0.0825, "jurisdiction": "California Department of Tax and Fee Administration", "exempt": False},
     "US_NY": {"rate": 0.08875, "jurisdiction": "New York State Department of Taxation and Finance", "exempt": False},
     "EU_DE": {"rate": 0.19, "jurisdiction": "Federal Central Tax Office (BZSt)", "exempt": False},
@@ -88,13 +89,13 @@ def calculate_regional_tax(subtotal: float, tax_region: Optional[str] = None) ->
     Calculate regional sales tax or VAT based on shipping destination.
     """
     if not tax_region:
-        tax_region = "STANDARD"
+        return 0.0
 
     tax_config = REGIONAL_TAX_RATES.get(tax_region.upper(), 0.0)
     if isinstance(tax_config, dict):
         tax_rate = tax_config.get("rate", 0.0)
     else:
-        tax_rate = tax_config
+        tax_rate = float(tax_config) if tax_config else 0.0
     return round(subtotal * tax_rate, 2)
 
 

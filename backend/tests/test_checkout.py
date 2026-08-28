@@ -78,6 +78,21 @@ def test_checkout_with_tax_region():
     assert data["total"] == 108.25
 
 
+def test_checkout_with_standard_international_tax():
+    """Verify checkout with STANDARD tax region accurately applies 5% international tax."""
+    payload = {
+        "user_id": None,
+        "cart_items": [{"sku": "SKU-SENTINEL-PRO", "qty": 1, "price": 100.0}],
+        "currency": "USD",
+        "is_guest": True,
+        "tax_region": "STANDARD",
+    }
+    response = client.post("/checkout", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] == 105.0
+
+
 def test_calculate_total_missing_shipping_tier_defaults_safely():
     items = [CartItem(sku="SKU-SENTINEL-PRO", qty=1, price=99.0)]
     assert calculate_total(items, currency_info=None, currency="USD") == 99.0
