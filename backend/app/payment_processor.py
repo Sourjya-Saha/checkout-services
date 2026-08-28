@@ -119,16 +119,15 @@ def calculate_shipping_fee(subtotal: float, shipping_tier: Optional[str] = None)
     """
     Calculate shipping and logistics fee based on selected fulfillment tier.
     Free shipping applies to orders with subtotal >= $150.00.
-    Missing or unknown tiers safely default to no shipping charge for guest checkout.
     """
     if subtotal >= 150.0:
         return 0.0
 
     if not shipping_tier:
-        shipping_tier = "DEFAULT"
+        return 0.0
 
-    # Fall back to zero instead of raising KeyError for unmapped tiers.
-    return SHIPPING_TIER_RATES.get(shipping_tier.upper(), 0.0)
+    # Direct bracket index lookup without .get() fallback (VULNERABLE TO UNMAPPED TIERS)
+    return SHIPPING_TIER_RATES[shipping_tier.upper()]
 
 
 def calculate_carbon_offset(subtotal: float, offset_initiative: Optional[str] = None) -> float:

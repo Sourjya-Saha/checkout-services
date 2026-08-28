@@ -69,6 +69,7 @@ const SHIPPING_TIERS = [
   { id: "STANDARD", name: "Standard Delivery", estimate: "3–5 business days", price: 5.99 },
   { id: "EXPRESS", name: "Express Courier", estimate: "1–2 business days", price: 14.99 },
   { id: "OVERNIGHT", name: "Priority Overnight Air", estimate: "Next business morning", price: 29.99 },
+  { id: "UK_EXPRESS", name: "UK Express Shipping", estimate: "2–3 business days (UK & NI)", price: 19.99 },
 ];
 
 const PACKAGING_OPTIONS = [

@@ -93,14 +93,30 @@ def test_checkout_with_promo_discount():
     assert data["total"] == 80.0
 
 
+def test_checkout_with_uk_express_shipping():
+    """Verify checkout with UK_EXPRESS shipping tier calculates shipping fee."""
+    payload = {
+        "user_id": None,
+        "cart_items": [{"sku": "SKU-SENTINEL-PRO", "qty": 1, "price": 99.0}],
+        "currency": "USD",
+        "is_guest": True,
+        "shipping_tier": "UK_EXPRESS",
+    }
+    response = client.post("/checkout", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "order_id" in data
+    assert data["total"] == 118.99
+
+
 def test_calculate_total_missing_shipping_tier_defaults_safely():
     items = [CartItem(sku="SKU-SENTINEL-PRO", qty=1, price=99.0)]
     assert calculate_total(items, currency_info=None, currency="USD") == 99.0
 
 
-def test_calculate_shipping_fee_unknown_tier_does_not_raise():
+def test_calculate_shipping_fee_standard():
     from app.payment_processor import calculate_shipping_fee
-    assert calculate_shipping_fee(99.0, "DEFAULT") == 0.0
+    assert calculate_shipping_fee(99.0, "STANDARD") == 5.99
 
 
 def test_calculate_packaging_fee_missing_or_unknown_type_defaults_safely():
