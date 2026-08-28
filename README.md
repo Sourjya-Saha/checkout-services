@@ -1,15 +1,24 @@
 # SentinelOps: Autonomous Incident Response Engine & Resilient Microservice Platform
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-checkout--services-181717?logo=github)](https://github.com/Sourjya-Saha/checkout-services)
+[![Skills Repo](https://img.shields.io/badge/GitHub-sentinelops--skills-181717?logo=github)](https://github.com/Sourjya-Saha/sentinelops-skills)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![TrueForge](https://img.shields.io/badge/TrueForge-Multi--Agent-DC2626)](https://truefoundry.com/)
 [![Daytona](https://img.shields.io/badge/Daytona-Linux_Sandbox-000000?logo=linux)](https://daytona.io/)
 [![Qodo AI](https://img.shields.io/badge/Qodo_AI-Code_Review_Verified-10B981)](https://qodo.ai/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_Persistence-3ECF8E?logo=supabase)](https://supabase.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)](https://python.org/)
 
 > **SentinelOps** is an autonomous AI Site Reliability Engineering (SRE) orchestration platform powered by **TrueForge**. It actively monitors production microservices, automatically spins up a parallel multi-agent swarm to triangulate root causes across Git history, application logs, and database records, safely **reproduces and validates bugs inside an isolated Daytona Linux Sandbox**, executes fixes with strict **Two-Stage Human-in-the-Loop (HITL)** approval gates, subjects candidate pull requests to automated **Qodo AI** code reviews, and records persistent postmortem incident memory into **Supabase PostgreSQL**.
+
+---
+
+## 🔗 Official Monorepo Repositories
+
+| Repository | GitHub URL | Description |
+| :--- | :--- | :--- |
+| **`checkout-service`** | [**https://github.com/Sourjya-Saha/checkout-services**](https://github.com/Sourjya-Saha/checkout-services) | Production FastAPI microservice, Next.js storefront, and SentinelOps Command Center HUD. |
+| **`sentinelops-skills`** | [**https://github.com/Sourjya-Saha/sentinelops-skills**](https://github.com/Sourjya-Saha/sentinelops-skills) | TrueForge Agent Skills runtime (`agent.yaml`, `manifest.json`, incident runbooks, and rollback playbooks). |
 
 ---
 
@@ -33,12 +42,12 @@
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["1. CLIENT & E-COMMERCE STOREFRONT"]
-        User["Customer / QA Client"] -->|Applies Promo / Triggers Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
+        User["Customer / QA Client"] -->|Selects Shipping / Triggers Checkout| WebStore["Checkout Service UI<br/>(Next.js 14 / TypeScript)"]
         WebStore -->|HTTP POST /checkout| APIGateway["FastAPI Microservice (:8000)"]
     end
 
     subgraph FailureIngestion ["2. INCIDENT DETECTION & INGESTION"]
-        APIGateway -->|Unhandled Exception 500 Spike| ExceptionLogger["payment_processor.py<br/>TypeError / KeyError / NoneType"]
+        APIGateway -->|Unhandled Exception 500 Spike| ExceptionLogger["payment_processor.py<br/>KeyError / TypeError / NoneType"]
         ExceptionLogger -->|Automated Incident Dispatch| IncidentStore["Next.js SSE Dispatcher<br/>/api/incidents/report"]
     end
 
@@ -58,7 +67,7 @@ flowchart TD
         Hypothesis --> GateA{"CHECKPOINT A<br/>Human Approval to Reproduce & Fix"}
         
         GateA -->|Approved by SRE Commander| DaytonaBox["Daytona Linux MicroVM Sandbox<br/>(Clean Working Copy / Isolated Env)"]
-        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce Bug in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (10/10 OK)"]
+        DaytonaBox -->|1. Clone & pip install<br/>2. Actively Reproduce Bug in Sandbox<br/>3. Apply Candidate Patch<br/>4. Re-run pytest backend/tests| SandboxProof["100% Sandbox Verification Passed (11/11 OK)"]
         
         SandboxProof --> GateB{"CHECKPOINT B<br/>Human Approval to Open GitHub PR"}
     end
@@ -157,6 +166,7 @@ Below is the verified record of production incidents autonomously investigated, 
 
 | Supabase Incident ID | Exception & Failure Mode | Daytona Sandbox Proof | Human Approval | Target GitHub PR | Qodo AI Review | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **`INC-20260828-shipping-uk-express`** | `KeyError: 'UK_EXPRESS'` in `calculate_shipping_fee` | 100% test suites passed (11/11 OK) | Checkpoint A & B Approved | [**PR #14**](https://github.com/Sourjya-Saha/checkout-services/pull/14) | **APPROVED (0 BUGS / 0 HIGHS)** | **RESOLVED [OK]** |
 | **`INC-20260828-checkout`** | `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` | 100% test suites passed (10/10 OK) | Checkpoint A & B Approved | [**PR #13**](https://github.com/Sourjya-Saha/checkout-services/pull/13) | **APPROVED (0 BUGS / 0 HIGHS)** | **RESOLVED [OK]** |
 | **`INC-20260826-9448`** | `TypeError: unsupported operand type(s) for *: 'float' and 'dict'` | 100% test suites passed (9/9 OK) | Checkpoint A & B Approved | [**PR #12**](https://github.com/Sourjya-Saha/checkout-services/pull/12) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
 | **`INC-20260826-1338`** | `TypeError: 'NoneType' object is not subscriptable` | 100% test suites passed (8/8 OK) | Checkpoint A & B Approved | [**PR #11**](https://github.com/Sourjya-Saha/checkout-services/pull/11) | **APPROVED (0 HIGHS)** | **RESOLVED [OK]** |
@@ -167,7 +177,39 @@ Below is the verified record of production incidents autonomously investigated, 
 
 ---
 
-### Marquee Case Study: Promo Coupon Metadata Multiplier Regression (`INC-20260828-checkout` / PR #13)
+### Featured Case Study 1: UK Express Shipping Mismatch (`INC-20260828-shipping-uk-express` / PR #14)
+
+* **Incident ID:** `INC-20260828-shipping-uk-express`
+* **Trigger Traceback:**
+  ```python
+  File "checkout-service/backend/app/payment_processor.py", line 128, in calculate_shipping_fee
+      return SHIPPING_TIER_RATES[shipping_tier.upper()]
+  KeyError: 'UK_EXPRESS'
+  ```
+* **Root Cause:**
+  * Commit `b297d3f` (`feat: add UK Express shipping option to checkout UI`) added the `"UK_EXPRESS"` shipping option to the frontend checkout form.
+  * However, `SHIPPING_TIER_RATES` in `backend/app/payment_processor.py` was never updated to include `"UK_EXPRESS"`, and `calculate_shipping_fee()` performed an unsafe direct dictionary lookup without fallback.
+* **Swarm Evidence & Triangulation:**
+  * **Subagent Alpha:** Identified commit `b297d3f` adding UK Express to the checkout frontend.
+  * **Subagent Bravo:** Decoded the runtime exception: `KeyError: 'UK_EXPRESS'` at line 128 of `payment_processor.py`.
+  * **Subagent Charlie:** Correlated checkout orders with `shipping_tier == 'UK_EXPRESS'`.
+* **Two-Stage Human-in-the-Loop Flow:**
+  1. **Checkpoint A:** Agent requested approval to reproduce and test fix in the Daytona sandbox $\to$ **Approved by Incident Commander**.
+  2. **Daytona Linux Sandbox Execution:**
+     * Cloned repository and reproduced `KeyError: 'UK_EXPRESS'`.
+     * Added `"UK_EXPRESS": 19.99` to `SHIPPING_TIER_RATES` and applied safe dictionary `.get()` normalization:
+       ```python
+       return SHIPPING_TIER_RATES.get(shipping_tier.upper(), 0.0)
+       ```
+     * Executed test suite: **11 passed (100% OK)**.
+  3. **Checkpoint B:** Agent presented sandbox verification proof and requested approval to open PR $\to$ **Approved by Incident Commander**.
+  4. **GitHub PR Creation:** Opened **[PR #14: fix(checkout): add UK_EXPRESS shipping rate to prevent guest checkout KeyError](https://github.com/Sourjya-Saha/checkout-services/pull/14)** via GitHub MCP.
+* **Qodo AI Automated Review & Verification:**
+  * Qodo AI reviewed PR #14, verified zero security or logic regressions, and issued an official approval: **"APPROVED (0 HIGHS / 0 BUGS)"**.
+
+---
+
+### Featured Case Study 2: Promo Coupon Metadata Regression (`INC-20260828-checkout` / PR #13)
 
 * **Incident ID:** `INC-20260828-checkout`
 * **Trigger Traceback:**
@@ -182,9 +224,9 @@ Below is the verified record of production incidents autonomously investigated, 
   * Commit `55d66d8` (`feat(promo): migrate promo codes to structured metadata dictionaries`) updated `PROMO_CODE_DISCOUNTS` to dictionaries like `{"rate": 0.20, "description": "Summer Seasonal 20% Discount", "active": True}`.
   * However, `apply_promo_discount()` in `payment_processor.py:111` treated the lookup result as a float rate and directly multiplied `subtotal * discount_rate`.
 * **Swarm Evidence & Triangulation:**
-  * **Subagent Alpha:** Identified commit `55d66d8` introducing structured dictionary shapes to promo tables.
+  * **Subagent Alpha:** Isolated commit `55d66d8` modifying promo codes.
   * **Subagent Bravo:** Pinpointed line 111 in `apply_promo_discount()` attempting binary arithmetic on a float and dictionary.
-  * **Subagent Charlie:** Correlated checkout requests passing promo codes (`SUMMER20`, `WELCOME10`, `VIP50`).
+  * **Subagent Charlie:** Correlated checkout requests passing coupon codes (`SUMMER20`, `WELCOME10`, `VIP50`).
 * **Two-Stage Human-in-the-Loop Flow:**
   1. **Checkpoint A (03:33:03 PM):** Agent paused and requested approval: *"Requesting approval to: draft and test a fix in the sandbox."* $\to$ Approved by SRE Commander.
   2. **Daytona Linux Sandbox Execution (03:34:50 PM):**
@@ -233,7 +275,7 @@ SentinelOps enforces strict security boundaries between the sandbox and external
                                              1. pip install deps
                                              2. Actively reproduce bug
                                              3. Apply candidate fix
-                                             4. Run pytest suite (10/10 pass)
+                                             4. Run pytest suite (11/11 pass)
                                                        │
                                                        ▼
         ╔══════════════════════════════════════════════════════════╗
@@ -271,6 +313,7 @@ SentinelOps does not guess fixes or apply untested code:
 
 | PR Reference | Target Branch | Qodo AI Verdict | Qodo AI Findings | Daytona Verification Status | Action Taken |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| **[PR #14](https://github.com/Sourjya-Saha/checkout-services/pull/14)** | `main` | **APPROVED** | **0 Bugs, 0 Rule Violations, 0 Gaps** | **Daytona Verified (11/11 Passed)** | Verified by Qodo AI & Merged |
 | **[PR #13](https://github.com/Sourjya-Saha/checkout-services/pull/13)** | `main` | **APPROVED** | **0 Bugs, 0 Rule Violations, 0 Gaps** | **Daytona Verified (10/10 Passed)** | Verified by Qodo AI & Merged |
 | **[PR #12](https://github.com/Sourjya-Saha/checkout-services/pull/12)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (9/9 Passed)** | Verified by Qodo AI & Merged |
 | **[PR #11](https://github.com/Sourjya-Saha/checkout-services/pull/11)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (8/8 Passed)** | Verified by Qodo AI & Merged |
@@ -288,7 +331,7 @@ checkout-service/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py               # FastAPI application entrypoint & incident routing
-│   │   ├── payment_processor.py  # Promo codes, tax calculation & payment logic
+│   │   ├── payment_processor.py  # Promo codes, tax calculation & shipping logic
 │   │   ├── database.py           # Supabase PostgreSQL client & session pool
 │   │   ├── auth.py               # JWT customer authentication
 │   │   └── models.py             # SQLAlchemy & Pydantic schemas
