@@ -329,22 +329,6 @@ SentinelOps does not guess fixes or apply untested code:
 
 ## 6. Qodo AI Automated Code Review & Logic Flow Verification
 
-### Qodo Code Review Evidence
-
-Every substantive change to `checkout-services` from the point Qodo was connected onward has gone through a GitHub pull request reviewed by Qodo before merge.
-
-**Representative merged PR:** [**#14 — fix(checkout): add UK_EXPRESS shipping rate to prevent guest checkout KeyError**](https://github.com/Sourjya-Saha/checkout-services/pull/14)
-
-**What Qodo surfaced:** Qodo reviewed the fix for a `KeyError: 'UK_EXPRESS'` regression (a new shipping option was added to the frontend without a matching backend rate entry). Its automated review checked for bugs, rule violations, and requirement gaps and returned a clean result — **"0 Bugs, 0 Rule Violations, 0 Requirement Gaps"** — which we accepted as-is, since the fix (`SHIPPING_TIER_RATES.get(shipping_tier.upper(), 0.0)`) was already covered by an updated regression test (11/11 passing) verified in an isolated Daytona sandbox before the PR was opened.
-
-**Review history:**
-- PR opened via TrueForge's GitHub MCP connector with sandbox-verified fix and test results in the description.
-- Qodo automatically triggered a review within ~1 minute of PR creation.
-- Qodo posted a PR summary, an AI-generated logic diagram of the fix, and a full code review with zero findings.
-- PR merged after review with no outstanding findings to address.
-
-We also have a second Qodo-reviewed PR, [**#13 — Fix structured promo discount handling in checkout**](https://github.com/Sourjya-Saha/checkout-services/pull/13), following the identical review → merge flow, confirming this was our standard process rather than a one-time setup for submission.
-
 | PR Reference | Target Branch | Qodo AI Verdict | Qodo AI Findings | Daytona Verification Status | Action Taken |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **[PR #14](https://github.com/Sourjya-Saha/checkout-services/pull/14)** | `main` | **APPROVED** | **0 Bugs, 0 Rule Violations, 0 Gaps** | **Daytona Verified (11/11 Passed)** | Verified by Qodo AI & Merged |
@@ -355,6 +339,26 @@ We also have a second Qodo-reviewed PR, [**#13 — Fix structured promo discount
 | **[PR #9](https://github.com/Sourjya-Saha/checkout-services/pull/9)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (8/8 Passed)** | Verified by Qodo AI & Merged |
 | **[PR #3](https://github.com/Sourjya-Saha/checkout-services/pull/3)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (4/4 Passed)** | Verified by Qodo AI & Merged |
 | **[PR #2](https://github.com/Sourjya-Saha/checkout-services/pull/2)** | `main` | **APPROVED** | **0 High Findings** | **Daytona Verified (200 OK)** | Verified by Qodo AI & Merged |
+
+---
+
+## Qodo Code Review Evidence
+
+Every substantive change to `checkout-services` from the point Qodo was connected onward has gone through a GitHub pull request reviewed by Qodo before merge.
+
+**Representative merged PR:** [#14 — fix(checkout): add UK_EXPRESS shipping rate to prevent guest checkout KeyError](https://github.com/Sourjya-Saha/checkout-services/pull/14)
+
+**What Qodo surfaced:** Qodo reviewed the fix for a `KeyError: 'UK_EXPRESS'` regression (a new shipping option was added to the frontend without a matching backend rate entry). Its automated review checked for bugs, rule violations, and requirement gaps and returned a clean result — "0 Bugs, 0 Rule Violations, 0 Requirement Gaps" — which we accepted as-is, since the fix (`SHIPPING_TIER_RATES.get(shipping_tier.upper(), 0.0)`) was already covered by an updated regression test (11/11 passing) verified in an isolated Daytona sandbox before the PR was opened.
+
+**Review history:**
+- PR opened via TrueForge's GitHub MCP connector with sandbox-verified fix and test results in the description.
+- Qodo automatically triggered a review within ~1 minute of PR creation.
+- Qodo posted a PR summary, an AI-generated logic diagram of the fix, and a full code review with zero findings.
+- PR merged after review with no outstanding findings to address.
+
+We also have a second Qodo-reviewed PR, [#13 — Fix structured promo discount handling in checkout](https://github.com/Sourjya-Saha/checkout-services/pull/13), following the identical review -> merge flow, confirming this was our standard process rather than a one-time setup for submission.
+
+**Note on earlier PRs:** Early development iterations prior to connecting Qodo AI used CodeAnt for experimental linting checks. Once Qodo AI was integrated as our primary automated code review system, all subsequent pull requests (including PR #13 and PR #14) strictly followed the Qodo AI review and approval workflow before merging.
 
 ---
 
