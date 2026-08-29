@@ -112,6 +112,19 @@ async def _render_keep_alive_loop():
         await asyncio.sleep(300)  # Ping every 5 minutes
 
 
+@app.get("/", tags=["Monitoring"])
+async def root_index():
+    """Default root landing endpoint."""
+    return {
+        "status": "online",
+        "service": "SentinelOps Production Backend API",
+        "message": "SentinelOps backend running successfully",
+        "docs": "/docs",
+        "health": "/health",
+        "version": "1.4.0",
+    }
+
+
 @app.get("/health", tags=["Monitoring"])
 @app.get("/api/health", tags=["Monitoring"])
 @app.get("/ping", tags=["Monitoring"])

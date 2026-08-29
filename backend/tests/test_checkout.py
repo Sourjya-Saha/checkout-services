@@ -8,6 +8,15 @@ from app.models import CartItem
 client = TestClient(app, raise_server_exceptions=False)
 
 
+def test_root_index():
+    """Verify root / endpoint returns running successfully message."""
+    response = client.get("/")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "online"
+    assert "SentinelOps backend running successfully" in data["message"]
+
+
 def test_health_check():
     """Verify health endpoint returns 200 OK."""
     response = client.get("/health")
