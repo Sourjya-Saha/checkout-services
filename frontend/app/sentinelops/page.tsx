@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import Blurred404Background from "@/components/Blurred404Background";
@@ -34,7 +34,7 @@ interface IncidentState {
   root_cause?: string | null;
 }
 
-export default function DistortedBlackBoxSentinelOpsCommander() {
+function SentinelOpsCommanderInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const incidentQueryId = searchParams.get("incident");
@@ -885,5 +885,19 @@ export default function DistortedBlackBoxSentinelOpsCommander() {
         </footer>
       </div>
     </Blurred404Background>
+  );
+}
+
+export default function DistortedBlackBoxSentinelOpsCommander() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#000000] flex items-center justify-center font-mono text-[#ff3b30] text-sm tracking-wider">
+          INITIALIZING SENTINELOPS COMMANDER...
+        </div>
+      }
+    >
+      <SentinelOpsCommanderInner />
+    </Suspense>
   );
 }
