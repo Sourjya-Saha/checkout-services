@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   getStoredUser,
@@ -52,6 +52,17 @@ export default function CustomerOrdersPage() {
   const [authError, setAuthError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const apiBase = process.env.NEXT_PUBLIC_CHECKOUT_API_URL || "http://127.0.0.1:8000";
 
@@ -169,16 +180,12 @@ export default function CustomerOrdersPage() {
         {/* User Account Controls with DP & Hover Dropdown */}
         <div className="flex items-center gap-4">
           {user ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
-            >
+            <div ref={dropdownRef} className="relative">
               {/* User Avatar DP Pill */}
               <button
                 type="button"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs"
+                onClick={() => setIsDropdownOpen((prev) => !prev)}
+                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs cursor-pointer"
               >
                 <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold">
                   {user.name

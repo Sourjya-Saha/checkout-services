@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -158,6 +158,18 @@ export default function ProfessionalCheckoutPage() {
       setCustomerName("");
       setCustomerEmail("");
     }
+  }, []);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleAuthSubmit = async (e: React.FormEvent) => {
@@ -424,16 +436,12 @@ export default function ProfessionalCheckoutPage() {
         {/* User Account Controls with DP & Hover Dropdown */}
         <div className="flex items-center gap-4">
           {currentUser ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
-            >
+            <div ref={dropdownRef} className="relative">
               {/* User Avatar DP Pill */}
               <button
                 type="button"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs"
+                onClick={() => setIsDropdownOpen((prev) => !prev)}
+                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs cursor-pointer"
               >
                 <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold">
                   {userInitials}
