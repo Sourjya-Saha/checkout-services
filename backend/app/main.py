@@ -75,12 +75,56 @@ from app.auth import (
     _in_memory_users_by_email,
 )
 
+import asyncio
+import os
+import logging
+import httpx
+
+logger = logging.getLogger("sentinelops.keepalive")
+
+
+@app.on_event("startup")
+async def start_keep_alive_worker():
+    """
+    Launch automated background keep-alive ping loop on startup to keep Render free tier alive.
+    Runs every 5 minutes (300 seconds).
+    """
+    asyncio.create_task(_render_keep_alive_loop())
+
+
+async def _render_keep_alive_loop():
+    """
+    Periodic self-ping loop preventing Render 15-minute idle spin-down.
+    Reads RENDER_EXTERNAL_URL (injected by Render) or PUBLIC_API_URL.
+    """
+    await asyncio.sleep(45)  # Initial grace delay after boot
+    while True:
+        try:
+            target_url = os.getenv("RENDER_EXTERNAL_URL") or os.getenv("PUBLIC_API_URL")
+            if target_url:
+                clean_base = target_url.rstrip("/")
+                health_url = f"{clean_base}/health"
+                async with httpx.AsyncClient(timeout=15.0) as client:
+                    resp = await client.get(health_url)
+                    logger.info(f"[KeepAlive] Self-pinged {health_url} -> Status {resp.status_code}")
+        except Exception as e:
+            logger.debug(f"[KeepAlive] Self-ping status: {e}")
+        await asyncio.sleep(300)  # Ping every 5 minutes
+
+
 @app.get("/health", tags=["Monitoring"])
+@app.get("/api/health", tags=["Monitoring"])
+@app.get("/ping", tags=["Monitoring"])
 async def health_check():
-    """Health check endpoint and Supabase connectivity status."""
+    """Health check endpoint and Supabase connectivity status for uptime monitors and KeepAlive."""
     client = get_supabase_client()
     db_status = "connected" if client is not None else "unconfigured"
-    return {"status": "ok", "database": db_status}
+    return {
+        "status": "ok",
+        "database": db_status,
+        "timestamp": datetime.utcnow().isoformat(),
+        "keep_alive_interval": "300s",
+    }
 
 
 # ==========================================
