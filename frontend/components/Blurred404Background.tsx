@@ -39,14 +39,14 @@ export default function Blurred404Background({
         className={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden filter ${blurClasses} opacity-85 transform scale-105`}
       >
         {/* MOBILE & TABLET: TIGHT-KNIT CLUSTERED 404 */}
-        <div className="flex lg:hidden absolute top-[52%] sm:top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center -space-x-4 sm:-space-x-7 whitespace-nowrap">
-          <span className="font-anton text-red-600/90 text-[35vw] sm:text-[38vw] md:text-[36vw] leading-[0.72] tracking-[-0.05em] opacity-90">
+        <div className="flex lg:hidden absolute top-[52%] sm:top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center -space-x-4 sm:-space-x-7 whitespace-nowrap gap-3 sm:gap-6 md:gap-6">
+          <span className="font-anton text-red-600/90 text-[72vw] sm:text-[72vw] md:text-[72vw] blur-[4px] sm:blur-[7px] opacity-90">
             4
           </span>
-          <span className="font-anton text-[#dc2626] text-[42vw] sm:text-[45vw] md:text-[42vw] leading-[0.72] tracking-[-0.05em] z-10">
+          <span className="font-anton text-[#dc2626] text-[72vw] sm:text-[72vw] md:text-[72vw] z-10">
             0
           </span>
-          <span className="font-anton text-red-600/90 text-[35vw] sm:text-[38vw] md:text-[36vw] leading-[0.72] tracking-[-0.05em] opacity-90">
+          <span className="font-anton text-red-600/90 text-[72vw] sm:text-[72vw] md:text-[72vw] blur-[4px] sm:blur-[7px] opacity-90">
             4
           </span>
         </div>
