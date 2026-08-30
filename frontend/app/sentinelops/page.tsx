@@ -373,16 +373,19 @@ function SentinelOpsCommanderInner() {
         {/* ========================================================================= */}
         {/* TOP NAVIGATION BAR (SINGLE REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
         {/* ========================================================================= */}
-        <header className="animate-landing px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
+        {/* ========================================================================= */}
+        {/* COMIC TOP BAR */}
+        {/* ========================================================================= */}
+        <header className="animate-landing px-4 sm:px-12 py-4 sm:py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted White Background Patch for SENTINEL OPS */}
-            <Link href="/" className="group flex items-center gap-3">
+            <Link href="/" className="group flex items-center gap-2.5 sm:gap-3 flex-wrap">
               <div
                 className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
                 style={{ filter: "url(#comic-title-wobble)" }}
               >
-                <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-tight uppercase block">
+                <div className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
+                <span className="relative z-10 font-anton text-xl sm:text-3xl text-black px-2.5 sm:px-3.5 py-0.5 tracking-tight uppercase block">
                   SENTINEL OPS
                 </span>
               </div>
@@ -390,7 +393,7 @@ function SentinelOpsCommanderInner() {
               {/* Clean Comic SWARM HUD Tag */}
               <div className="relative inline-block rotate-[2deg]">
                 <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#000000]" />
-                <span className="relative z-10 font-anton text-sm text-white px-3 py-0.5 uppercase tracking-wider block">
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-2.5 sm:px-3 py-0.5 uppercase tracking-wider block">
                   SWARM HUD
                 </span>
               </div>
@@ -401,13 +404,13 @@ function SentinelOpsCommanderInner() {
           <div className="flex items-center">
             <Link
               href="/incidents"
-              className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform"
+              className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform w-full sm:w-auto text-center"
             >
               <div
-                className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
                 style={{ filter: "url(#comic-title-wobble)" }}
               />
-              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-1.5 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+              <span className="relative z-10 font-anton text-xs sm:text-base text-black group-hover:text-white px-3.5 sm:px-5 py-1.5 uppercase tracking-wide flex items-center justify-center gap-2 block transition-colors">
                 <span>POSTMORTEM REPORTS</span>
                 <span>→</span>
               </span>
@@ -418,11 +421,11 @@ function SentinelOpsCommanderInner() {
         {/* ========================================================================= */}
         {/* MAIN HUD CONTAINER */}
         {/* ========================================================================= */}
-        <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 pb-16 space-y-12 flex-1 w-full">
+        <main className="max-w-7xl mx-auto px-4 sm:px-8 md:px-12 pt-8 sm:pt-14 md:pt-20 pb-16 space-y-8 sm:space-y-12 flex-1 w-full">
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-1 relative p-8 sm:p-12 rotate-[-0.3deg]">
+          <div className="animate-landing-stagger-1 relative p-5 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
             <div
               className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
@@ -430,12 +433,12 @@ function SentinelOpsCommanderInner() {
             />
 
             {/* Content inside Hero Banner */}
-            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
-              <div className="space-y-6">
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 sm:gap-8">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Subtitle Badge */}
                 <div className="relative inline-block rotate-[0.5deg]">
                   <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
-                  <span className="relative z-10 font-anton text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                  <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-3 py-0.5 sm:px-3.5 sm:py-1 tracking-wider uppercase block">
                     01 // AUTONOMOUS INCIDENT INGESTION &amp; LIVE STREAM
                   </span>
                 </div>
@@ -443,21 +446,21 @@ function SentinelOpsCommanderInner() {
                 {/* Big Title: SENTINELOPS INCIDENT HUD */}
                 <div>
                   <div
-                    className="relative inline-block mt-1"
+                    className="relative inline-block mt-1 max-w-full"
                     style={{ filter: "url(#comic-title-wobble)" }}
                   >
-                    <div className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[6px_6px_0px_#dc2626]" />
-                    <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-tight uppercase px-4 py-1.5 leading-none block">
+                    <div className="absolute -inset-2 sm:-inset-4 bg-white border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0px_#dc2626] sm:shadow-[6px_6px_0px_#dc2626]" />
+                    <h1 className="relative z-10 font-anton text-2xl xs:text-3xl sm:text-5xl md:text-7xl text-black tracking-tight uppercase px-3 sm:px-4 py-1 sm:py-1.5 leading-none block break-words">
                       SENTINELOPS INCIDENT HUD
                     </h1>
                   </div>
                 </div>
 
                 {/* Specs Ribbon */}
-                <div className="pt-4">
+                <div className="pt-2 sm:pt-4">
                   <div className="relative inline-block rotate-[-1.5deg]">
-                    <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
-                    <p className="relative z-10 text-sm sm:text-base font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
+                    <div className="absolute -inset-1 sm:-inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
+                    <p className="relative z-10 text-xs sm:text-base font-anton text-zinc-100 px-3 sm:px-4 py-1 sm:py-1.5 flex items-center gap-2 sm:gap-3 flex-wrap tracking-wide uppercase">
                       <span className="text-red-500">TRUEFORGE AGENT RUNTIME</span>
                       <span className="text-zinc-500">•</span>
                       <span className="text-white">DAYTONA LINUX SANDBOX</span>
@@ -469,11 +472,11 @@ function SentinelOpsCommanderInner() {
               </div>
 
               {/* Status and Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-wrap">
                 {incidentId ? (
-                  <div className="relative rotate-[1deg]">
+                  <div className="relative rotate-[1deg] max-w-full">
                     <div className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                    <span className="relative z-10 font-anton text-sm text-black px-3.5 py-1.5 uppercase block">
+                    <span className="relative z-10 font-anton text-xs sm:text-sm text-black px-3 sm:px-3.5 py-1 sm:py-1.5 uppercase block truncate">
                       INCIDENT: {incidentId.slice(0, 16)}...
                     </span>
                   </div>
@@ -481,10 +484,10 @@ function SentinelOpsCommanderInner() {
                   <button
                     onClick={handleLaunchNewIncident}
                     disabled={isSpawning}
-                    className="relative group rotate-[-1deg] hover:rotate-0 transition-transform"
+                    className="relative group rotate-[-1deg] hover:rotate-0 transition-transform w-full sm:w-auto"
                   >
                     <div className="absolute -inset-1.5 bg-red-600 border-[3px] border-black shadow-[5px_5px_0px_#ffffff] group-hover:shadow-[7px_7px_0px_#ffffff]" />
-                    <span className="relative z-10 font-anton text-sm text-white px-6 py-3 uppercase tracking-wider block">
+                    <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-5 sm:px-6 py-2.5 sm:py-3 uppercase tracking-wider block text-center">
                       {isSpawning ? "SPAWNING SWARM..." : "LAUNCH INCIDENT SWARM →"}
                     </span>
                   </button>
@@ -493,7 +496,7 @@ function SentinelOpsCommanderInner() {
                 {incidentState?.status && (
                   <div className="relative rotate-[-1deg]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-black shadow-[3px_3px_0px_#dc2626]" />
-                    <span className="relative z-10 font-anton text-sm text-black px-3 py-1 uppercase block">
+                    <span className="relative z-10 font-anton text-xs sm:text-sm text-black px-3 py-1 uppercase block">
                       STATUS: {incidentState.status}
                     </span>
                   </div>
@@ -546,56 +549,56 @@ function SentinelOpsCommanderInner() {
 
           {/* Checkpoint A: Fix Approval */}
           {incidentState?.status === "awaiting_fix_approval" && (
-            <div className="relative p-8 space-y-6 rotate-[-0.4deg]">
+            <div className="relative p-5 sm:p-8 space-y-5 sm:space-y-6 rotate-[-0.4deg]">
               <div
                 className="absolute inset-0 bg-black/95 border-[3.5px] border-red-600 shadow-[9px_9px_0px_0px_#dc2626]"
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
 
-              <div className="relative z-10 space-y-6">
+              <div className="relative z-10 space-y-5 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="w-3.5 h-3.5 rounded-full bg-red-600 border-[2px] border-white animate-ping" />
-                    <div className="relative inline-block">
+                    <span className="w-3.5 h-3.5 rounded-full bg-red-600 border-[2px] border-white animate-ping flex-shrink-0" />
+                    <div className="relative inline-block max-w-full">
                       <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                      <h3 className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase">
+                      <h3 className="relative z-10 font-anton text-lg sm:text-2xl text-black px-3 sm:px-4 py-1 uppercase break-words">
                         CHECKPOINT A // APPROVAL TO DRAFT &amp; TEST FIX
                       </h3>
                     </div>
                   </div>
-                  <div className="relative rotate-[1.5deg]">
+                  <div className="relative rotate-[1.5deg] self-start sm:self-auto">
                     <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]" />
-                    <span className="relative z-10 font-anton text-sm text-white px-3 py-1 uppercase block tracking-wider">
+                    <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-2.5 sm:px-3 py-0.5 sm:py-1 uppercase block tracking-wider">
                       HITL GATE 1 OF 2
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2px] border-white/30">
+                <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-3.5 sm:p-4 border-[2px] border-white/30">
                   SentinelOps has verified the root-cause hypothesis. Explicit human approval is required before drafting code or running candidate patches in the Daytona sandbox.
                 </p>
 
                 {/* TARGET REPO / TARGET ERROR / ACTION (HIGH-LEGIBILITY WIDE TRACKING) */}
-                <div className="p-5 bg-white border-[3px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs sm:text-sm font-semibold space-y-2.5 leading-relaxed">
-                  <p className="tracking-wide">
+                <div className="p-4 sm:p-5 bg-white border-[3px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs sm:text-sm font-semibold space-y-2.5 leading-relaxed overflow-x-auto">
+                  <p className="tracking-wide break-words">
                     <strong className="text-red-600 font-bold tracking-wider uppercase font-mono mr-2">[TARGET REPO]</strong>
                     <span className="text-zinc-900 font-medium">Sourjya-Saha/checkout-services</span>
                   </p>
-                  <p className="tracking-wide">
+                  <p className="tracking-wide break-words">
                     <strong className="text-black font-bold tracking-wider uppercase font-mono mr-2">[TARGET ERROR]</strong>
-                    <span className="text-red-700 font-bold bg-red-50 px-1.5 py-0.5 border border-red-200">{incidentState.error_message || "Active production regression"}</span>
+                    <span className="text-red-700 font-bold bg-red-50 px-1.5 py-0.5 border border-red-200 inline-block break-all">{incidentState.error_message || "Active production regression"}</span>
                   </p>
-                  <p className="tracking-wide">
+                  <p className="tracking-wide break-words">
                     <strong className="text-zinc-800 font-bold tracking-wider uppercase font-mono mr-2">[ACTION]</strong>
                     <span className="text-zinc-800">Install dependencies, apply safe fallback in payment_processor.py, and run sandbox verification.</span>
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-4 pt-2">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2">
                   <button
                     onClick={() => handleApproveAction("approve")}
                     disabled={isApproving}
-                    className="px-7 py-3.5 bg-white hover:bg-zinc-200 text-black font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#dc2626] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all disabled:opacity-50"
+                    className="w-full sm:w-auto px-5 sm:px-7 py-3 sm:py-3.5 bg-white hover:bg-zinc-200 text-black font-anton text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#dc2626] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all disabled:opacity-50 text-center"
                   >
                     {isApproving && approvalDecision === "approve"
                       ? "TRANSMITTING APPROVAL..."
@@ -604,7 +607,7 @@ function SentinelOpsCommanderInner() {
                   <button
                     onClick={() => handleApproveAction("deny")}
                     disabled={isApproving}
-                    className="px-6 py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] transition-all"
+                    className="w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] transition-all text-center"
                   >
                     DENY
                   </button>
@@ -615,52 +618,52 @@ function SentinelOpsCommanderInner() {
 
           {/* Checkpoint B: Pull Request Approval */}
           {incidentState?.status === "awaiting_pr_approval" && (
-            <div className="relative p-8 space-y-6 rotate-[0.4deg]">
+            <div className="relative p-5 sm:p-8 space-y-5 sm:space-y-6 rotate-[0.4deg]">
               <div
                 className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
 
-              <div className="relative z-10 space-y-6">
+              <div className="relative z-10 space-y-5 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="w-3.5 h-3.5 rounded-full bg-white border-[2px] border-red-600 animate-ping" />
-                    <div className="relative inline-block">
+                    <span className="w-3.5 h-3.5 rounded-full bg-white border-[2px] border-red-600 animate-ping flex-shrink-0" />
+                    <div className="relative inline-block max-w-full">
                       <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                      <h3 className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase">
+                      <h3 className="relative z-10 font-anton text-lg sm:text-2xl text-black px-3 sm:px-4 py-1 uppercase break-words">
                         CHECKPOINT B // APPROVAL TO OPEN GITHUB PULL REQUEST
                       </h3>
                     </div>
                   </div>
-                  <div className="relative rotate-[-1.5deg]">
+                  <div className="relative rotate-[-1.5deg] self-start sm:self-auto">
                     <div className="absolute -inset-1 bg-white border-[2px] border-black shadow-[2px_2px_0px_#dc2626]" />
-                    <span className="relative z-10 font-anton text-sm text-black px-3 py-1 uppercase block tracking-wider">
+                    <span className="relative z-10 font-anton text-xs sm:text-sm text-black px-2.5 sm:px-3 py-0.5 sm:py-1 uppercase block tracking-wider">
                       HITL GATE 2 OF 2
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-4 border-[2px] border-white/30">
+                <p className="text-xs sm:text-sm font-bold text-zinc-100 leading-relaxed bg-zinc-900/90 p-3.5 sm:p-4 border-[2px] border-white/30">
                   Candidate patch successfully verified in the Daytona sandbox with all test suites passing. Explicit human approval is required before opening a Pull Request on GitHub.
                 </p>
 
                 {/* TARGET REPO / DAYTONA PROOF (WIDE TRACKING) */}
-                <div className="p-5 bg-white border-[3px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs sm:text-sm font-semibold space-y-2.5 leading-relaxed">
-                  <p className="tracking-wide">
+                <div className="p-4 sm:p-5 bg-white border-[3px] border-black shadow-[5px_5px_0px_#dc2626] text-black font-mono text-xs sm:text-sm font-semibold space-y-2.5 leading-relaxed overflow-x-auto">
+                  <p className="tracking-wide break-words">
                     <strong className="text-red-600 font-bold tracking-wider uppercase font-mono mr-2">[TARGET REPO]</strong>
                     <span className="text-zinc-900 font-medium">Sourjya-Saha/checkout-services</span>
                   </p>
-                  <p className="tracking-wide">
+                  <p className="tracking-wide break-words">
                     <strong className="text-black font-bold tracking-wider uppercase font-mono mr-2">[DAYTONA PROOF]</strong>
-                    <span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">100% verification checks passed in isolated Linux sandbox.</span>
+                    <span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 border border-emerald-200 inline-block">100% verification checks passed in isolated Linux sandbox.</span>
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-4 pt-2">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2">
                   <button
                     onClick={() => handleApproveAction("approve")}
                     disabled={isApproving}
-                    className="px-7 py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all disabled:opacity-50"
+                    className="w-full sm:w-auto px-5 sm:px-7 py-3 sm:py-3.5 bg-red-600 hover:bg-red-500 text-white font-anton text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all disabled:opacity-50 text-center"
                   >
                     {isApproving && approvalDecision === "approve"
                       ? "OPENING GITHUB PR..."
@@ -669,7 +672,7 @@ function SentinelOpsCommanderInner() {
                   <button
                     onClick={() => handleApproveAction("deny")}
                     disabled={isApproving}
-                    className="px-6 py-3.5 bg-white hover:bg-zinc-200 text-black font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] transition-all"
+                    className="w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 bg-white hover:bg-zinc-200 text-black font-anton text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] transition-all text-center"
                   >
                     DENY
                   </button>
@@ -680,21 +683,21 @@ function SentinelOpsCommanderInner() {
 
           {/* Resolved Banner */}
           {incidentState?.status === "resolved" && (
-            <div className="relative p-8 space-y-4">
+            <div className="relative p-5 sm:p-8 space-y-4">
               <div
                 className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
                 style={{ filter: "url(#comic-box-wobble)" }}
               />
 
               <div className="relative z-10 space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div className="relative inline-block">
                     <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                    <h3 className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-4 py-1 uppercase">
+                    <h3 className="relative z-10 font-anton text-xl sm:text-3xl text-black px-3.5 sm:px-4 py-1 uppercase">
                       INCIDENT REMEDIATED &amp; RESOLVED
                     </h3>
                   </div>
-                  <span className="px-4 py-1.5 bg-red-600 text-white font-anton text-sm uppercase border-[2px] border-black tracking-wider">
+                  <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-red-600 text-white font-anton text-xs sm:text-sm uppercase border-[2px] border-black tracking-wider">
                     STATUS: RESOLVED [OK]
                   </span>
                 </div>
@@ -706,7 +709,7 @@ function SentinelOpsCommanderInner() {
                     href={incidentState.pr_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-block px-6 py-3.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all"
+                    className="inline-block w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 bg-white hover:bg-red-600 hover:text-white text-black font-anton text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#ffffff] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0px_#000000] transition-all text-center"
                   >
                     VIEW PULL REQUEST ON GITHUB →
                   </a>
@@ -718,23 +721,23 @@ function SentinelOpsCommanderInner() {
           {/* ========================================================================= */}
           {/* 2. PARALLEL MULTI-AGENT SWARM (WIDE TRACKING) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-2 space-y-5">
+          <div className="animate-landing-stagger-2 space-y-4 sm:space-y-5">
             {/* Section Tag */}
             <div className="relative inline-block rotate-[-0.8deg]">
-              <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
-              <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase block">
+              <div className="absolute -inset-1 sm:-inset-1.5 bg-white border-[2.5px] sm:border-[3px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
+              <span className="relative z-10 font-anton text-lg sm:text-2xl text-black px-3 sm:px-4 py-1 uppercase block">
                 02 // PARALLEL MULTI-AGENT SWARM
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {subagents.map((sub, idx) => {
                 const rot = idx === 0 ? "rotate-[-0.5deg]" : idx === 1 ? "rotate-[0.5deg]" : "rotate-[-0.3deg]";
 
                 return (
                   <div
                     key={sub.id}
-                    className={`relative p-6 flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1 ${rot}`}
+                    className={`relative p-4 sm:p-6 flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1 ${rot}`}
                   >
                     {/* Distorted Black Box Background Layer */}
                     <div
@@ -748,13 +751,13 @@ function SentinelOpsCommanderInner() {
                         {/* Subagent Name */}
                         <div className="relative inline-block">
                           <div className="absolute -inset-1 bg-white border-[2px] border-black" />
-                          <span className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 tracking-wide block">
+                          <span className="relative z-10 font-anton text-xs sm:text-sm text-black px-2 sm:px-2.5 py-0.5 tracking-wide block">
                             {sub.name}
                           </span>
                         </div>
 
                         <span
-                          className={`text-sm font-anton uppercase px-3 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] tracking-wider ${
+                          className={`text-xs sm:text-sm font-anton uppercase px-2.5 sm:px-3 py-0.5 border-[2px] border-black shadow-[2px_2px_0px_#000] tracking-wider ${
                             sub.status === "completed"
                               ? "bg-white text-black"
                               : sub.status === "running"
@@ -766,11 +769,11 @@ function SentinelOpsCommanderInner() {
                         </span>
                       </div>
 
-                      <h4 className="font-anton text-lg text-red-500 uppercase tracking-wide leading-tight">{sub.role}</h4>
-                      <p className="text-xs font-mono font-bold text-zinc-300 tracking-wider">{sub.metric}</p>
+                      <h4 className="font-anton text-base sm:text-lg text-red-500 uppercase tracking-wide leading-tight">{sub.role}</h4>
+                      <p className="text-xs font-mono font-bold text-zinc-300 tracking-wider break-words">{sub.metric}</p>
                     </div>
 
-                    <div className="relative z-10 p-3.5 bg-zinc-950 border-[1.5px] border-white/30 font-mono text-xs text-zinc-200 min-h-[85px] leading-relaxed tracking-wide">
+                    <div className="relative z-10 p-3 sm:p-3.5 bg-zinc-950 border-[1.5px] border-white/30 font-mono text-xs text-zinc-200 min-h-[75px] sm:min-h-[85px] leading-relaxed tracking-wide break-words">
                       {sub.telemetry}
                     </div>
                   </div>
@@ -782,17 +785,17 @@ function SentinelOpsCommanderInner() {
           {/* ========================================================================= */}
           {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (FULL HISTORY & THIN BLACK SCROLLBAR) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-3 space-y-5">
+          <div className="animate-landing-stagger-3 space-y-4 sm:space-y-5">
             {/* Section Tag */}
             <div className="relative inline-block rotate-[0.8deg]">
-              <div className="absolute -inset-1.5 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
-              <span className="relative z-10 font-anton text-xl sm:text-2xl text-black px-4 py-1 uppercase block">
+              <div className="absolute -inset-1 sm:-inset-1.5 bg-white border-[2.5px] sm:border-[3px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
+              <span className="relative z-10 font-anton text-lg sm:text-2xl text-black px-3 sm:px-4 py-1 uppercase block">
                 03 // LIVE TRUEFORGE SSE STREAM &amp; DAYTONA TERMINAL
               </span>
             </div>
 
             {/* Distorted Terminal Box */}
-            <div className="relative p-7 font-mono text-xs space-y-4 rotate-[-0.2deg]">
+            <div className="relative p-4 sm:p-7 font-mono text-xs space-y-4 rotate-[-0.2deg]">
               {/* Distorted Black Box Background Layer */}
               <div
                 className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
@@ -801,32 +804,32 @@ function SentinelOpsCommanderInner() {
 
               {/* Terminal Content */}
               <div className="relative z-10 space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-[2px] border-white/20 text-[11px] gap-2.5">
                   {/* STREAM In White Box with Red Border */}
-                  <div className="relative inline-block rotate-[-0.5deg]">
+                  <div className="relative inline-block rotate-[-0.5deg] max-w-full">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-sm px-3 py-1 block tracking-wide">
+                    <span className="relative z-10 text-black font-anton text-xs sm:text-sm px-2.5 sm:px-3 py-0.5 sm:py-1 block tracking-wide truncate">
                       STREAM: {incidentId ? `/api/incidents/${incidentId}/stream` : "DISCONNECTED"}
                     </span>
                   </div>
 
                   {/* SAVED AGENT: sentinelops In White Box with Red Border */}
-                  <div className="relative inline-block rotate-[0.5deg]">
+                  <div className="relative inline-block rotate-[0.5deg] self-start sm:self-auto">
                     <div className="absolute -inset-1 bg-white border-[2px] border-red-600 shadow-[2px_2px_0px_#000000]" />
-                    <span className="relative z-10 text-black font-anton text-sm px-3 py-1 uppercase block tracking-wide">
+                    <span className="relative z-10 text-black font-anton text-xs sm:text-sm px-2.5 sm:px-3 py-0.5 sm:py-1 uppercase block tracking-wide">
                       AGENT: sentinelops
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-2 min-h-[200px] max-h-[360px] overflow-y-auto pr-2">
+                <div className="space-y-2 min-h-[180px] sm:min-h-[200px] max-h-[360px] overflow-y-auto pr-2">
                   {terminalLogs.length === 0 ? (
                     <p className="text-zinc-500 font-mono text-xs">// Waiting for incident trigger on checkout-service...</p>
                   ) : (
                     terminalLogs.map((log, idx) => (
                       <p
                         key={idx}
-                        className={
+                        className={`break-words ${
                           log.includes("[!]") || log.includes("TypeError") || log.includes("KeyError")
                             ? "text-red-400 font-bold"
                             : log.includes("[OK]") || log.includes("PASS") || log.includes("Resolved")
@@ -834,7 +837,7 @@ function SentinelOpsCommanderInner() {
                             : log.includes("[+]") || log.includes("[*]")
                             ? "text-zinc-200"
                             : "text-zinc-400"
-                        }
+                        }`}
                       >
                         {log}
                       </p>
@@ -848,7 +851,7 @@ function SentinelOpsCommanderInner() {
         </main>
 
         {/* Comic Footer */}
-        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-5 sm:py-6 px-4 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {/* Footer SENTINEL OPS Distorted Badge */}
@@ -858,7 +861,7 @@ function SentinelOpsCommanderInner() {
                   style={{ filter: "url(#comic-title-wobble)" }}
                 >
                   <div className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626]" />
-                  <span className="relative z-10 font-anton text-base sm:text-lg text-black px-2.5 py-0.5 tracking-tight uppercase block">
+                  <span className="relative z-10 font-anton text-sm sm:text-lg text-black px-2.5 py-0.5 tracking-tight uppercase block">
                     SENTINEL OPS
                   </span>
                 </div>
@@ -866,16 +869,16 @@ function SentinelOpsCommanderInner() {
             </div>
 
             {/* Footer POSTMORTEM REPORTS Button */}
-            <div>
+            <div className="w-full sm:w-auto text-center">
               <Link
                 href="/incidents"
-                className="group relative inline-block rotate-[-1deg] hover:rotate-0 transition-transform"
+                className="group relative inline-block rotate-[-1deg] hover:rotate-0 transition-transform w-full sm:w-auto"
               >
                 <div
                   className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
                   style={{ filter: "url(#comic-title-wobble)" }}
                 />
-                <span className="relative z-10 font-anton text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-black group-hover:text-white px-3.5 sm:px-4 py-1 uppercase tracking-wide flex items-center justify-center gap-2 block transition-colors">
                   <span>POSTMORTEM REPORTS LEDGER</span>
                   <span>→</span>
                 </span>

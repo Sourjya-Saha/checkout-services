@@ -416,14 +416,14 @@ export default function ProfessionalCheckoutPage() {
       {/* ========================================================================= */}
       {/* TOP NAVIGATION */}
       {/* ========================================================================= */}
-      <nav className="animate-landing sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-8">
+      <nav className="animate-landing sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-4 sm:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-4 sm:gap-8">
           <Link
             href="/"
-            className="text-lg font-['EB_Garamond',serif] font-normal tracking-[-0.02em] text-[#0c0a09] flex items-center gap-2 group"
+            className="text-base sm:text-lg font-['EB_Garamond',serif] font-normal tracking-[-0.02em] text-[#0c0a09] flex items-center gap-2 group"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-[#292524] inline-block transition-transform group-hover:scale-125" />
-            <span className="font-['EB_Garamond',serif] text-xl text-[#0c0a09]">SentinelOps Store</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#292524] inline-block transition-transform group-hover:scale-125 flex-shrink-0" />
+            <span className="font-['EB_Garamond',serif] text-lg sm:text-xl text-[#0c0a09] whitespace-nowrap">SentinelOps Store</span>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm text-[#777169]">
             <span className="text-[#0c0a09] font-medium">Store & Checkout</span>
@@ -434,19 +434,19 @@ export default function ProfessionalCheckoutPage() {
         </div>
 
         {/* User Account Controls with DP & Hover Dropdown */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {currentUser ? (
             <div ref={dropdownRef} className="relative">
               {/* User Avatar DP Pill */}
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs cursor-pointer"
+                className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold">
+                <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">
                   {userInitials}
                 </div>
-                <span className="text-xs font-medium text-[#0c0a09] hidden sm:inline">
+                <span className="text-xs font-medium text-[#0c0a09] hidden sm:inline max-w-[120px] truncate">
                   {currentUser.name}
                 </span>
                 <svg
@@ -497,7 +497,7 @@ export default function ProfessionalCheckoutPage() {
                 setAuthMode("login");
                 setShowAuthModal(true);
               }}
-              className="px-4 py-1.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
+              className="px-3.5 sm:px-4 py-1.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
             >
               Sign In
             </button>
@@ -508,14 +508,13 @@ export default function ProfessionalCheckoutPage() {
       {/* ========================================================================= */}
       {/* MAIN CHECKOUT BODY */}
       {/* ========================================================================= */}
-      <main className="animate-landing-stagger-1 max-w-[1240px] mx-auto px-6 sm:px-10 py-12 sm:py-16">
+      <main className="animate-landing-stagger-1 max-w-[1240px] mx-auto px-4 sm:px-8 lg:px-10 py-8 sm:py-16">
         {/* Editorial Header */}
-        <header className="mb-12 text-center max-w-2xl mx-auto space-y-3">
-        
-          <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09] leading-[1.1]">
+        <header className="mb-8 sm:mb-12 text-center max-w-2xl mx-auto space-y-2 sm:space-y-3">
+          <h1 className="text-3xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09] leading-[1.15]">
             Review & Complete Your Order
           </h1>
-          <p className="text-sm sm:text-base text-[#777169] font-normal leading-relaxed">
+          <p className="text-xs sm:text-base text-[#777169] font-normal leading-relaxed px-2">
             Enter your destination, select fulfillment options, and review your cart.
           </p>
         </header>
@@ -1206,17 +1205,17 @@ export default function ProfessionalCheckoutPage() {
       </main>
 
       {/* ========================================================================= */}
-      {/* AUTHENTICATION MODAL (Login & Signup Dialog) */}
+      {/* AUTHENTICATION MODAL (SIGN IN / REGISTER) */}
       {/* ========================================================================= */}
       {showAuthModal && (
         <div className="fixed inset-0 bg-[#0c0a09]/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#ffffff] rounded-2xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-[#e7e5e4] animate-in fade-in zoom-in duration-150">
+          <div className="bg-[#ffffff] rounded-2xl max-w-md w-full p-5 sm:p-8 space-y-5 shadow-2xl border border-[#e7e5e4] max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-150">
             <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-3">
               <div>
                 <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
                   {authMode === "login" ? "Account Access" : "Create Account"}
                 </span>
-                <h3 className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+                <h3 className="text-xl sm:text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
                   {authMode === "login" ? "Sign in to your account" : "Register customer account"}
                 </h3>
               </div>
@@ -1241,21 +1240,21 @@ export default function ProfessionalCheckoutPage() {
                     <label className="block font-medium text-[#4e4e4e]">Full Name</label>
                     <input
                       type="text"
+                      required
                       value={authName}
                       onChange={(e) => setAuthName(e.target.value)}
                       placeholder="Jane Doe"
-                      required
-                      className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                      className="w-full px-3.5 py-2 rounded-lg border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-colors"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="block font-medium text-[#4e4e4e]">Default Delivery Address</label>
+                    <label className="block font-medium text-[#4e4e4e]">Shipping Address</label>
                     <input
                       type="text"
                       value={authAddress}
                       onChange={(e) => setAuthAddress(e.target.value)}
-                      placeholder="500 Howard St, San Francisco, CA"
-                      className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                      placeholder="123 Luxury Lane, London"
+                      className="w-full px-3.5 py-2 rounded-lg border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-colors"
                     />
                   </div>
                 </>
@@ -1265,11 +1264,11 @@ export default function ProfessionalCheckoutPage() {
                 <label className="block font-medium text-[#4e4e4e]">Email Address</label>
                 <input
                   type="email"
+                  required
                   value={authEmail}
                   onChange={(e) => setAuthEmail(e.target.value)}
-                  placeholder="jane@company.com"
-                  required
-                  className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                  placeholder="jane@example.com"
+                  className="w-full px-3.5 py-2 rounded-lg border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-colors"
                 />
               </div>
 
@@ -1278,25 +1277,23 @@ export default function ProfessionalCheckoutPage() {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
+                    required
                     value={authPassword}
                     onChange={(e) => setAuthPassword(e.target.value)}
                     placeholder="••••••••"
-                    required
-                    minLength={6}
-                    className="w-full pl-3 pr-9 py-2 rounded-lg bg-[#ffffff] border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09]"
+                    className="w-full px-3.5 py-2 pr-9 rounded-lg border border-[#d6d3d1] text-xs text-[#0c0a09] focus:outline-none focus:border-[#0c0a09] transition-colors"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#777169] hover:text-[#0c0a09] transition-colors p-1"
-                    title={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#a8a29e] hover:text-[#0c0a09]"
                   >
                     {showPassword ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                       </svg>
                     ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
@@ -1358,10 +1355,10 @@ export default function ProfessionalCheckoutPage() {
       {/* ========================================================================= */}
       {showIncidentModal && errorState && (
         <div className="fixed inset-0 bg-[#0c0a09]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#ffffff] rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-[#e7e5e4] animate-in fade-in zoom-in duration-200">
+          <div className="bg-[#ffffff] rounded-2xl max-w-lg w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl border border-[#e7e5e4] max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-4">
               <div className="flex items-center gap-2 text-[#dc2626] font-semibold text-xs uppercase tracking-[0.96px]">
-                <span className="w-2 h-2 rounded-full bg-[#dc2626] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#dc2626] animate-pulse flex-shrink-0" />
                 Service Exception Captured
               </div>
               <button
@@ -1373,15 +1370,15 @@ export default function ProfessionalCheckoutPage() {
             </div>
 
             <div className="space-y-3 text-sm">
-              <h3 className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+              <h3 className="text-xl sm:text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
                 500 Internal Server Error
               </h3>
               <p className="text-[#777169] text-xs leading-relaxed">
                 An unhandled runtime error occurred on /checkout.
               </p>
 
-              <div className="p-3.5 rounded-xl bg-[#fafafa] border border-[#e7e5e4] space-y-1 font-mono text-xs">
-                <div className="text-[#dc2626] font-semibold">
+              <div className="p-3.5 rounded-xl bg-[#fafafa] border border-[#e7e5e4] space-y-1 font-mono text-xs overflow-x-auto">
+                <div className="text-[#dc2626] font-semibold break-all">
                   {errorState.errorType}: {errorState.message}
                 </div>
                 <div className="text-[11px] text-[#777169] truncate">
@@ -1400,7 +1397,7 @@ export default function ProfessionalCheckoutPage() {
               </button>
               <button
                 onClick={() => setShowIncidentModal(false)}
-                className="py-2.5 px-5 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all"
+                className="py-2.5 px-5 rounded-full bg-transparent border border-[#d6d3d1] text-[#0c0a09] text-xs font-medium hover:bg-[#f0efed] transition-all text-center"
               >
                 Dismiss
               </button>

@@ -160,16 +160,16 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {/* TOP NAVIGATION */}
       {/* ========================================================================= */}
-      <nav className="animate-landing sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-6 sm:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-8">
+      <nav className="animate-landing sticky top-0 z-40 bg-[#f5f5f5]/85 backdrop-blur-md border-b border-[#e7e5e4] h-16 px-4 sm:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-4 sm:gap-8">
           <Link
-            href="/checkout"
-            className="text-lg font-['EB_Garamond',serif] font-normal tracking-[-0.02em] text-[#0c0a09] flex items-center gap-2 group"
+            href="/"
+            className="text-base sm:text-lg font-['EB_Garamond',serif] font-normal tracking-[-0.02em] text-[#0c0a09] flex items-center gap-2 group"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-[#292524] inline-block transition-transform group-hover:scale-125" />
-            <span className="font-['EB_Garamond',serif] text-xl text-[#0c0a09]">SentinelOps Store</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#292524] inline-block transition-transform group-hover:scale-125 flex-shrink-0" />
+            <span className="font-['EB_Garamond',serif] text-lg sm:text-xl text-[#0c0a09] whitespace-nowrap">SentinelOps Store</span>
           </Link>
-          <div className="flex items-center gap-6 text-sm text-[#777169]">
+          <div className="hidden md:flex items-center gap-6 text-sm text-[#777169]">
             <Link href="/checkout" className="hover:text-[#0c0a09] transition-colors">
               Store & Checkout
             </Link>
@@ -178,16 +178,16 @@ export default function CustomerOrdersPage() {
         </div>
 
         {/* User Account Controls with DP & Hover Dropdown */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <div ref={dropdownRef} className="relative">
               {/* User Avatar DP Pill */}
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs cursor-pointer"
+                className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-[#ffffff] border border-[#e7e5e4] hover:border-[#d6d3d1] transition-all shadow-xs cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold">
+                <div className="w-7 h-7 rounded-full bg-[#292524] text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">
                   {user.name
                     ? user.name
                         .split(" ")
@@ -197,7 +197,7 @@ export default function CustomerOrdersPage() {
                         .slice(0, 2)
                     : "U"}
                 </div>
-                <span className="text-xs font-medium text-[#0c0a09] hidden sm:inline">
+                <span className="text-xs font-medium text-[#0c0a09] hidden sm:inline max-w-[120px] truncate">
                   {user.name}
                 </span>
                 <svg
@@ -251,7 +251,7 @@ export default function CustomerOrdersPage() {
                 setAuthMode("login");
                 setShowAuthModal(true);
               }}
-              className="px-4 py-1.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
+              className="px-3.5 sm:px-4 py-1.5 rounded-full bg-[#292524] hover:bg-[#0c0a09] text-white text-xs font-medium transition-all shadow-xs"
             >
               Sign In
             </button>
@@ -262,17 +262,17 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {/* MAIN ORDERS CONTENT */}
       {/* ========================================================================= */}
-      <main className="animate-landing-stagger-1 max-w-[1100px] mx-auto px-6 sm:px-10 py-12 sm:py-16 space-y-8">
+      <main className="animate-landing-stagger-1 max-w-[1100px] mx-auto px-4 sm:px-8 lg:px-10 py-8 sm:py-16 space-y-6 sm:space-y-8">
         {/* Header */}
-        <header className="text-center max-w-xl mx-auto space-y-3">
+        <header className="text-center max-w-xl mx-auto space-y-2 sm:space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0efed] text-[12px] font-semibold tracking-[0.96px] uppercase text-[#0c0a09]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#292524]" />
             {user ? "Your Order History" : "Customer Orders"}
           </div>
-          <h1 className="text-4xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09]">
+          <h1 className="text-3xl sm:text-5xl font-['EB_Garamond',serif] font-light tracking-[-0.03em] text-[#0c0a09]">
             Purchases & Invoices
           </h1>
-          <p className="text-sm text-[#777169] leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#777169] leading-relaxed px-2">
             {user
               ? `Displaying verified purchases recorded for ${user.name} (${user.email}).`
               : "Sign in with your email and password to access your personalized order history and invoice receipts."}
@@ -533,13 +533,13 @@ export default function CustomerOrdersPage() {
       {/* ========================================================================= */}
       {showAuthModal && (
         <div className="fixed inset-0 bg-[#0c0a09]/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#ffffff] rounded-2xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-[#e7e5e4] animate-in fade-in zoom-in duration-150">
+          <div className="bg-[#ffffff] rounded-2xl max-w-md w-full p-5 sm:p-8 space-y-5 shadow-2xl border border-[#e7e5e4] max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-150">
             <div className="flex items-center justify-between border-b border-[#e7e5e4] pb-3">
               <div>
                 <span className="text-[11px] font-semibold uppercase tracking-[0.96px] text-[#777169]">
                   {authMode === "login" ? "Account Access" : "Create Account"}
                 </span>
-                <h3 className="text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
+                <h3 className="text-xl sm:text-2xl font-['EB_Garamond',serif] font-light text-[#0c0a09]">
                   {authMode === "login" ? "Sign in to your account" : "Register customer account"}
                 </h3>
               </div>

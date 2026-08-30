@@ -38,10 +38,23 @@ export default function Blurred404Background({
         aria-hidden="true"
         className={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden filter ${blurClasses} opacity-85 transform scale-105`}
       >
-        {/* GIANT 404 NUMBERS (ANTON FONT) */}
-        <div className="absolute inset-0 flex items-center justify-between overflow-hidden">
+        {/* MOBILE & TABLET: TIGHT-KNIT CLUSTERED 404 */}
+        <div className="flex lg:hidden absolute top-[52%] sm:top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center -space-x-4 sm:-space-x-7 whitespace-nowrap">
+          <span className="font-anton text-red-600/90 text-[35vw] sm:text-[38vw] md:text-[36vw] leading-[0.72] tracking-[-0.05em] opacity-90">
+            4
+          </span>
+          <span className="font-anton text-[#dc2626] text-[42vw] sm:text-[45vw] md:text-[42vw] leading-[0.72] tracking-[-0.05em] z-10">
+            0
+          </span>
+          <span className="font-anton text-red-600/90 text-[35vw] sm:text-[38vw] md:text-[36vw] leading-[0.72] tracking-[-0.05em] opacity-90">
+            4
+          </span>
+        </div>
+
+        {/* DESKTOP: FULL-WIDTH CINEMATIC 404 WITH CRISP 0 AND BLURRED 4s */}
+        <div className="hidden lg:flex absolute inset-0 items-center justify-between overflow-hidden">
           {/* LEFT 4 */}
-          <div className="absolute top-[54%] left-0 -translate-y-1/2 -translate-x-[4%] sm:-translate-x-[2%] whitespace-nowrap">
+          <div className="absolute top-[54%] left-0 -translate-y-1/2 -translate-x-[2%] whitespace-nowrap">
             <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em]">
               4
             </span>
@@ -55,7 +68,7 @@ export default function Blurred404Background({
           </div>
 
           {/* RIGHT 4 */}
-          <div className="absolute top-[54%] right-0 -translate-y-1/2 translate-x-[4%] sm:translate-x-[2%] whitespace-nowrap">
+          <div className="absolute top-[54%] right-0 -translate-y-1/2 translate-x-[2%] whitespace-nowrap">
             <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em]">
               4
             </span>
@@ -64,9 +77,9 @@ export default function Blurred404Background({
 
         {/* DENSE SILK & COBWEB WAVY FILAMENT MESH */}
         <svg
-          className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-95 mix-blend-screen"
+          className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-85 sm:opacity-95 mix-blend-screen"
           viewBox="0 0 1440 900"
-          preserveAspectRatio="none"
+          preserveAspectRatio="xMidYMid slice"
         >
           <defs>
             <filter id="silkFlowBg" x="-20%" y="-20%" width="140%" height="140%">

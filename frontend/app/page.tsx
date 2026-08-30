@@ -9,7 +9,7 @@ export default function Exact404SentinelOpsLanding() {
   const [hoverBottomLeft, setHoverBottomLeft] = useState<boolean>(false);
 
   return (
-    <main className="relative w-screen h-screen min-h-screen bg-[#070b0b] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-8 sm:p-14">
+    <main className="relative w-full min-h-[100dvh] h-full sm:h-screen bg-[#070b0b] text-white selection:bg-red-600 selection:text-white font-epic antialiased overflow-hidden select-none flex flex-col justify-between p-4 sm:p-8 md:p-14">
       {/* ========================================================================= */}
       {/* 1. ANALOGUE FILM GRAIN NOISE OVERLAY */}
       {/* ========================================================================= */}
@@ -21,28 +21,44 @@ export default function Exact404SentinelOpsLanding() {
       />
 
       {/* ========================================================================= */}
-      {/* 2. EXACT GIANT 404 BACKGROUND (ANTON FONT): BLURRED SIDES + CRISP 0 */}
+      {/* 2. EXACT GIANT 404 BACKGROUND (ANTON FONT): TIGHT-KNIT ON MOBILE, WIDE ON DESKTOP */}
       {/* ========================================================================= */}
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 animate-entrance-bg">
-        {/* LEFT 4 */}
-        <div className="absolute top-[54%] left-0 -translate-y-1/2 -translate-x-[4%] sm:-translate-x-[2%] whitespace-nowrap">
-          <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
+        {/* MOBILE & TABLET: TIGHT-KNIT CLUSTERED 404 */}
+        <div className="flex lg:hidden absolute top-[52%] sm:top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center -space-x-4 sm:-space-x-7 whitespace-nowrap gap-3 sm:gap-6 md:gap-6">
+          <span className="font-anton text-red-600/90 text-[72vw] sm:text-[72vw] md:text-[72vw] blur-[4px] sm:blur-[7px] opacity-90">
             4
           </span>
-        </div>
-
-        {/* CENTER 0 */}
-        <div className="absolute top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
-          <span className="font-anton text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
+          <span className="font-anton text-[#dc2626] text-[72vw] sm:text-[72vw] md:text-[72vw]  z-10">
             0
           </span>
-        </div>
-
-        {/* RIGHT 4 */}
-        <div className="absolute top-[54%] right-0 -translate-y-1/2 translate-x-[4%] sm:translate-x-[2%] whitespace-nowrap">
-          <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[14px] sm:blur-[10px] opacity-95">
+          <span className="font-anton text-red-600/90 text-[72vw] sm:text-[72vw] md:text-[72vw]  blur-[4px] sm:blur-[7px] opacity-90">
             4
           </span>
+        </div>
+
+        {/* DESKTOP: FULL-WIDTH CINEMATIC 404 WITH CRISP 0 AND BLURRED 4s */}
+        <div className="hidden lg:flex absolute inset-0 items-center justify-between overflow-hidden">
+          {/* LEFT 4 */}
+          <div className="absolute top-[54%] left-0 -translate-y-1/2 -translate-x-[2%] whitespace-nowrap">
+            <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[10px] opacity-95">
+              4
+            </span>
+          </div>
+
+          {/* CENTER 0 */}
+          <div className="absolute top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap">
+            <span className="font-anton text-[#dc2626] text-[136vh] leading-[0.72] tracking-[-0.04em]">
+              0
+            </span>
+          </div>
+
+          {/* RIGHT 4 */}
+          <div className="absolute top-[54%] right-0 -translate-y-1/2 translate-x-[2%] whitespace-nowrap">
+            <span className="font-anton text-red-600/90 text-[125vh] leading-[0.72] tracking-[-0.04em] blur-[10px] opacity-95">
+              4
+            </span>
+          </div>
         </div>
       </div>
 
@@ -51,9 +67,9 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       <svg
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-90 mix-blend-screen"
+        className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-visible opacity-85 sm:opacity-90 mix-blend-screen"
         viewBox="0 0 1440 900"
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid slice"
       >
         <defs>
           <filter id="silkFlow" x="-20%" y="-20%" width="140%" height="140%">
@@ -104,17 +120,17 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       {/* 4. TOP ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex justify-between items-start font-mono text-xs text-zinc-200 leading-tight">
+      <div className="relative z-50 flex justify-between items-start font-mono text-[10px] sm:text-xs text-zinc-200 leading-tight gap-2">
         {/* Top-Left Hand-Drawn Wobbly Chalk Loop */}
         <Link
           href="/sentinelops"
           onMouseEnter={() => setHoverTopLeft(true)}
           onMouseLeave={() => setHoverTopLeft(false)}
-          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tl"
+          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tl max-w-[48%] sm:max-w-none"
         >
           {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
-            className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
+            className="absolute -inset-2 sm:-inset-3 w-[calc(100%+16px)] sm:w-[calc(100%+24px)] h-[calc(100%+16px)] sm:h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 160 70"
             preserveAspectRatio="none"
           >
@@ -128,7 +144,7 @@ export default function Exact404SentinelOpsLanding() {
             />
           </svg>
 
-          <div className="relative z-10 p-2.5">
+          <div className="relative z-10 p-1.5 sm:p-2.5">
             {hoverTopLeft ? (
               <div className="text-red-400 font-bold animate-fadeIn">
                 <p>kill your</p>
@@ -148,11 +164,11 @@ export default function Exact404SentinelOpsLanding() {
           href="/checkout"
           onMouseEnter={() => setHoverTopRight(true)}
           onMouseLeave={() => setHoverTopRight(false)}
-          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tr"
+          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-tr max-w-[48%] sm:max-w-none"
         >
           {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
-            className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
+            className="absolute -inset-2 sm:-inset-3 w-[calc(100%+16px)] sm:w-[calc(100%+24px)] h-[calc(100%+16px)] sm:h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 165 70"
             preserveAspectRatio="none"
           >
@@ -166,7 +182,7 @@ export default function Exact404SentinelOpsLanding() {
             />
           </svg>
 
-          <div className="relative z-10 p-2.5">
+          <div className="relative z-10 p-1.5 sm:p-2.5">
             {hoverTopRight ? (
               <div className="text-red-400 font-bold animate-fadeIn">
                 <p>face the actual</p>
@@ -185,10 +201,10 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       {/* 5. CENTER HERO: "My Harness Agent" + WHITE BOLD "SENTINEL OPS" */}
       {/* ========================================================================= */}
-      <div className="relative z-50 my-auto text-center py-4">
+      <div className="relative z-50 my-auto text-center py-4 px-2">
         {/* "My Harness Agent" (TEXT + SHADOW 100% UNIFIED ATOMICALLY) */}
         <p
-          className="text-sm sm:text-base font-epic font-medium tracking-wide text-white mb-2 animate-entrance-eyebrow cursor-default"
+          className="text-xs sm:text-base font-epic font-medium tracking-wide text-white mb-1.5 sm:mb-2 animate-entrance-eyebrow cursor-default"
           style={{
             textShadow:
               "0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.95)",
@@ -198,9 +214,9 @@ export default function Exact404SentinelOpsLanding() {
         </p>
 
         {/* Giant Main Title: "SENTINEL OPS" (TEXT + SHADOW 100% UNIFIED ATOMICALLY) */}
-        <div className="relative inline-block select-none my-1 animate-entrance-hero cursor-default">
+        <div className="relative inline-block select-none my-1 animate-entrance-hero cursor-default max-w-full">
           <h1
-            className="relative text-5xl sm:text-7xl md:text-8xl font-epic font-black uppercase tracking-tight text-white z-10 whitespace-nowrap"
+            className="relative text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-epic font-black uppercase tracking-tight text-white z-10 whitespace-normal sm:whitespace-nowrap px-2 leading-none"
             style={{
               textShadow:
                 "3px 5px 6px rgba(0,0,0,0.95), 0 8px 24px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.95)",
@@ -214,17 +230,17 @@ export default function Exact404SentinelOpsLanding() {
       {/* ========================================================================= */}
       {/* 6. BOTTOM ROW: HAND-DRAWN ORGANIC CURVED CHALK BORDERS */}
       {/* ========================================================================= */}
-      <div className="relative z-50 flex justify-between items-end font-mono text-xs text-zinc-200 leading-tight">
+      <div className="relative z-50 flex justify-between items-end font-mono text-[10px] sm:text-xs text-zinc-200 leading-tight gap-2">
         {/* Bottom-Left Hand-Drawn Wobbly Chalk Loop */}
         <Link
           href="/incidents"
           onMouseEnter={() => setHoverBottomLeft(true)}
           onMouseLeave={() => setHoverBottomLeft(false)}
-          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-bl"
+          className="group relative inline-block cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-bl max-w-[48%] sm:max-w-none"
         >
           {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
-            className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
+            className="absolute -inset-2 sm:-inset-3 w-[calc(100%+16px)] sm:w-[calc(100%+24px)] h-[calc(100%+16px)] sm:h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 145 70"
             preserveAspectRatio="none"
           >
@@ -238,7 +254,7 @@ export default function Exact404SentinelOpsLanding() {
             />
           </svg>
 
-          <div className="relative z-10 p-2.5">
+          <div className="relative z-10 p-1.5 sm:p-2.5">
             {hoverBottomLeft ? (
               <div className="text-red-400 font-bold animate-fadeIn">
                 <p>Explore</p>
@@ -258,11 +274,11 @@ export default function Exact404SentinelOpsLanding() {
           href="https://github.com/Sourjya-Saha"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-br"
+          className="group relative inline-block text-right cursor-pointer transition-transform duration-300 hover:scale-105 animate-entrance-br max-w-[48%] sm:max-w-none"
         >
           {/* Hand-drawn SVG wavy outline with slow hypnotic 8s marching animation */}
           <svg
-            className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] pointer-events-none overflow-visible"
+            className="absolute -inset-2 sm:-inset-3 w-[calc(100%+16px)] sm:w-[calc(100%+24px)] h-[calc(100%+16px)] sm:h-[calc(100%+24px)] pointer-events-none overflow-visible"
             viewBox="0 0 165 70"
             preserveAspectRatio="none"
           >
@@ -276,9 +292,9 @@ export default function Exact404SentinelOpsLanding() {
             />
           </svg>
 
-          <div className="relative z-10 p-2.5">
-            <p className="text-[10px] text-white">Create by</p>
-            <p className="text-white group-hover:text-red-400 font-bold tracking-wider text-xs sm:text-sm font-mono uppercase transition-colors">
+          <div className="relative z-10 p-1.5 sm:p-2.5">
+            <p className="text-[9px] sm:text-[10px] text-white">Create by</p>
+            <p className="text-white group-hover:text-red-400 font-bold tracking-wider text-[11px] sm:text-sm font-mono uppercase transition-colors truncate">
               SOURJYA SAHA ↗
             </p>
           </div>

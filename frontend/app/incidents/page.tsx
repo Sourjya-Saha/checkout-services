@@ -106,18 +106,18 @@ export default function DistortedIncidentsAudit() {
 
       <div className="min-h-screen flex flex-col justify-between text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white">
         {/* ========================================================================= */}
-        {/* TOP NAVIGATION BAR */}
+        {/* COMIC TOP BAR */}
         {/* ========================================================================= */}
-        <header className="animate-landing px-6 sm:px-12 py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
+        <header className="animate-landing px-4 sm:px-12 py-4 sm:py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted White Background Patch for SENTINEL OPS */}
-            <Link href="/" className="group flex items-center gap-3">
+            <Link href="/" className="group flex items-center gap-2.5 sm:gap-3 flex-wrap">
               <div
                 className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
                 style={{ filter: "url(#comic-title-wobble)" }}
               >
-                <div className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626]" />
-                <span className="relative z-10 font-anton text-2xl sm:text-3xl text-black px-3.5 py-0.5 tracking-tight uppercase block">
+                <div className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
+                <span className="relative z-10 font-anton text-xl sm:text-3xl text-black px-2.5 sm:px-3.5 py-0.5 tracking-tight uppercase block">
                   SENTINEL OPS
                 </span>
               </div>
@@ -125,7 +125,7 @@ export default function DistortedIncidentsAudit() {
               {/* Clean Comic AUDIT LEDGER Tag */}
               <div className="relative inline-block rotate-[2deg]">
                 <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#000000]" />
-                <span className="relative z-10 font-anton text-sm text-white px-3 py-0.5 uppercase tracking-wider block">
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-2.5 sm:px-3 py-0.5 uppercase tracking-wider block">
                   POSTMORTEM LEDGER
                 </span>
               </div>
@@ -133,10 +133,10 @@ export default function DistortedIncidentsAudit() {
           </div>
 
           {/* Navigation Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             <button
               onClick={fetchIncidents}
-              className="px-4 py-1.5 bg-zinc-900 hover:bg-white text-white hover:text-black font-anton text-sm uppercase tracking-wider border-[2px] border-white/40 hover:border-black shadow-[3px_3px_0px_#dc2626] hover:shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
+              className="px-3.5 sm:px-4 py-1.5 bg-zinc-900 hover:bg-white text-white hover:text-black font-anton text-xs sm:text-sm uppercase tracking-wider border-[2px] border-white/40 hover:border-black shadow-[3px_3px_0px_#dc2626] hover:shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
             >
               SYNC DB →
             </button>
@@ -145,10 +145,10 @@ export default function DistortedIncidentsAudit() {
               className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform"
             >
               <div
-                className="absolute -inset-2 bg-white border-[3.5px] border-black shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[6px_6px_0px_#ffffff] group-hover:bg-red-600 transition-all"
+                className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
                 style={{ filter: "url(#comic-title-wobble)" }}
               />
-              <span className="relative z-10 font-anton text-sm sm:text-base text-black group-hover:text-white px-5 py-1.5 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+              <span className="relative z-10 font-anton text-xs sm:text-base text-black group-hover:text-white px-3.5 sm:px-5 py-1.5 uppercase tracking-wide flex items-center gap-2 block transition-colors">
                 <span>SENTINELOPS HUD</span>
                 <span>→</span>
               </span>
@@ -159,11 +159,11 @@ export default function DistortedIncidentsAudit() {
         {/* ========================================================================= */}
         {/* MAIN AUDIT CONTAINER */}
         {/* ========================================================================= */}
-        <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 sm:pt-20 pb-16 space-y-12 flex-1 w-full">
+        <main className="max-w-7xl mx-auto px-4 sm:px-8 md:px-12 pt-8 sm:pt-14 md:pt-20 pb-16 space-y-8 sm:space-y-12 flex-1 w-full">
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-1 relative p-8 sm:p-12 rotate-[-0.3deg]">
+          <div className="animate-landing-stagger-1 relative p-5 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
             <div
               className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
@@ -171,11 +171,11 @@ export default function DistortedIncidentsAudit() {
             />
 
             {/* Content inside Hero Banner */}
-            <div className="relative z-10 space-y-6">
+            <div className="relative z-10 space-y-4 sm:space-y-6">
               {/* Subtitle Badge */}
               <div className="relative inline-block rotate-[0.5deg]">
                 <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[3px_3px_0px_#ffffff]" />
-                <span className="relative z-10 font-anton text-sm text-white px-3.5 py-1 tracking-wider uppercase block">
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-3 py-0.5 sm:px-3.5 sm:py-1 tracking-wider uppercase block">
                   02 // POSTGRESQL PERSISTENT MEMORY MATRIX
                 </span>
               </div>
@@ -183,21 +183,21 @@ export default function DistortedIncidentsAudit() {
               {/* Big Title: INCIDENT AUDIT RECORDS */}
               <div>
                 <div
-                  className="relative inline-block mt-1"
+                  className="relative inline-block mt-1 max-w-full"
                   style={{ filter: "url(#comic-title-wobble)" }}
                 >
-                  <div className="absolute -inset-2.5 sm:-inset-4 bg-white border-[4px] border-black shadow-[6px_6px_0px_#dc2626]" />
-                  <h1 className="relative z-10 font-anton text-4xl sm:text-6xl md:text-7xl text-black tracking-tight uppercase px-4 py-1.5 leading-none block">
+                  <div className="absolute -inset-2 sm:-inset-4 bg-white border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0px_#dc2626] sm:shadow-[6px_6px_0px_#dc2626]" />
+                  <h1 className="relative z-10 font-anton text-2xl xs:text-3xl sm:text-5xl md:text-7xl text-black tracking-tight uppercase px-3 sm:px-4 py-1 sm:py-1.5 leading-none block break-words">
                     INCIDENT AUDIT RECORDS
                   </h1>
                 </div>
               </div>
 
               {/* Slanted Specs Ribbon */}
-              <div className="pt-4">
+              <div className="pt-2 sm:pt-4">
                 <div className="relative inline-block rotate-[-1.5deg]">
-                  <div className="absolute -inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
-                  <p className="relative z-10 text-sm sm:text-base font-anton text-zinc-100 px-4 py-1.5 flex items-center gap-3 flex-wrap tracking-wide uppercase">
+                  <div className="absolute -inset-1 sm:-inset-1.5 bg-zinc-900 border-[2px] border-white shadow-[3px_3px_0px_#dc2626]" />
+                  <p className="relative z-10 text-xs sm:text-base font-anton text-zinc-100 px-3 sm:px-4 py-1 sm:py-1.5 flex items-center gap-2 sm:gap-3 flex-wrap tracking-wide uppercase">
                     <span className="text-red-500">SUPABASE PERSISTENCE</span>
                     <span className="text-zinc-500">•</span>
                     <span className="text-white">DAYTONA SANDBOX VERIFICATION</span>
@@ -212,7 +212,7 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 2. METRICS GRID (4 DISTORTED BLACK PANELS) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="animate-landing-stagger-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <div className="relative p-6 rotate-[-0.5deg]">
               <div
                 className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
@@ -319,7 +319,7 @@ export default function DistortedIncidentsAudit() {
                   const incApproval = inc.approval_record || "Two-Stage HITL Human Approval granted at Checkpoints A & B.";
 
                   return (
-                    <div key={incId} className={`relative p-8 space-y-6 ${rot}`}>
+                    <div key={incId} className={`relative p-5 sm:p-8 space-y-5 sm:space-y-6 ${rot}`}>
                       {/* Distorted Black Box Background */}
                       <div
                         className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
@@ -327,77 +327,77 @@ export default function DistortedIncidentsAudit() {
                       />
 
                       {/* Content */}
-                      <div className="relative z-10 space-y-6">
+                      <div className="relative z-10 space-y-5 sm:space-y-6">
                         {/* Header of Incident Card */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-[2px] border-white/20">
-                          <div className="flex items-center gap-3">
-                            <div className="relative inline-block">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b-[2px] border-white/20">
+                          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                            <div className="relative inline-block flex-shrink-0">
                               <div className="absolute -inset-1 bg-white border-[2px] border-black" />
-                              <span className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 uppercase block">
+                              <span className="relative z-10 font-anton text-xs sm:text-sm text-black px-2 sm:px-2.5 py-0.5 uppercase block">
                                 {incId}
                               </span>
                             </div>
-                            <h3 className="font-anton text-xl sm:text-2xl text-white uppercase tracking-wide">
+                            <h3 className="font-anton text-lg sm:text-2xl text-white uppercase tracking-wide break-words">
                               {incTitle}
                             </h3>
                           </div>
 
-                          <div className="relative inline-block">
+                          <div className="relative inline-block self-start sm:self-auto flex-shrink-0">
                             <div className="absolute -inset-1 bg-red-600 border-[2px] border-black shadow-[2px_2px_0px_#ffffff]" />
-                            <span className="relative z-10 font-anton text-sm text-white px-3 py-1 uppercase block">
+                            <span className="relative z-10 font-anton text-xs sm:text-sm text-white px-2.5 sm:px-3 py-0.5 sm:py-1 uppercase block">
                               STATUS: {incStatus} [OK]
                             </span>
                           </div>
                         </div>
 
                         {/* Root Cause & Daytona Subgrids */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-mono">
-                          <div className="p-5 bg-zinc-950 border-[2px] border-red-600/60 space-y-2">
-                            <p className="font-anton text-sm text-red-500 uppercase tracking-wider">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-xs font-mono">
+                          <div className="p-4 sm:p-5 bg-zinc-950 border-[2px] border-red-600/60 space-y-2">
+                            <p className="font-anton text-xs sm:text-sm text-red-500 uppercase tracking-wider">
                               ROOT CAUSE ANALYSIS
                             </p>
-                            <p className="text-zinc-200 leading-relaxed">{incRootCause}</p>
+                            <p className="text-zinc-200 leading-relaxed break-words">{incRootCause}</p>
                           </div>
 
-                          <div className="p-5 bg-zinc-950 border-[2px] border-white/30 space-y-2">
-                            <p className="font-anton text-sm text-white uppercase tracking-wider">
+                          <div className="p-4 sm:p-5 bg-zinc-950 border-[2px] border-white/30 space-y-2">
+                            <p className="font-anton text-xs sm:text-sm text-white uppercase tracking-wider">
                               DAYTONA SANDBOX VERIFICATION
                             </p>
-                            <p className="text-zinc-200 leading-relaxed">{incVerification}</p>
+                            <p className="text-zinc-200 leading-relaxed break-words">{incVerification}</p>
                           </div>
                         </div>
 
                         {/* Evidence & Approval Details */}
-                        <div className="p-4 bg-zinc-950 border-[1.5px] border-white/20 font-mono text-xs text-zinc-300 space-y-2">
-                          <p>
-                            <strong className="text-white font-anton text-sm tracking-wider">SUBAGENT EVIDENCE:</strong> {incEvidence}
+                        <div className="p-3.5 sm:p-4 bg-zinc-950 border-[1.5px] border-white/20 font-mono text-xs text-zinc-300 space-y-2">
+                          <p className="break-words">
+                            <strong className="text-white font-anton text-xs sm:text-sm tracking-wider">SUBAGENT EVIDENCE:</strong> {incEvidence}
                           </p>
-                          <p>
-                            <strong className="text-red-400 font-anton text-sm tracking-wider">HUMAN APPROVAL:</strong> {incApproval}
+                          <p className="break-words">
+                            <strong className="text-red-400 font-anton text-xs sm:text-sm tracking-wider">HUMAN APPROVAL:</strong> {incApproval}
                           </p>
                         </div>
 
                         {/* Bottom Actions */}
-                        <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                          <div className="flex items-center gap-4">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 pt-2">
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4">
                             {inc.pr_link && (
                               <a
                                 href={inc.pr_link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="px-6 py-2.5 bg-white hover:bg-red-600 text-black hover:text-white font-anton text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:shadow-[7px_7px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all inline-block"
+                                className="px-5 sm:px-6 py-2.5 bg-white hover:bg-red-600 text-black hover:text-white font-anton text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[5px_5px_0px_#dc2626] hover:shadow-[7px_7px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000000] transition-all text-center inline-block"
                               >
                                 VIEW GITHUB PR →
                               </a>
                             )}
-                            <span className="px-3.5 py-2 bg-zinc-900 border-[2px] border-white/30 text-sm font-anton uppercase text-zinc-300">
+                            <span className="px-3 sm:px-3.5 py-1.5 sm:py-2 bg-zinc-900 border-[2px] border-white/30 text-xs sm:text-sm font-anton uppercase text-zinc-300 text-center">
                               QODO REVIEW: APPROVED (0 HIGHS)
                             </span>
                           </div>
 
                           <button
                             onClick={() => setSelectedIncident(inc)}
-                            className="px-5 py-2 bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black font-anton text-sm uppercase border-[2px] border-white/30 hover:border-black shadow-[3px_3px_0px_#dc2626] hover:shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
+                            className="px-4 sm:px-5 py-2 bg-zinc-900 hover:bg-white text-zinc-300 hover:text-black font-anton text-xs sm:text-sm uppercase border-[2px] border-white/30 hover:border-black shadow-[3px_3px_0px_#dc2626] hover:shadow-[5px_5px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all text-center"
                           >
                             INSPECT SUPABASE JSON SCHEMA →
                           </button>
@@ -414,7 +414,7 @@ export default function DistortedIncidentsAudit() {
         {/* JSON Schema Modal */}
         {selectedIncident && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div className="relative max-w-2xl w-full p-8 rotate-[-0.5deg]">
+            <div className="relative max-w-2xl w-full p-5 sm:p-8 rotate-[-0.5deg]">
               <div
                 className="absolute inset-0 bg-black border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626]"
                 style={{ filter: "url(#comic-box-wobble)" }}
@@ -422,28 +422,28 @@ export default function DistortedIncidentsAudit() {
 
               <div className="relative z-10 space-y-4">
                 <div className="flex items-center justify-between border-b-[2px] border-white/20 pb-3">
-                  <div className="relative inline-block">
+                  <div className="relative inline-block max-w-[80%]">
                     <div className="absolute -inset-1 bg-white border-[2px] border-black" />
-                    <h3 className="relative z-10 font-anton text-sm text-black px-2.5 py-0.5 uppercase">
+                    <h3 className="relative z-10 font-anton text-xs sm:text-sm text-black px-2 sm:px-2.5 py-0.5 uppercase truncate">
                       SUPABASE MEMORY RECORD ({selectedIncident.id})
                     </h3>
                   </div>
                   <button
                     onClick={() => setSelectedIncident(null)}
-                    className="text-white hover:text-red-500 font-anton text-sm"
+                    className="text-white hover:text-red-500 font-anton text-xs sm:text-sm"
                   >
                     ✕ CLOSE
                   </button>
                 </div>
 
-                <pre className="bg-zinc-950 text-zinc-200 p-4 border-[2px] border-white/20 text-xs font-mono overflow-x-auto max-h-96">
+                <pre className="bg-zinc-950 text-zinc-200 p-3 sm:p-4 border-[2px] border-white/20 text-xs font-mono overflow-x-auto max-h-72 sm:max-h-96">
                   {JSON.stringify(selectedIncident, null, 2)}
                 </pre>
 
                 <div className="text-right pt-2">
                   <button
                     onClick={() => setSelectedIncident(null)}
-                    className="px-6 py-2.5 bg-white hover:bg-red-600 text-black hover:text-white font-anton text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] hover:shadow-[6px_6px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all"
+                    className="w-full sm:w-auto px-5 sm:px-6 py-2 sm:py-2.5 bg-white hover:bg-red-600 text-black hover:text-white font-anton text-xs sm:text-sm uppercase tracking-wider border-[2.5px] border-black shadow-[4px_4px_0px_#dc2626] hover:shadow-[6px_6px_0px_#ffffff] hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] transition-all text-center"
                   >
                     DISMISS
                   </button>
@@ -454,7 +454,7 @@ export default function DistortedIncidentsAudit() {
         )}
 
         {/* Comic Footer (PINNED ABSOLUTELY TO BOTTOM) */}
-        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-6 px-6 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-5 sm:py-6 px-4 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {/* Footer SENTINEL OPS Distorted Badge */}
@@ -464,7 +464,7 @@ export default function DistortedIncidentsAudit() {
                   style={{ filter: "url(#comic-title-wobble)" }}
                 >
                   <div className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626]" />
-                  <span className="relative z-10 font-anton text-base sm:text-lg text-black px-2.5 py-0.5 tracking-tight uppercase block">
+                  <span className="relative z-10 font-anton text-sm sm:text-lg text-black px-2.5 py-0.5 tracking-tight uppercase block">
                     SENTINEL OPS
                   </span>
                 </div>
@@ -472,16 +472,16 @@ export default function DistortedIncidentsAudit() {
             </div>
 
             {/* Footer SENTINELOPS COMMAND HUD Button */}
-            <div>
+            <div className="w-full sm:w-auto text-center">
               <Link
                 href="/sentinelops"
-                className="group relative inline-block rotate-[-1deg] hover:rotate-0 transition-transform"
+                className="group relative inline-block rotate-[-1deg] hover:rotate-0 transition-transform w-full sm:w-auto"
               >
                 <div
                   className="absolute -inset-1.5 bg-white border-[2.5px] border-black shadow-[3px_3px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
                   style={{ filter: "url(#comic-title-wobble)" }}
                 />
-                <span className="relative z-10 font-anton text-sm text-black group-hover:text-white px-4 py-1 uppercase tracking-wide flex items-center gap-2 block transition-colors">
+                <span className="relative z-10 font-anton text-xs sm:text-sm text-black group-hover:text-white px-3.5 sm:px-4 py-1 uppercase tracking-wide flex items-center justify-center gap-2 block transition-colors">
                   <span>SENTINELOPS COMMAND HUD</span>
                   <span>→</span>
                 </span>
