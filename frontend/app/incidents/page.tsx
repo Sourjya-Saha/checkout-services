@@ -90,32 +90,15 @@ export default function DistortedIncidentsAudit() {
         }
       `}</style>
 
-      {/* SVG Distorted Drawing Filters */}
-      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
-        <defs>
-          <filter id="comic-box-wobble" x="-4%" y="-4%" width="108%" height="108%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-          <filter id="comic-title-wobble" x="-4%" y="-4%" width="108%" height="108%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
-
       <div className="min-h-screen flex flex-col justify-between text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white">
         {/* ========================================================================= */}
         {/* COMIC TOP BAR */}
         {/* ========================================================================= */}
-        <header className="animate-landing px-4 sm:px-12 py-4 sm:py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
+        <header className="px-4 sm:px-12 py-4 sm:py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted White Background Patch for SENTINEL OPS */}
             <Link href="/" className="group flex items-center gap-2.5 sm:gap-3 flex-wrap">
-              <div
-                className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
-                style={{ filter: "url(#comic-title-wobble)" }}
-              >
+              <div className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform">
                 <div className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
                 <span className="relative z-10 font-anton text-xl sm:text-3xl text-black px-2.5 sm:px-3.5 py-0.5 tracking-tight uppercase block">
                   SENTINEL OPS
@@ -144,10 +127,7 @@ export default function DistortedIncidentsAudit() {
               href="/sentinelops"
               className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform"
             >
-              <div
-                className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
-                style={{ filter: "url(#comic-title-wobble)" }}
-              />
+              <div className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all" />
               <span className="relative z-10 font-anton text-xs sm:text-base text-black group-hover:text-white px-3.5 sm:px-5 py-1.5 uppercase tracking-wide flex items-center gap-2 block transition-colors">
                 <span>SENTINELOPS HUD</span>
                 <span>→</span>
@@ -163,12 +143,9 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-1 relative p-5 sm:p-12 rotate-[-0.3deg]">
+          <div className="relative p-5 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
-            <div
-              className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
-              style={{ filter: "url(#comic-box-wobble)" }}
-            />
+            <div className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]" />
 
             {/* Content inside Hero Banner */}
             <div className="relative z-10 space-y-4 sm:space-y-6">
@@ -182,10 +159,7 @@ export default function DistortedIncidentsAudit() {
 
               {/* Big Title: INCIDENT AUDIT RECORDS */}
               <div>
-                <div
-                  className="relative inline-block mt-1 max-w-full"
-                  style={{ filter: "url(#comic-title-wobble)" }}
-                >
+                <div className="relative inline-block mt-1 max-w-full">
                   <div className="absolute -inset-2 sm:-inset-4 bg-white border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0px_#dc2626] sm:shadow-[6px_6px_0px_#dc2626]" />
                   <h1 className="relative z-10 font-anton text-2xl xs:text-3xl sm:text-5xl md:text-7xl text-black tracking-tight uppercase px-3 sm:px-4 py-1 sm:py-1.5 leading-none block break-words">
                     INCIDENT AUDIT RECORDS
@@ -212,12 +186,9 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 2. METRICS GRID (4 DISTORTED BLACK PANELS) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <div className="relative p-6 rotate-[-0.5deg]">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]" />
               <div className="relative z-10 space-y-2">
                 <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">TOTAL EVENTS</p>
                 <p className="text-4xl sm:text-5xl font-anton text-white tracking-tight">{incidents.length}</p>
@@ -228,10 +199,7 @@ export default function DistortedIncidentsAudit() {
             </div>
 
             <div className="relative p-6 rotate-[0.5deg]">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]" />
               <div className="relative z-10 space-y-2">
                 <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">AGENT HARNESS</p>
                 <p className="text-3xl sm:text-4xl font-anton text-white tracking-tight">TRUEFORGE</p>
@@ -240,10 +208,7 @@ export default function DistortedIncidentsAudit() {
             </div>
 
             <div className="relative p-6 rotate-[-0.3deg]">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]" />
               <div className="relative z-10 space-y-2">
                 <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">CODE QUALITY</p>
                 <p className="text-3xl sm:text-4xl font-anton text-red-500 tracking-tight">QODO AI</p>
@@ -252,10 +217,7 @@ export default function DistortedIncidentsAudit() {
             </div>
 
             <div className="relative p-6 rotate-[0.4deg]">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]" />
               <div className="relative z-10 space-y-2">
                 <p className="text-sm font-anton text-zinc-400 uppercase tracking-wide">PERSISTENT DB</p>
                 <p className="text-3xl sm:text-4xl font-anton text-white tracking-tight">SUPABASE</p>
@@ -267,23 +229,17 @@ export default function DistortedIncidentsAudit() {
           {/* ========================================================================= */}
           {/* 3. AUDIT LOG STREAM (DISTORTED PANELS) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-3 space-y-6">
+          <div className="space-y-6">
             {loading ? (
               <div className="relative p-12 text-center rotate-[0.2deg]">
-                <div
-                  className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-box-wobble)" }}
-                />
+                <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]" />
                 <p className="relative z-10 text-zinc-300 font-mono text-xs">
                   Querying Supabase persistent memory cluster...
                 </p>
               </div>
             ) : incidents.length === 0 ? (
               <div className="relative p-10 sm:p-14 text-center space-y-6 rotate-[0.3deg]">
-                <div
-                  className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
-                  style={{ filter: "url(#comic-box-wobble)" }}
-                />
+                <div className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]" />
                 <div className="relative z-10 space-y-6">
                   <div className="relative inline-block">
                     <div className="absolute -inset-2 bg-white border-[3px] border-black shadow-[4px_4px_0px_#dc2626]" />
@@ -321,10 +277,7 @@ export default function DistortedIncidentsAudit() {
                   return (
                     <div key={incId} className={`relative p-5 sm:p-8 space-y-5 sm:space-y-6 ${rot}`}>
                       {/* Distorted Black Box Background */}
-                      <div
-                        className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
-                        style={{ filter: "url(#comic-box-wobble)" }}
-                      />
+                      <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]" />
 
                       {/* Content */}
                       <div className="relative z-10 space-y-5 sm:space-y-6">
@@ -415,10 +368,7 @@ export default function DistortedIncidentsAudit() {
         {selectedIncident && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
             <div className="relative max-w-2xl w-full p-5 sm:p-8 rotate-[-0.5deg]">
-              <div
-                className="absolute inset-0 bg-black border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black border-[4px] border-white shadow-[10px_10px_0px_0px_#dc2626]" />
 
               <div className="relative z-10 space-y-4">
                 <div className="flex items-center justify-between border-b-[2px] border-white/20 pb-3">
@@ -454,7 +404,7 @@ export default function DistortedIncidentsAudit() {
         )}
 
         {/* Comic Footer (PINNED ABSOLUTELY TO BOTTOM) */}
-        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-5 sm:py-6 px-4 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+        <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-5 sm:py-6 px-4 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {/* Footer SENTINEL OPS Distorted Badge */}

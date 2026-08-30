@@ -355,35 +355,15 @@ function SentinelOpsCommanderInner() {
         }
       `}</style>
 
-      {/* SVG Distorted Drawing Filters */}
-      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
-        <defs>
-          <filter id="comic-box-wobble" x="-4%" y="-4%" width="108%" height="108%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-          <filter id="comic-title-wobble" x="-4%" y="-4%" width="108%" height="108%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
-
       <div className="min-h-screen flex flex-col justify-between text-white font-['Space_Grotesk',sans-serif] antialiased selection:bg-red-600 selection:text-white">
-        {/* ========================================================================= */}
-        {/* TOP NAVIGATION BAR (SINGLE REDIRECTION BUTTON: POSTMORTEM REPORTS) */}
-        {/* ========================================================================= */}
         {/* ========================================================================= */}
         {/* COMIC TOP BAR */}
         {/* ========================================================================= */}
-        <header className="animate-landing px-4 sm:px-12 py-4 sm:py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
+        <header className="px-4 sm:px-12 py-4 sm:py-5 border-b-[3.5px] border-black bg-black/90 backdrop-blur-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_6px_0_0_#dc2626]">
           <div className="flex items-center gap-3">
             {/* Distorted White Background Patch for SENTINEL OPS */}
             <Link href="/" className="group flex items-center gap-2.5 sm:gap-3 flex-wrap">
-              <div
-                className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform"
-                style={{ filter: "url(#comic-title-wobble)" }}
-              >
+              <div className="relative inline-block rotate-[-1.5deg] group-hover:rotate-0 transition-transform">
                 <div className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
                 <span className="relative z-10 font-anton text-xl sm:text-3xl text-black px-2.5 sm:px-3.5 py-0.5 tracking-tight uppercase block">
                   SENTINEL OPS
@@ -406,10 +386,7 @@ function SentinelOpsCommanderInner() {
               href="/incidents"
               className="group relative inline-block rotate-[-1.5deg] hover:rotate-0 transition-transform w-full sm:w-auto text-center"
             >
-              <div
-                className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all"
-                style={{ filter: "url(#comic-title-wobble)" }}
-              />
+              <div className="absolute -inset-1.5 sm:-inset-2 bg-white border-[3px] sm:border-[3.5px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626] group-hover:shadow-[5px_5px_0px_#ffffff] group-hover:bg-red-600 transition-all" />
               <span className="relative z-10 font-anton text-xs sm:text-base text-black group-hover:text-white px-3.5 sm:px-5 py-1.5 uppercase tracking-wide flex items-center justify-center gap-2 block transition-colors">
                 <span>POSTMORTEM REPORTS</span>
                 <span>→</span>
@@ -425,12 +402,9 @@ function SentinelOpsCommanderInner() {
           {/* ========================================================================= */}
           {/* 1. HERO BANNER */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-1 relative p-5 sm:p-12 rotate-[-0.3deg]">
+          <div className="relative p-5 sm:p-12 rotate-[-0.3deg]">
             {/* Distorted Black Box Background Layer */}
-            <div
-              className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
-              style={{ filter: "url(#comic-box-wobble)" }}
-            />
+            <div className="absolute inset-0 bg-black/95 border-[4px] border-white shadow-[9px_9px_0px_0px_#dc2626]" />
 
             {/* Content inside Hero Banner */}
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 sm:gap-8">
@@ -445,10 +419,7 @@ function SentinelOpsCommanderInner() {
 
                 {/* Big Title: SENTINELOPS INCIDENT HUD */}
                 <div>
-                  <div
-                    className="relative inline-block mt-1 max-w-full"
-                    style={{ filter: "url(#comic-title-wobble)" }}
-                  >
+                  <div className="relative inline-block mt-1 max-w-full">
                     <div className="absolute -inset-2 sm:-inset-4 bg-white border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0px_#dc2626] sm:shadow-[6px_6px_0px_#dc2626]" />
                     <h1 className="relative z-10 font-anton text-2xl xs:text-3xl sm:text-5xl md:text-7xl text-black tracking-tight uppercase px-3 sm:px-4 py-1 sm:py-1.5 leading-none block break-words">
                       SENTINELOPS INCIDENT HUD
@@ -550,10 +521,7 @@ function SentinelOpsCommanderInner() {
           {/* Checkpoint A: Fix Approval */}
           {incidentState?.status === "awaiting_fix_approval" && (
             <div className="relative p-5 sm:p-8 space-y-5 sm:space-y-6 rotate-[-0.4deg]">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-red-600 shadow-[9px_9px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-red-600 shadow-[9px_9px_0px_0px_#dc2626]" />
 
               <div className="relative z-10 space-y-5 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -619,10 +587,7 @@ function SentinelOpsCommanderInner() {
           {/* Checkpoint B: Pull Request Approval */}
           {incidentState?.status === "awaiting_pr_approval" && (
             <div className="relative p-5 sm:p-8 space-y-5 sm:space-y-6 rotate-[0.4deg]">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626]" />
 
               <div className="relative z-10 space-y-5 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -684,10 +649,7 @@ function SentinelOpsCommanderInner() {
           {/* Resolved Banner */}
           {incidentState?.status === "resolved" && (
             <div className="relative p-5 sm:p-8 space-y-4">
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[9px_9px_0px_0px_#dc2626]" />
 
               <div className="relative z-10 space-y-4">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -721,7 +683,7 @@ function SentinelOpsCommanderInner() {
           {/* ========================================================================= */}
           {/* 2. PARALLEL MULTI-AGENT SWARM (WIDE TRACKING) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-2 space-y-4 sm:space-y-5">
+          <div className="space-y-4 sm:space-y-5">
             {/* Section Tag */}
             <div className="relative inline-block rotate-[-0.8deg]">
               <div className="absolute -inset-1 sm:-inset-1.5 bg-white border-[2.5px] sm:border-[3px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
@@ -740,10 +702,7 @@ function SentinelOpsCommanderInner() {
                     className={`relative p-4 sm:p-6 flex flex-col justify-between space-y-4 transition-transform hover:-translate-y-1 ${rot}`}
                   >
                     {/* Distorted Black Box Background Layer */}
-                    <div
-                      className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]"
-                      style={{ filter: "url(#comic-box-wobble)" }}
-                    />
+                    <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[7px_7px_0px_0px_#dc2626]" />
 
                     {/* Content inside Subagent Card */}
                     <div className="relative z-10 space-y-3">
@@ -785,7 +744,7 @@ function SentinelOpsCommanderInner() {
           {/* ========================================================================= */}
           {/* 3. LIVE TERMINAL & SSE EXECUTION STREAM (FULL HISTORY & THIN BLACK SCROLLBAR) */}
           {/* ========================================================================= */}
-          <div className="animate-landing-stagger-3 space-y-4 sm:space-y-5">
+          <div className="space-y-4 sm:space-y-5">
             {/* Section Tag */}
             <div className="relative inline-block rotate-[0.8deg]">
               <div className="absolute -inset-1 sm:-inset-1.5 bg-white border-[2.5px] sm:border-[3px] border-black shadow-[3px_3px_0px_#dc2626] sm:shadow-[4px_4px_0px_#dc2626]" />
@@ -797,10 +756,7 @@ function SentinelOpsCommanderInner() {
             {/* Distorted Terminal Box */}
             <div className="relative p-4 sm:p-7 font-mono text-xs space-y-4 rotate-[-0.2deg]">
               {/* Distorted Black Box Background Layer */}
-              <div
-                className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]"
-                style={{ filter: "url(#comic-box-wobble)" }}
-              />
+              <div className="absolute inset-0 bg-black/95 border-[3.5px] border-white shadow-[8px_8px_0px_0px_#dc2626]" />
 
               {/* Terminal Content */}
               <div className="relative z-10 space-y-4">
@@ -851,7 +807,7 @@ function SentinelOpsCommanderInner() {
         </main>
 
         {/* Comic Footer */}
-        <footer className="animate-landing-stagger-4 mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-5 sm:py-6 px-4 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
+        <footer className="mt-auto w-full border-t-[3.5px] border-black bg-black/95 py-5 sm:py-6 px-4 sm:px-12 shadow-[0_-6px_0_0_#dc2626]">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               {/* Footer SENTINEL OPS Distorted Badge */}

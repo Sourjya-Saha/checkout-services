@@ -36,7 +36,8 @@ export default function Blurred404Background({
       {/* ========================================================================= */}
       <div
         aria-hidden="true"
-        className={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden filter ${blurClasses} opacity-85 transform scale-105`}
+        className={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden filter ${blurClasses} opacity-85`}
+        style={{ transform: "translate3d(0, 0, 0) scale(1.05)", willChange: "transform" }}
       >
         {/* MOBILE & TABLET: TIGHT-KNIT CLUSTERED 404 */}
         <div className="flex lg:hidden absolute top-[52%] sm:top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center -space-x-4 sm:-space-x-7 whitespace-nowrap gap-3 sm:gap-6 md:gap-6">
@@ -120,7 +121,7 @@ export default function Blurred404Background({
       {/* ========================================================================= */}
       {/* 3. SCROLLABLE PAGE CONTENT LAYER */}
       {/* ========================================================================= */}
-      <div className="relative z-40 w-full min-h-screen">
+      <div className="relative z-40 w-full min-h-screen" style={{ transform: "translateZ(0)" }}>
         {children}
       </div>
     </div>
